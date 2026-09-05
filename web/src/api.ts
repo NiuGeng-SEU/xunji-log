@@ -187,7 +187,7 @@ export async function fetchDayDetail(datestr: string): Promise<DayDetail> {
   const res = await fetch(`/api/day/${datestr}`);
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(text || `加载 ${datestr} 失败`);
+    throw new Error(text || `Failed to load ${datestr}`);
   }
   return res.json();
 }
@@ -346,7 +346,7 @@ export async function fetchDrill(type: DrillType, key: string): Promise<DrillRes
   const res = await fetch(`/api/drill?${qs}`);
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(text || `下钻加载失败`);
+    throw new Error(text || "Failed to load workout details");
   }
   return res.json();
 }

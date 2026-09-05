@@ -25,12 +25,13 @@ import { useLanguage } from "../language";
 function InsightList({ items, title }: { items: string[]; title: string }) {
   const { unit } = useWeightUnit();
   const { text } = useLanguage();
-  if (!items.length) return null;
+  const translated = items.map((item) => text(convertInsightUnits(item, unit))).filter(Boolean);
+  if (!translated.length) return null;
   return (
     <div className="chart-card insights-card">
       <h3>{title}</h3>
       <ul className="insight-list">
-        {items.map((item, i) => <li key={i}>{text(convertInsightUnits(item, unit))}</li>)}
+        {translated.map((item, i) => <li key={i}>{item}</li>)}
       </ul>
     </div>
   );
@@ -228,7 +229,6 @@ function MovementBody({
               ],
             }}
           />
-          <p className="caption">{t("Click a point to view the complete workout", "点击数据点查看当天完整训练")}</p>
         </div>
       )}
 
@@ -322,7 +322,7 @@ function CategoryBody({
       )}
       {cat && cat.movements.length > 0 && (
         <div className="chart-card" style={{ marginBottom: 16 }}>
-          <h3>{t("Movements in This Area", "该部位动作排行 · 点击下钻")}</h3>
+          <h3>{t("Movements in This Area", "该部位动作排行")}</h3>
           <Chart
             height={Math.min(320, cat.movements.length * 32 + 40)}
             onEvents={{ click: (p) => { const n = chartClickName(p); if (n) onOpenMovement(data.category?.movements.find((m) => label(m.name) === n)?.name || n); } }}
@@ -453,7 +453,7 @@ function RhythmBody({
       <InsightList items={data.insights || []} title={t("Rhythm Analysis", "节奏分析")} />
       {s.top_movements.length > 0 && (
         <div className="chart-card" style={{ marginBottom: 16 }}>
-          <h3>{t("Common Movements in This Time Slot", "该时段常练动作 · 点击下钻")}</h3>
+          <h3>{t("Common Movements in This Time Slot", "该时段常练动作")}</h3>
           <table className="data">
             <thead><tr><th>{t("Movement", "动作")}</th><th>{t("Volume", "容量")}</th><th>{t("Days", "天数")}</th></tr></thead>
             <tbody>
@@ -468,7 +468,7 @@ function RhythmBody({
       )}
       {!!data.sessions_preview?.length && (
         <div className="chart-card">
-          <h3>{t("Recent Workouts", "最近训练 · 点击查看当天")}</h3>
+          <h3>{t("Recent Workouts", "最近训练")}</h3>
           {data.sessions_preview.map((sess, i) => (
             <div key={`${sess.datestr}-${i}`} className="session-preview" onClick={() => onOpenDay(sess.datestr)}>
               <div className="session-preview-title"><strong>{sess.datestr}</strong> · {label(sess.title)}</div>
@@ -531,7 +531,7 @@ export default function DrillPanel({
         <header className="day-drawer-header">
           <div>
             <h2>{data ? (data.view === "category" ? label(data.key) : data.title) : `${current.type}: ${current.key}`}</h2>
-            <p>{stack.length > 1 ? t(`Level ${stack.length} · Esc to go back`, `下钻层级 ${stack.length} · Esc 返回上一级`) : t("Click charts or tables to explore · Esc to close", "点击图表/表格可继续下钻 · Esc 关闭")}</p>
+            <p>{stack.length > 1 ? t(`Level ${stack.length} · Esc to go back`, `下钻层级 ${stack.length} · Esc 返回上一级`) : t("Esc to close", "Esc 关闭")}</p>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
             {stack.length > 1 && <button className="btn btn-ghost" type="button" onClick={back}>← {t("Back", "返回")}</button>}

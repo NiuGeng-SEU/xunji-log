@@ -37,7 +37,7 @@ export default function Muscle({ data }: { data: Analysis }) {
     <>
       <h2 className="page-title">{t("Strength Training", "增肌训练")}</h2>
       <p className="page-desc">
-        {t("Total volume", "总容量")} {formatVolume(data.total_volume_kg, unit)} · {data.total_done_sets} {t("completed sets", "组完成")} · {t("Click charts to explore", "图表可下钻")}
+        {t("Total volume", "总容量")} {formatVolume(data.total_volume_kg, unit)} · {data.total_done_sets} {t("completed sets", "组完成")}
       </p>
 
       <div className="stats-grid">
@@ -90,7 +90,6 @@ export default function Muscle({ data }: { data: Analysis }) {
               tooltip: { trigger: "axis" },
             }}
           />
-          <p className="caption">{t("Click a line to explore that body area, or a month to view the full month", "点击某条折线可下钻该部位；点击月份可看整月")}</p>
         </div>
         <div className="chart-card clickable-hint">
           <h3>{t("Training Share by Body Area", "部位训练占比")}</h3>
@@ -130,7 +129,7 @@ export default function Muscle({ data }: { data: Analysis }) {
       </div>
 
       <div className="chart-card full">
-        <h3>{t("Top 20 Movements by Volume", "Top 20 动作 · 容量排行 · 点击下钻")}</h3>
+        <h3>{t("Top 20 Movements by Volume", "Top 20 动作 · 容量排行")}</h3>
         <table className="data">
           <thead>
             <tr><th>{t("Movement", "动作")}</th><th>{t("Area", "部位")}</th><th>{t("Days", "训练天数")}</th><th>{t("Sets", "组数")}</th><th>{t("Volume", "容量")}</th></tr>

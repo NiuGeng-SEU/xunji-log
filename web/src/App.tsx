@@ -3,10 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import {
   Analysis,
-  SyncStatus,
   fetchAnalysis,
-  fetchSyncStatus,
-  refreshAnalysis,
   triggerSync,
 } from "./api";
 import Overview from "./pages/Overview";
@@ -16,7 +13,7 @@ import Rhythm from "./pages/Rhythm";
 import Movements from "./pages/Movements";
 import Calendar from "./pages/Calendar";
 import { UnitProvider } from "./units";
-import { LanguageProvider, useLanguage } from "./language";
+import { LanguageProvider } from "./language";
 
 export default function App() {
   return (
@@ -27,9 +24,7 @@ export default function App() {
 }
 
 function AppContent() {
-  const { t } = useLanguage();
   const [data, setData] = useState<Analysis | null>(null);
-  const [sync, setSync] = useState<SyncStatus | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
@@ -38,12 +33,8 @@ function AppContent() {
     setLoading(true);
     setError("");
     try {
-      const [analysis, status] = await Promise.all([
-        fetchAnalysis(),
-        fetchSyncStatus().catch(() => null),
-      ]);
+      const analysis = await fetchAnalysis();
       setData(analysis);
-      setSync(status);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to load data");
     } finally {
@@ -53,48 +44,27 @@ function AppContent() {
 
   useEffect(() => { load(); }, [load]);
 
-  const onRefresh = async () => {
-    try {
-      await refreshAnalysis();
-      await load();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : t("Failed to refresh", "刷新失败"));
-    }
-  };
-
   const onSync = async () => {
     setSyncing(true);
     setError("");
     try {
-      const status = await triggerSync();
-      setSync(status);
+      await triggerSync();
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : t("Failed to sync", "同步失败"));
+      setError(e instanceof Error ? e.message : "Failed to sync");
     } finally {
       setSyncing(false);
     }
   };
 
-  if (loading) return <div className="loading">{t("Loading workout data…", "加载训练数据中…")}</div>;
-  if (error || !data) return <div className="error">{error || t("No data", "无数据")}</div>;
+  if (loading) return <div className="loading">Loading workout data…</div>;
+  if (error || !data) return <div className="error">{error || "No data"}</div>;
 
   return (
     <UnitProvider>
       <Routes>
-        <Route element={<Layout />}>
-        <Route
-          index
-          element={
-            <Overview
-              data={data}
-              sync={sync}
-              syncing={syncing}
-              onRefresh={onRefresh}
-              onSync={onSync}
-            />
-          }
-        />
+        <Route element={<Layout syncing={syncing} onSync={onSync} />}>
+        <Route index element={<Overview data={data} />} />
         <Route path="fat-loss" element={<FatLoss data={data} />} />
         <Route path="muscle" element={<Muscle data={data} />} />
         <Route path="rhythm" element={<Rhythm data={data} />} />

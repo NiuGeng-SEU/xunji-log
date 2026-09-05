@@ -28,7 +28,6 @@ export default function FatLoss({ data }: { data: Analysis }) {
       <h2 className="page-title">{t("Cardio Analysis", "减脂分析")}</h2>
       <p className="page-desc">
         {c.n_sessions} {t("cardio sessions", "次有氧训练")} · {c.total_km} km · {c.total_kcal.toLocaleString()} kcal
-        {" · "}{t("Click charts and tables to explore", "图表/表格可下钻")}
       </p>
 
       <div className="stats-grid">
@@ -90,7 +89,7 @@ export default function FatLoss({ data }: { data: Analysis }) {
       </div>
 
       <div className="chart-card full">
-        <h3>{t("Recent Cardio Sessions (Last 20)", "有氧训练记录（最近 20 次）· 点击日期下钻")}</h3>
+        <h3>{t("Recent Cardio Sessions (Last 20)", "有氧训练记录（最近 20 次）")}</h3>
         <table className="data">
           <thead>
             <tr>

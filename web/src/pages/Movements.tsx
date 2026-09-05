@@ -16,7 +16,7 @@ export default function Movements({ data }: { data: Analysis }) {
   return (
     <>
       <h2 className="page-title">{t("Movement Progress", "动作进步")}</h2>
-      <p className="page-desc">{t("Monthly volume trends for the top 8 movements · Personal records (PR)", "Top 8 动作月度容量趋势 · 个人记录（PR）· 点击下钻")}</p>
+      <p className="page-desc">{t("Monthly volume trends for the top 8 movements · Personal records (PR)", "Top 8 动作月度容量趋势 · 个人记录（PR）")}</p>
 
       <div className="charts-grid">
         <div className="chart-card full clickable-hint">
@@ -45,12 +45,11 @@ export default function Movements({ data }: { data: Analysis }) {
               tooltip: { trigger: "axis" },
             }}
           />
-          <p className="caption">{t("Click a line or legend item to view weight and volume progress", "点击某条曲线 / 图例对应系列 → 查看该动作重量与容量进步")}</p>
         </div>
       </div>
 
       <div className="chart-card full">
-        <h3>{t("Personal Records (PR) · Top 30", "个人记录（PR）· Top 30 · 点击下钻")}</h3>
+        <h3>{t("Personal Records (PR) · Top 30", "个人记录（PR）· Top 30")}</h3>
         <table className="data">
           <thead>
             <tr><th>{t("Movement", "动作")}</th><th>{t("Area", "部位")}</th><th>{t("Max Weight", "最大重量")}</th><th>{t("Reps", "次数")}</th><th>{t("Date", "日期")}</th></tr>

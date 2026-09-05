@@ -1,10 +1,7 @@
-import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
-
-export type Language = "en" | "zh";
+import { createContext, ReactNode, useContext, useEffect } from "react";
 
 type LanguageContextValue = {
-  language: Language;
-  setLanguage: (language: Language) => void;
+  language: "en";
   t: (english: string, chinese: string) => string;
   label: (value: string) => string;
   rawLabel: (value: string) => string;
@@ -67,6 +64,12 @@ const ENGLISH_LABELS: Record<string, string> = {
 };
 const RAW_LABELS = Object.fromEntries(Object.entries(ENGLISH_LABELS).map(([raw, english]) => [english, raw]));
 
+function replaceKnownLabels(value: string): string {
+  return Object.entries(ENGLISH_LABELS)
+    .sort(([a], [b]) => b.length - a.length)
+    .reduce((text, [raw, english]) => text.replaceAll(raw, english), value);
+}
+
 function translateGeneratedText(raw: string): string {
   const rules: Array<[RegExp, (...parts: string[]) => string]> = [
     [/^共 (\d+) 次训练：(.+)$/, (n, names) => `${n} sessions: ${names}`],
@@ -91,32 +94,29 @@ function translateGeneratedText(raw: string): string {
   ];
   for (const [pattern, render] of rules) {
     const match = raw.match(pattern);
-    if (match) return render(...match.slice(1));
+    if (match) {
+      const translated = replaceKnownLabels(render(...match.slice(1)));
+      return /\p{Script=Han}/u.test(translated) ? "" : translated;
+    }
   }
-  return ENGLISH_LABELS[raw] || raw;
-}
-
-function initialLanguage(): Language {
-  return window.localStorage.getItem("xunji-language") === "zh" ? "zh" : "en";
+  const translated = replaceKnownLabels(ENGLISH_LABELS[raw] || raw);
+  return /\p{Script=Han}/u.test(translated) ? "" : translated;
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>(initialLanguage);
-
   useEffect(() => {
-    window.localStorage.setItem("xunji-language", language);
-    document.documentElement.lang = language === "en" ? "en" : "zh-CN";
-    document.title = language === "en" ? "Workout Dashboard" : "训练数据 Dashboard";
-  }, [language]);
+    window.localStorage.removeItem("xunji-language");
+    document.documentElement.lang = "en";
+    document.title = "Workout Dashboard";
+  }, []);
 
-  const value = useMemo<LanguageContextValue>(() => ({
-    language,
-    setLanguage,
-    t: (english, chinese) => language === "en" ? english : chinese,
-    label: (raw) => language === "en" ? (ENGLISH_LABELS[raw] || raw) : raw,
-    rawLabel: (display) => language === "en" ? (RAW_LABELS[display] || display) : display,
-    text: (raw) => language === "en" ? translateGeneratedText(raw) : raw,
-  }), [language]);
+  const value: LanguageContextValue = {
+    language: "en",
+    t: (english) => english,
+    label: (raw) => ENGLISH_LABELS[raw] || (/\p{Script=Han}/u.test(raw) ? "Custom Movement" : raw),
+    rawLabel: (display) => RAW_LABELS[display] || display,
+    text: (raw) => translateGeneratedText(raw),
+  };
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }

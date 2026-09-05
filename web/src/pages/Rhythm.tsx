@@ -58,7 +58,7 @@ export default function Rhythm({ data }: { data: Analysis }) {
               grid: { left: 48, right: 16, top: 32, bottom: 60 },
             }}
           />
-          <p className="caption">{t("Zero indicates a week without training; click a week for details", "0 表示该周无训练（空窗期）· 点击某周查看详情")}</p>
+          <p className="caption">{t("Zero indicates a week without training", "0 表示该周无训练（空窗期）")}</p>
         </div>
         <div className="chart-card clickable-hint">
           <h3>{t("Sessions by Day of Week", "星期几分布")}</h3>
