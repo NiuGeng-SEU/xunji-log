@@ -347,6 +347,29 @@ a { color: inherit; text-decoration: none; }
 .heatmap-cell:disabled { opacity: 1; }
 .heatmap-cell.outside-year { visibility: hidden; }
 
+.heatmap-tooltip {
+  position: fixed;
+  z-index: 200;
+  max-width: min(320px, calc(100vw - 24px));
+  padding: 6px 9px;
+  border: 1px solid #afb8c1;
+  border-radius: 6px;
+  background: #24292f;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(31, 35, 40, 0.2);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: heatmap-tooltip-in 60ms ease-out both;
+}
+
+@keyframes heatmap-tooltip-in {
+  from { opacity: 0; transform: translateY(-2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .heatmap-years {
   display: flex;
   flex-direction: column;

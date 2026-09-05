@@ -64,6 +64,7 @@ export default function TrainingHeatmap({
   const [year, setYear] = useState(years[0]);
   const [showStrength, setShowStrength] = useState(true);
   const [showCardio, setShowCardio] = useState(true);
+  const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
   const { weeks, maxVolume, maxCardio } = useMemo(() => {
     const yearDays = data.daily.filter((day) => day.date.startsWith(`${year}-`));
     const days = new Map(yearDays.map((day) => [day.date, day]));
@@ -114,7 +115,10 @@ export default function TrainingHeatmap({
                 type="button"
                 className={showStrength ? "active" : ""}
                 aria-pressed={showStrength}
-                onClick={() => setShowStrength((visible) => !visible)}
+                onClick={() => {
+                  setShowStrength((visible) => !visible);
+                  setTooltip(null);
+                }}
               >
                 <i className="heatmap-swatch strength" />Strength
               </button>
@@ -122,7 +126,10 @@ export default function TrainingHeatmap({
                 type="button"
                 className={showCardio ? "active" : ""}
                 aria-pressed={showCardio}
-                onClick={() => setShowCardio((visible) => !visible)}
+                onClick={() => {
+                  setShowCardio((visible) => !visible);
+                  setTooltip(null);
+                }}
               >
                 <i className="heatmap-swatch cardio" />Cardio
               </button>
@@ -163,9 +170,25 @@ export default function TrainingHeatmap({
                           type="button"
                           className={`heatmap-cell${visible ? " trained" : ""}${inYear ? "" : " outside-year"}`}
                           style={{ background: cellBackground(day, maxVolume, maxCardio, showStrength, showCardio) }}
-                          title={details}
                           aria-label={details}
                           disabled={!visible}
+                          onMouseEnter={(event) => visible && setTooltip({
+                            text: details,
+                            x: Math.min(event.clientX + 12, window.innerWidth - 280),
+                            y: event.clientY + 14,
+                          })}
+                          onMouseMove={(event) => visible && setTooltip({
+                            text: details,
+                            x: Math.min(event.clientX + 12, window.innerWidth - 280),
+                            y: event.clientY + 14,
+                          })}
+                          onMouseLeave={() => setTooltip(null)}
+                          onFocus={(event) => {
+                            if (!visible) return;
+                            const rect = event.currentTarget.getBoundingClientRect();
+                            setTooltip({ text: details, x: rect.left, y: rect.bottom + 7 });
+                          }}
+                          onBlur={() => setTooltip(null)}
                           onClick={() => visible && onOpenDay(date)}
                         />
                       );
@@ -183,13 +206,25 @@ export default function TrainingHeatmap({
               type="button"
               className={choice === year ? "active" : ""}
               aria-current={choice === year ? "true" : undefined}
-              onClick={() => setYear(choice)}
+              onClick={() => {
+                setYear(choice);
+                setTooltip(null);
+              }}
             >
               {choice}
             </button>
           ))}
         </nav>
       </div>
+      {tooltip && (
+        <div
+          className="heatmap-tooltip"
+          role="tooltip"
+          style={{ left: tooltip.x, top: tooltip.y }}
+        >
+          {tooltip.text}
+        </div>
+      )}
     </section>
   );
 }
