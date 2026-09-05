@@ -121,7 +121,7 @@ def _train_metrics(t: dict) -> dict:
             r = _f(s.get("reps"))
             unit = s.get("unit") or "kg"
             if w > 0 and r > 0 and not s.get("selfWeight") and s.get("done"):
-                w_kg = w * 0.4536 if unit == "lb" else w
+                w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
                 volume += w_kg * r
             metrics = s.get("metrics") or {}
             cardio_km += _f(metrics.get("distance"))
@@ -189,7 +189,7 @@ def _aggregate(trains: list[dict]) -> dict:
                 r = _f(s.get("reps"))
                 unit = s.get("unit") or "kg"
                 if w > 0 and r > 0 and not s.get("selfWeight") and s.get("done"):
-                    w_kg = w * 0.4536 if unit == "lb" else w
+                    w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
                     move_vol[name] += w_kg * r
                     move_days[name].add(ds)
 
@@ -302,7 +302,7 @@ def _parse_set_row(s: dict) -> dict:
     w = _f(s.get("weight") or s.get("weight_kg"))
     r = _f(s.get("reps"))
     unit = s.get("unit") or "kg"
-    w_kg = w * 0.4536 if unit == "lb" else w
+    w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
     done = bool(s.get("done"))
     self_w = bool(s.get("selfWeight"))
     volume = w_kg * r if done and not self_w and w_kg > 0 and r > 0 else 0.0
@@ -360,7 +360,7 @@ def _movement_pr(trains: list[dict], name: str) -> dict | None:
                 unit = s.get("unit") or "kg"
                 if s.get("selfWeight") or w <= 0 or r <= 0:
                     continue
-                w_kg = w * 0.4536 if unit == "lb" else w
+                w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
                 if not best or w_kg > best["max_weight_kg"]:
                     best = {
                         "max_weight_kg": round(w_kg, 1),
@@ -388,7 +388,7 @@ def _movement_monthly(trains: list[dict], name: str) -> dict:
                 w = _f(s.get("weight") or s.get("weight_kg"))
                 r = _f(s.get("reps"))
                 unit = s.get("unit") or "kg"
-                w_kg = w * 0.4536 if unit == "lb" else w
+                w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
                 if w_kg > 0 and r > 0 and not s.get("selfWeight"):
                     month_vol[month] += w_kg * r
                     month_max[month] = max(month_max[month], w_kg)
@@ -589,7 +589,7 @@ def _movement_progression(trains: list[dict], name: str) -> list[dict]:
                 w = _f(s.get("weight") or s.get("weight_kg"))
                 r = _f(s.get("reps"))
                 unit = s.get("unit") or "kg"
-                w_kg = w * 0.4536 if unit == "lb" else w
+                w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
                 if w_kg > 0 and r > 0 and not s.get("selfWeight"):
                     entry["volume_kg"] += w_kg * r
                     if w_kg >= entry["max_weight_kg"]:
@@ -720,7 +720,7 @@ def build_drill(
                     r = _f(s.get("reps"))
                     unit = s.get("unit") or "kg"
                     if w > 0 and r > 0 and not s.get("selfWeight") and s.get("done"):
-                        w_kg = w * 0.4536 if unit == "lb" else w
+                        w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
                         vol = w_kg * r
                         month_vol[month] += vol
                         entry["volume_kg"] += vol

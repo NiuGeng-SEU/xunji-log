@@ -24,7 +24,7 @@ COPY --from=web-build /app/web/dist ./web/dist
 
 ENV DATA_DIR=/app/data
 ENV STATIC_DIR=/app/web/dist
-ENV TZ=Asia/Shanghai
+ENV TZ=America/New_York
 
 EXPOSE 8080
 

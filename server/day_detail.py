@@ -50,7 +50,7 @@ def _fmt_clock(ms: Any) -> str | None:
         from zoneinfo import ZoneInfo
 
         dt = datetime.fromtimestamp(ms / 1000, tz=timezone.utc).astimezone(
-            ZoneInfo("Asia/Shanghai")
+            ZoneInfo("America/New_York")
         )
         return dt.strftime("%H:%M")
     except Exception:
@@ -61,7 +61,7 @@ def _parse_set(s: dict) -> dict:
     w = _f(s.get("weight") or s.get("weight_kg"))
     r = _f(s.get("reps"))
     unit = s.get("unit") or "kg"
-    w_kg = w * 0.4536 if unit == "lb" else w
+    w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
     done = bool(s.get("done"))
     self_w = bool(s.get("selfWeight"))
     volume = w_kg * r if done and not self_w and w_kg > 0 and r > 0 else 0.0

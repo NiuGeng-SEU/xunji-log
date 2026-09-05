@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
+import { useWeightUnit } from "../units";
 
 const NAV = [
   { to: "/", label: "总览", end: true },
@@ -10,6 +11,8 @@ const NAV = [
 ];
 
 export default function Layout() {
+  const { unit, setUnit } = useWeightUnit();
+
   return (
     <div className="layout">
       <aside className="sidebar">
@@ -29,6 +32,20 @@ export default function Layout() {
         </nav>
       </aside>
       <main className="main">
+        <div className="unit-bar">
+          <span>重量单位</span>
+          <button
+            type="button"
+            className={`unit-switch is-${unit}`}
+            aria-label={`当前重量单位为 ${unit.toUpperCase()}，点击切换为 ${unit === "lb" ? "KG" : "LB"}`}
+            title={`点击切换为 ${unit === "lb" ? "KG" : "LB"}`}
+            onClick={() => setUnit(unit === "lb" ? "kg" : "lb")}
+          >
+            <span className="unit-switch-thumb" aria-hidden="true" />
+            <span className={unit === "lb" ? "active" : ""}>LB</span>
+            <span className={unit === "kg" ? "active" : ""}>KG</span>
+          </button>
+        </div>
         <Outlet />
       </main>
     </div>

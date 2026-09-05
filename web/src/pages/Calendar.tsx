@@ -2,8 +2,10 @@ import { useCallback, useMemo, useState } from "react";
 import { Analysis, DrillQuery } from "../api";
 import Chart from "../components/Chart";
 import DrillPanel from "../components/DrillPanel";
+import { formatVolume, kgToDisplay, useWeightUnit } from "../units";
 
 export default function Calendar({ data }: { data: Analysis }) {
+  const { unit } = useWeightUnit();
   const [metric, setMetric] = useState<"sessions" | "volume_kg" | "cardio_km">("sessions");
   const [drill, setDrill] = useState<DrillQuery | null>(null);
 
@@ -25,14 +27,14 @@ export default function Calendar({ data }: { data: Analysis }) {
         ? metric === "sessions"
           ? d.sessions
           : metric === "volume_kg"
-            ? d.volume_kg
+            ? kgToDisplay(d.volume_kg, unit)
             : d.cardio_km
         : 0;
       cells.push({ date: ds, value, label: ds.slice(5) });
       cur.setDate(cur.getDate() + 1);
     }
     return cells;
-  }, [data, metric]);
+  }, [data, metric, unit]);
 
   const openDay = useCallback(
     (datestr: string) => {
@@ -51,7 +53,7 @@ export default function Calendar({ data }: { data: Analysis }) {
     [openDay],
   );
 
-  const metricLabel = { sessions: "训练次数", volume_kg: "容量(kg)", cardio_km: "有氧(km)" }[metric];
+  const metricLabel = { sessions: "训练次数", volume_kg: `容量(${unit})`, cardio_km: "有氧(km)" }[metric];
 
   return (
     <>
@@ -132,7 +134,7 @@ export default function Calendar({ data }: { data: Analysis }) {
             <tr>
               <th>日期</th>
               <th>次数</th>
-              <th>容量(kg)</th>
+              <th>容量</th>
               <th>时长(分)</th>
               <th>有氧(km)</th>
               <th>消耗(kcal)</th>
@@ -148,7 +150,7 @@ export default function Calendar({ data }: { data: Analysis }) {
               >
                 <td>{d.date}</td>
                 <td>{d.sessions}</td>
-                <td>{d.volume_kg.toLocaleString()}</td>
+                <td>{formatVolume(d.volume_kg, unit)}</td>
                 <td>{d.duration_min}</td>
                 <td>{d.cardio_km || "—"}</td>
                 <td>{d.cardio_kcal || "—"}</td>

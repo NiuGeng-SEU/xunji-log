@@ -2,6 +2,12 @@ import { useCallback, useState } from "react";
 import { Analysis, DrillQuery, chartClickIndex, chartClickName } from "../api";
 import Chart, { axisStyle, barSeries, lineSeries } from "../components/Chart";
 import DrillPanel, { expandMonthKey } from "../components/DrillPanel";
+import {
+  formatVolume,
+  metricTonsToDisplay,
+  useWeightUnit,
+  volumeScaleLabel,
+} from "../units";
 
 type Props = {
   data: Analysis;
@@ -28,7 +34,10 @@ function Stat({ value, label }: { value: string; label: string }) {
 }
 
 export default function Overview({ data, sync, syncing, onRefresh, onSync }: Props) {
+  const { unit } = useWeightUnit();
   const m = data.monthly;
+  const volumeUnit = volumeScaleLabel(unit);
+  const monthlyVolume = m.volume_tons.map((v) => metricTonsToDisplay(v, unit));
   const shortLabels = m.labels.map((l) => l.slice(2));
   const syncLabel = sync?.updated_at
     ? `${sync.state} · ${sync.updated_at}`
@@ -82,7 +91,7 @@ export default function Overview({ data, sync, syncing, onRefresh, onSync }: Pro
       <div className="stats-grid">
         <Stat value={`${data.n_days} 天`} label="训练天数" />
         <Stat value={`${data.n_sessions} 次`} label="训练次数" />
-        <Stat value={`${(data.total_volume_kg / 1000).toFixed(0)} 吨`} label="总训练容量" />
+        <Stat value={formatVolume(data.total_volume_kg, unit)} label="总训练容量" />
         <Stat value={`${Math.round(data.total_duration_min / 60)} 小时`} label="总训练时长" />
         <Stat value={`${data.avg_sessions_per_week} 次/周`} label="平均训练频率" />
         <Stat value={`${data.max_streak_days} 天`} label="最长连续训练" />
@@ -104,13 +113,13 @@ export default function Overview({ data, sync, syncing, onRefresh, onSync }: Pro
           />
         </div>
         <div className="chart-card clickable-hint">
-          <h3>月度训练容量（吨）</h3>
+          <h3>月度训练容量（{volumeUnit}）</h3>
           <Chart
             onEvents={{ click: openMonth }}
             option={{
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
-              yAxis: { type: "value", name: "吨", ...axisStyle },
-              series: [lineSeries("容量", m.volume_tons, true)],
+              yAxis: { type: "value", name: volumeUnit, ...axisStyle },
+              series: [lineSeries("容量", monthlyVolume, true)],
               tooltip: { trigger: "axis" },
             }}
           />
@@ -122,16 +131,16 @@ export default function Overview({ data, sync, syncing, onRefresh, onSync }: Pro
             onEvents={{ click: openMonth }}
             option={{
               legend: {
-                data: ["训练容量(吨)", "有氧里程(km)", "有氧消耗(kcal/100)"],
+                data: [`训练容量(${volumeUnit})`, "有氧里程(km)", "有氧消耗(kcal/100)"],
                 textStyle: { color: "#8b92a8" },
               },
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
               yAxis: [
-                { type: "value", name: "容量(吨)", ...axisStyle },
+                { type: "value", name: `容量(${volumeUnit})`, ...axisStyle },
                 { type: "value", name: "里程/消耗", ...axisStyle },
               ],
               series: [
-                { ...barSeries("训练容量(吨)", m.volume_tons), yAxisIndex: 0 },
+                { ...barSeries(`训练容量(${volumeUnit})`, monthlyVolume), yAxisIndex: 0 },
                 { ...lineSeries("有氧里程(km)", m.cardio_km), yAxisIndex: 1 },
                 {
                   ...lineSeries(

@@ -2,9 +2,12 @@ import { useState } from "react";
 import { Analysis, DrillQuery, chartClickName } from "../api";
 import Chart, { axisStyle, lineSeries } from "../components/Chart";
 import DrillPanel from "../components/DrillPanel";
+import { formatWeight, metricTonsToDisplay, useWeightUnit, volumeScaleLabel } from "../units";
 
 export default function Movements({ data }: { data: Analysis }) {
+  const { unit } = useWeightUnit();
   const mt = data.movement_trends;
+  const volumeUnit = volumeScaleLabel(unit);
   const shortLabels = mt.labels.map((l) => l.slice(2));
   const [drill, setDrill] = useState<DrillQuery | null>(null);
 
@@ -15,7 +18,7 @@ export default function Movements({ data }: { data: Analysis }) {
 
       <div className="charts-grid">
         <div className="chart-card full clickable-hint">
-          <h3>Top 8 动作 · 月度容量（吨）</h3>
+          <h3>Top 8 动作 · 月度容量（{volumeUnit}）</h3>
           <Chart
             height={360}
             onEvents={{
@@ -34,8 +37,8 @@ export default function Movements({ data }: { data: Analysis }) {
                 type: "scroll",
               },
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
-              yAxis: { type: "value", name: "吨", ...axisStyle },
-              series: mt.series.map((s) => lineSeries(s.name, s.data)),
+              yAxis: { type: "value", name: volumeUnit, ...axisStyle },
+              series: mt.series.map((s) => lineSeries(s.name, s.data.map((v) => metricTonsToDisplay(v, unit)))),
               tooltip: { trigger: "axis" },
             }}
           />
@@ -58,7 +61,7 @@ export default function Movements({ data }: { data: Analysis }) {
               >
                 <td>{p.name}</td>
                 <td>{p.category}</td>
-                <td><strong>{p.max_weight_kg} kg</strong></td>
+                <td><strong>{formatWeight(p.max_weight_kg, unit)}</strong></td>
                 <td>{p.reps}</td>
                 <td
                   className="linkish"

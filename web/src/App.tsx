@@ -15,6 +15,7 @@ import Muscle from "./pages/Muscle";
 import Rhythm from "./pages/Rhythm";
 import Movements from "./pages/Movements";
 import Calendar from "./pages/Calendar";
+import { UnitProvider } from "./units";
 
 export default function App() {
   const [data, setData] = useState<Analysis | null>(null);
@@ -69,8 +70,9 @@ export default function App() {
   if (error || !data) return <div className="error">{error || "无数据"}</div>;
 
   return (
-    <Routes>
-      <Route element={<Layout />}>
+    <UnitProvider>
+      <Routes>
+        <Route element={<Layout />}>
         <Route
           index
           element={
@@ -88,7 +90,8 @@ export default function App() {
         <Route path="rhythm" element={<Rhythm data={data} />} />
         <Route path="movements" element={<Movements data={data} />} />
         <Route path="calendar" element={<Calendar data={data} />} />
-      </Route>
-    </Routes>
+        </Route>
+      </Routes>
+    </UnitProvider>
   );
 }

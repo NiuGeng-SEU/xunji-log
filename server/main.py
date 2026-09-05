@@ -28,7 +28,7 @@ SCRIPTS_DIR = ROOT / "scripts"
 SYNC_ENABLED = os.environ.get("SYNC_ENABLED", "true").lower() in ("1", "true", "yes")
 SYNC_CRON = os.environ.get("SYNC_CRON", "30 6 * * *")  # 每天 06:30
 SYNC_REFRESH_DAYS = int(os.environ.get("SYNC_REFRESH_DAYS", "3"))
-TZ_NAME = os.environ.get("TZ", "Asia/Shanghai")
+TZ_NAME = os.environ.get("TZ", "America/New_York")
 
 app = FastAPI(title="Xunji Training Dashboard", version="1.1.0")
 app.add_middleware(

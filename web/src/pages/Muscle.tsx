@@ -2,9 +2,19 @@ import { useCallback, useState } from "react";
 import { Analysis, DrillQuery, chartClickIndex, chartClickName } from "../api";
 import Chart, { axisStyle, lineSeries } from "../components/Chart";
 import DrillPanel, { expandMonthKey } from "../components/DrillPanel";
+import {
+  formatScaledVolume,
+  formatVolume,
+  metricTonsToDisplay,
+  useWeightUnit,
+  volumeScaleLabel,
+} from "../units";
 
 export default function Muscle({ data }: { data: Analysis }) {
+  const { unit } = useWeightUnit();
   const m = data.monthly;
+  const volumeUnit = volumeScaleLabel(unit);
+  const monthlyVolume = m.volume_tons.map((v) => metricTonsToDisplay(v, unit));
   const shortLabels = m.labels.map((l) => l.slice(2));
   const cm = data.category_monthly;
   const [drill, setDrill] = useState<DrillQuery | null>(null);
@@ -25,13 +35,13 @@ export default function Muscle({ data }: { data: Analysis }) {
     <>
       <h2 className="page-title">增肌训练</h2>
       <p className="page-desc">
-        总容量 {(data.total_volume_kg / 1000).toFixed(0)} 吨 · {data.total_done_sets} 组完成 · 图表可下钻
+        总容量 {formatVolume(data.total_volume_kg, unit)} · {data.total_done_sets} 组完成 · 图表可下钻
       </p>
 
       <div className="stats-grid">
-        <Stat value={`${(data.total_volume_kg / 1000).toFixed(0)} 吨`} label="总训练容量" />
+        <Stat value={formatVolume(data.total_volume_kg, unit)} label="总训练容量" />
         <Stat value={`${data.total_done_sets} 组`} label="完成组数" />
-        <Stat value={`${m.volume_tons[m.volume_tons.length - 1]} 吨`} label="最近月容量" />
+        <Stat value={formatScaledVolume(m.volume_tons[m.volume_tons.length - 1], unit)} label="最近月容量" />
         <Stat value={`×${(m.volume_tons[m.volume_tons.length - 1] / Math.max(m.volume_tons[0], 1)).toFixed(1)}`} label="容量增长倍数" />
         <Stat value={`${data.categories.sessions[0]}`} label="背部动作次数" />
         <Stat value={`${data.categories.sessions[1]}`} label="胸部动作次数" />
@@ -39,21 +49,21 @@ export default function Muscle({ data }: { data: Analysis }) {
 
       <div className="charts-grid">
         <div className="chart-card full clickable-hint">
-          <h3>月度训练容量增长（吨）</h3>
+          <h3>月度训练容量增长（{volumeUnit}）</h3>
           <Chart
             height={300}
             onEvents={{ click: openMonth }}
             option={{
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
-              yAxis: { type: "value", name: "吨", ...axisStyle },
-              series: [lineSeries("容量", m.volume_tons, true)],
+              yAxis: { type: "value", name: volumeUnit, ...axisStyle },
+              series: [lineSeries("容量", monthlyVolume, true)],
               tooltip: { trigger: "axis" },
             }}
           />
-          <p className="caption">渐进超负荷：容量从 {m.volume_tons[0]} 吨 → {m.volume_tons[m.volume_tons.length - 1]} 吨</p>
+          <p className="caption">渐进超负荷：容量从 {formatScaledVolume(m.volume_tons[0], unit)} → {formatScaledVolume(m.volume_tons[m.volume_tons.length - 1], unit)}</p>
         </div>
         <div className="chart-card full clickable-hint">
-          <h3>各部位月度容量（吨）</h3>
+          <h3>各部位月度容量（{volumeUnit}）</h3>
           <Chart
             height={320}
             onEvents={{
@@ -66,14 +76,14 @@ export default function Muscle({ data }: { data: Analysis }) {
             option={{
               legend: { data: cm.series.map((s) => s.name), textStyle: { color: "#8b92a8", fontSize: 10 } },
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
-              yAxis: { type: "value", name: "吨", ...axisStyle },
+              yAxis: { type: "value", name: volumeUnit, ...axisStyle },
               series: cm.series.map((s) => ({
                 name: s.name,
                 type: "line",
                 smooth: true,
                 stack: "total",
                 areaStyle: { opacity: 0.4 },
-                data: s.data,
+                data: s.data.map((v) => metricTonsToDisplay(v, unit)),
               })),
               tooltip: { trigger: "axis" },
             }}
@@ -121,7 +131,7 @@ export default function Muscle({ data }: { data: Analysis }) {
         <h3>Top 20 动作 · 容量排行 · 点击下钻</h3>
         <table className="data">
           <thead>
-            <tr><th>动作</th><th>部位</th><th>训练天数</th><th>组数</th><th>容量(kg)</th></tr>
+            <tr><th>动作</th><th>部位</th><th>训练天数</th><th>组数</th><th>容量</th></tr>
           </thead>
           <tbody>
             {data.top_movements.map((t) => (
@@ -134,7 +144,7 @@ export default function Muscle({ data }: { data: Analysis }) {
                 <td>{t.category}</td>
                 <td>{t.days}</td>
                 <td>{t.sets}</td>
-                <td>{t.volume_kg.toLocaleString()}</td>
+                <td>{formatVolume(t.volume_kg, unit)}</td>
               </tr>
             ))}
           </tbody>

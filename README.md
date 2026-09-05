@@ -66,7 +66,7 @@ python3 scripts/sync_training.py --refresh-days 3
 | `SYNC_ENABLED` | 否 | 默认 `true`，定时增量抓取 |
 | `SYNC_CRON` | 否 | 默认 `30 6 * * *`（每天 06:30） |
 | `SYNC_REFRESH_DAYS` | 否 | 每次强制重抓最近 N 天，默认 `3` |
-| `TZ` | 否 | 默认 `Asia/Shanghai` |
+| `TZ` | 否 | 默认 `America/New_York`（Durham，会自动处理夏令时） |
 
 ## 本地开发（不经 Docker）
 

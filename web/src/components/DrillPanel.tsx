@@ -11,25 +11,31 @@ import {
   chartClickName,
 } from "../api";
 import Chart, { axisStyle, barSeries, lineSeries } from "./Chart";
-
-function fmtVol(v: number) {
-  if (v >= 1000) return `${(v / 1000).toFixed(1)}t`;
-  return `${Math.round(v)}kg`;
-}
+import {
+  convertInsightUnits,
+  formatVolume,
+  formatWeight,
+  kgToDisplay,
+  metricTonsToDisplay,
+  useWeightUnit,
+  volumeScaleLabel,
+} from "../units";
 
 function InsightList({ items, title }: { items: string[]; title: string }) {
+  const { unit } = useWeightUnit();
   if (!items.length) return null;
   return (
     <div className="chart-card insights-card">
       <h3>{title}</h3>
       <ul className="insight-list">
-        {items.map((t, i) => <li key={i}>{t}</li>)}
+        {items.map((t, i) => <li key={i}>{convertInsightUnits(t, unit)}</li>)}
       </ul>
     </div>
   );
 }
 
 function SetTable({ move }: { move: DayMovement }) {
+  const { unit } = useWeightUnit();
   if (move.is_cardio) {
     const cardioSets = move.sets.filter((s) => s.cardio);
     return (
@@ -60,9 +66,9 @@ function SetTable({ move }: { move: DayMovement }) {
         {move.sets.map((s, i) => (
           <tr key={i} className={s.done ? "" : "undone"}>
             <td>{s.index ?? i + 1}</td>
-            <td>{s.weight_kg != null ? `${s.weight_kg} kg` : "—"}</td>
+            <td>{s.weight_kg != null ? formatWeight(s.weight_kg, unit) : "—"}</td>
             <td>{s.reps ?? "—"}</td>
-            <td>{s.volume_kg ? Math.round(s.volume_kg) : "—"}</td>
+            <td>{s.volume_kg ? formatVolume(s.volume_kg, unit) : "—"}</td>
             <td>{s.rpe ?? "—"}</td>
           </tr>
         ))}
@@ -72,6 +78,7 @@ function SetTable({ move }: { move: DayMovement }) {
 }
 
 function MovementSetRows({ sets }: { sets: MovementDrill["history"][0]["sets"] }) {
+  const { unit } = useWeightUnit();
   return (
     <table className="data set-table">
       <thead>
@@ -81,9 +88,9 @@ function MovementSetRows({ sets }: { sets: MovementDrill["history"][0]["sets"] }
         {sets.map((s, i) => (
           <tr key={i} className={s.done ? "" : "undone"}>
             <td>{s.index ?? i + 1}</td>
-            <td>{s.weight_kg != null ? `${s.weight_kg} kg` : "—"}</td>
+            <td>{s.weight_kg != null ? formatWeight(s.weight_kg, unit) : "—"}</td>
             <td>{s.reps ?? "—"}</td>
-            <td>{s.volume_kg ? Math.round(s.volume_kg) : "—"}</td>
+            <td>{s.volume_kg ? formatVolume(s.volume_kg, unit) : "—"}</td>
             <td>{s.rpe ?? "—"}</td>
           </tr>
         ))}
@@ -101,6 +108,7 @@ function DayBody({
   onOpenMovement?: (name: string) => void;
   onOpenCategory?: (name: string) => void;
 }) {
+  const { unit } = useWeightUnit();
   const s = detail.summary;
   const [expanded, setExpanded] = useState<Record<string, boolean>>(() => {
     const open: Record<string, boolean> = {};
@@ -114,7 +122,7 @@ function DayBody({
     <>
       <div className="stats-grid day-stats">
         <div className="stat-card"><div className="value">{s.sessions}</div><div className="label">训练次数</div></div>
-        <div className="stat-card"><div className="value">{fmtVol(s.volume_kg)}</div><div className="label">总容量</div></div>
+        <div className="stat-card"><div className="value">{formatVolume(s.volume_kg, unit)}</div><div className="label">总容量</div></div>
         <div className="stat-card"><div className="value">{s.duration_min}</div><div className="label">时长(分)</div></div>
         <div className="stat-card"><div className="value">{s.n_sets}</div><div className="label">总组数</div></div>
       </div>
@@ -136,7 +144,7 @@ function DayBody({
                 <button type="button" className="move-toggle" onClick={() => setExpanded((p) => ({ ...p, [key]: !p[key] }))}>
                   <span className="move-cat">{move.category}</span>
                   <span className="move-name">{move.name}</span>
-                  <span className="move-meta">{move.done_sets}/{move.sets_count} 组 · {fmtVol(move.volume_kg)}</span>
+                  <span className="move-meta">{move.done_sets}/{move.sets_count} 组 · {formatVolume(move.volume_kg, unit)}</span>
                   <span className="move-chevron">{open ? "▾" : "▸"}</span>
                 </button>
                 {open && (
@@ -165,24 +173,30 @@ function MovementBody({
   mv: MovementDrill;
   onOpenDay: (date: string) => void;
 }) {
+  const { unit } = useWeightUnit();
   const [openHist, setOpenHist] = useState<Record<string, boolean>>({});
   const prog = mv.progression;
   const monthly = mv.monthly;
+  const volumeUnit = volumeScaleLabel(unit);
+  const weightSeriesName = `峰值重量(${unit})`;
+  const volumeSeriesName = `容量(${unit})`;
+  const monthlyVolumeName = `月容量(${volumeUnit})`;
+  const monthlyWeightName = `月峰值重量(${unit})`;
 
   return (
     <>
       <div className="stats-grid day-stats">
         <div className="stat-card"><div className="value">{mv.stats.training_days}</div><div className="label">训练天数</div></div>
         <div className="stat-card"><div className="value">{mv.stats.total_sets}</div><div className="label">总组数</div></div>
-        <div className="stat-card"><div className="value">{fmtVol(mv.stats.total_volume_kg)}</div><div className="label">累计容量</div></div>
+        <div className="stat-card"><div className="value">{formatVolume(mv.stats.total_volume_kg, unit)}</div><div className="label">累计容量</div></div>
         <div className="stat-card">
-          <div className="value">{mv.pr ? `${mv.pr.max_weight_kg}` : "—"}</div>
-          <div className="label">PR (kg{mv.pr ? ` × ${mv.pr.reps}` : ""})</div>
+          <div className="value">{mv.pr ? formatWeight(mv.pr.max_weight_kg, unit) : "—"}</div>
+          <div className="label">PR{mv.pr ? ` × ${mv.pr.reps}` : ""}</div>
         </div>
         {mv.stats.early_avg_weight_kg != null && mv.stats.late_avg_weight_kg != null && (
           <div className="stat-card">
-            <div className="value">{mv.stats.early_avg_weight_kg}→{mv.stats.late_avg_weight_kg}</div>
-            <div className="label">早期→近期均重(kg)</div>
+            <div className="value">{formatWeight(mv.stats.early_avg_weight_kg, unit)} → {formatWeight(mv.stats.late_avg_weight_kg, unit)}</div>
+            <div className="label">早期→近期均重</div>
           </div>
         )}
         <div className="stat-card"><div className="value">{mv.category}</div><div className="label">部位</div></div>
@@ -197,14 +211,14 @@ function MovementBody({
             height={240}
             onEvents={{ click: (p) => { const i = chartClickIndex(p); if (i != null && prog[i]) onOpenDay(prog[i].date); } }}
             option={{
-              legend: { data: ["峰值重量(kg)", "容量(kg)"], textStyle: { color: "#8b92a8", fontSize: 10 } },
+              legend: { data: [weightSeriesName, volumeSeriesName], textStyle: { color: "#8b92a8", fontSize: 10 } },
               tooltip: { trigger: "axis" },
               grid: { left: 48, right: 48, top: 36, bottom: 48 },
               xAxis: { type: "category", data: prog.map((p) => p.date.slice(5)), ...axisStyle, axisLabel: { rotate: 45, fontSize: 8 } },
               yAxis: [{ type: "value", ...axisStyle }, { type: "value", ...axisStyle }],
               series: [
-                { ...lineSeries("峰值重量(kg)", prog.map((p) => p.max_weight_kg || 0)), yAxisIndex: 0, symbolSize: 6 },
-                { ...lineSeries("容量(kg)", prog.map((p) => p.volume_kg)), yAxisIndex: 1 },
+                { ...lineSeries(weightSeriesName, prog.map((p) => kgToDisplay(p.max_weight_kg || 0, unit))), yAxisIndex: 0, symbolSize: 6 },
+                { ...lineSeries(volumeSeriesName, prog.map((p) => kgToDisplay(p.volume_kg, unit))), yAxisIndex: 1 },
               ],
             }}
           />
@@ -218,14 +232,14 @@ function MovementBody({
           <Chart
             height={220}
             option={{
-              legend: { data: ["月容量(吨)", "月峰值重量(kg)"], textStyle: { color: "#8b92a8", fontSize: 10 } },
+              legend: { data: [monthlyVolumeName, monthlyWeightName], textStyle: { color: "#8b92a8", fontSize: 10 } },
               tooltip: { trigger: "axis" },
               grid: { left: 48, right: 48, top: 36, bottom: 36 },
               xAxis: { type: "category", data: monthly.labels.map((l) => l.slice(2)), ...axisStyle },
               yAxis: [{ type: "value", ...axisStyle }, { type: "value", ...axisStyle }],
               series: [
-                { ...barSeries("月容量(吨)", monthly.volume_tons), yAxisIndex: 0 },
-                { ...lineSeries("月峰值重量(kg)", monthly.max_weight_kg), yAxisIndex: 1 },
+                { ...barSeries(monthlyVolumeName, monthly.volume_tons.map((v) => metricTonsToDisplay(v, unit))), yAxisIndex: 0 },
+                { ...lineSeries(monthlyWeightName, monthly.max_weight_kg.map((v) => kgToDisplay(v, unit))), yAxisIndex: 1 },
               ],
             }}
           />
@@ -248,8 +262,8 @@ function MovementBody({
                     <td className="linkish" onClick={(e) => { e.stopPropagation(); onOpenDay(h.date); }}>{h.date}</td>
                     <td>{h.session_title || "—"}</td>
                     <td>{h.done_sets}</td>
-                    <td>{h.max_weight_kg != null ? `${h.max_weight_kg} kg` : "—"}</td>
-                    <td>{fmtVol(h.volume_kg)}</td>
+                    <td>{h.max_weight_kg != null ? formatWeight(h.max_weight_kg, unit) : "—"}</td>
+                    <td>{formatVolume(h.volume_kg, unit)}</td>
                   </tr>
                   {open && (
                     <tr>
@@ -277,21 +291,23 @@ function CategoryBody({
   onOpenMovement: (name: string) => void;
   onOpenDay: (date: string) => void;
 }) {
+  const { unit } = useWeightUnit();
   const s = data.summary!;
   const cat = data.category;
+  const volumeUnit = volumeScaleLabel(unit);
 
   return (
     <>
       <InsightList items={data.insights || []} title="部位分析" />
       {data.monthly && data.monthly.labels.length > 0 && (
         <div className="chart-card" style={{ marginBottom: 16 }}>
-          <h3>「{data.key}」月度容量（吨）</h3>
+          <h3>「{data.key}」月度容量（{volumeUnit}）</h3>
           <Chart
             height={220}
             option={{
               xAxis: { type: "category", data: data.monthly.labels.map((l) => l.slice(2)), ...axisStyle },
               yAxis: { type: "value", ...axisStyle },
-              series: [lineSeries("容量", data.monthly.volume_tons, true)],
+              series: [lineSeries("容量", data.monthly.volume_tons.map((v) => metricTonsToDisplay(v, unit)), true)],
               tooltip: { trigger: "axis" },
             }}
           />
@@ -307,7 +323,7 @@ function CategoryBody({
               grid: { left: 100, right: 24, top: 16, bottom: 28 },
               xAxis: { type: "value", ...axisStyle },
               yAxis: { type: "category", data: [...cat.movements].reverse().map((m) => m.name), axisLabel: { width: 90, overflow: "truncate", fontSize: 10, color: "#8b92a8" } },
-              series: [{ type: "bar", data: [...cat.movements].reverse().map((m) => m.volume_kg), itemStyle: { color: "#ff6b35" } }],
+              series: [{ type: "bar", data: [...cat.movements].reverse().map((m) => kgToDisplay(m.volume_kg, unit)), itemStyle: { color: "#ff6b35" } }],
               tooltip: { trigger: "axis" },
             }}
           />
@@ -316,7 +332,7 @@ function CategoryBody({
             <tbody>
               {cat.movements.map((m) => (
                 <tr key={m.name} className="clickable-row" onClick={() => onOpenMovement(m.name)}>
-                  <td>{m.name}</td><td>{m.days}</td><td>{m.sets}</td><td>{fmtVol(m.volume_kg)}</td>
+                  <td>{m.name}</td><td>{m.days}</td><td>{m.sets}</td><td>{formatVolume(m.volume_kg, unit)}</td>
                 </tr>
               ))}
             </tbody>
@@ -331,7 +347,7 @@ function CategoryBody({
             <tbody>
               {data.daily.slice(0, 30).map((d) => (
                 <tr key={d.date} className="clickable-row" onClick={() => onOpenDay(d.date)}>
-                  <td>{d.date}</td><td>{d.sessions}</td><td>{fmtVol(d.volume_kg)}</td>
+                  <td>{d.date}</td><td>{d.sessions}</td><td>{formatVolume(d.volume_kg, unit)}</td>
                 </tr>
               ))}
             </tbody>
@@ -351,15 +367,17 @@ function PeriodBody({
   onOpenDay: (date: string) => void;
   onOpenMovement: (name: string) => void;
 }) {
+  const { unit } = useWeightUnit();
   const s = data.summary!;
   const series = data.series;
+  const volumeSeriesName = `容量(${unit})`;
 
   return (
     <>
       <div className="stats-grid day-stats">
         <div className="stat-card"><div className="value">{s.sessions}</div><div className="label">训练次数</div></div>
         <div className="stat-card"><div className="value">{s.days}</div><div className="label">训练天数</div></div>
-        <div className="stat-card"><div className="value">{fmtVol(s.volume_kg)}</div><div className="label">总容量</div></div>
+        <div className="stat-card"><div className="value">{formatVolume(s.volume_kg, unit)}</div><div className="label">总容量</div></div>
         <div className="stat-card"><div className="value">{s.cardio_km || "—"}</div><div className="label">有氧(km)</div></div>
       </div>
       <InsightList items={data.insights || []} title={data.type === "month" ? "月度分析" : "周度分析"} />
@@ -370,13 +388,13 @@ function PeriodBody({
             height={220}
             onEvents={{ click: (p) => { const i = chartClickIndex(p); if (i != null && series.dates[i]) onOpenDay(series.dates[i]); } }}
             option={{
-              legend: { data: ["容量(kg)", "次数"], textStyle: { color: "#8b92a8", fontSize: 10 } },
+              legend: { data: [volumeSeriesName, "次数"], textStyle: { color: "#8b92a8", fontSize: 10 } },
               tooltip: { trigger: "axis" },
               grid: { left: 48, right: 48, top: 36, bottom: 48 },
               xAxis: { type: "category", data: series.dates.map((d) => d.slice(5)), ...axisStyle, axisLabel: { rotate: 45, fontSize: 9 } },
               yAxis: [{ type: "value", ...axisStyle }, { type: "value", ...axisStyle }],
               series: [
-                { ...lineSeries("容量(kg)", series.volume_kg || [], true), yAxisIndex: 0 },
+                { ...lineSeries(volumeSeriesName, (series.volume_kg || []).map((v) => kgToDisplay(v, unit)), true), yAxisIndex: 0 },
                 { ...barSeries("次数", series.sessions || []), yAxisIndex: 1 },
               ],
             }}
@@ -393,7 +411,7 @@ function PeriodBody({
               grid: { left: 100, right: 24, top: 16, bottom: 28 },
               xAxis: { type: "value", ...axisStyle },
               yAxis: { type: "category", data: [...s.top_movements].reverse().map((m) => m.name), axisLabel: { width: 90, overflow: "truncate", fontSize: 10, color: "#8b92a8" } },
-              series: [{ type: "bar", data: [...s.top_movements].reverse().map((m) => m.volume_kg), itemStyle: { color: "#ff6b35" } }],
+              series: [{ type: "bar", data: [...s.top_movements].reverse().map((m) => kgToDisplay(m.volume_kg, unit)), itemStyle: { color: "#ff6b35" } }],
               tooltip: { trigger: "axis" },
             }}
           />
@@ -412,6 +430,7 @@ function RhythmBody({
   onOpenDay: (date: string) => void;
   onOpenMovement: (name: string) => void;
 }) {
+  const { unit } = useWeightUnit();
   const s = data.summary!;
 
   return (
@@ -420,7 +439,7 @@ function RhythmBody({
         <div className="stat-card"><div className="value">{s.sessions}</div><div className="label">训练次数</div></div>
         <div className="stat-card"><div className="value">{s.days}</div><div className="label">训练天数</div></div>
         <div className="stat-card"><div className="value">{Math.round(s.duration_min / Math.max(s.sessions, 1))}</div><div className="label">均时(分)</div></div>
-        <div className="stat-card"><div className="value">{fmtVol(s.volume_kg)}</div><div className="label">总容量</div></div>
+        <div className="stat-card"><div className="value">{formatVolume(s.volume_kg, unit)}</div><div className="label">总容量</div></div>
       </div>
       <InsightList items={data.insights || []} title="节奏分析" />
       {s.top_movements.length > 0 && (
@@ -431,7 +450,7 @@ function RhythmBody({
             <tbody>
               {s.top_movements.map((m) => (
                 <tr key={m.name} className="clickable-row" onClick={() => onOpenMovement(m.name)}>
-                  <td>{m.name}</td><td>{fmtVol(m.volume_kg)}</td><td>{m.days ?? "—"}</td>
+                  <td>{m.name}</td><td>{formatVolume(m.volume_kg, unit)}</td><td>{m.days ?? "—"}</td>
                 </tr>
               ))}
             </tbody>

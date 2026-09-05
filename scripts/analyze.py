@@ -137,8 +137,8 @@ def main():
                 w = parse_weight(s.get("weight") or s.get("weight_kg"))
                 r = parse_reps(s.get("reps"))
                 if w > 0 and r > 0 and not s.get("selfWeight"):
-                    if (s.get("unit") or "kg") == "lb":
-                        w *= 0.4536
+                    if str(s.get("unit") or "kg").strip().lower() in {"lb", "lbs", "pound", "pounds"}:
+                        w *= 0.45359237
                     vol = w * r
                     total_volume_kg += vol
                     st["volume"] += vol
@@ -180,8 +180,8 @@ def main():
                 w = parse_weight(s.get("weight") or s.get("weight_kg"))
                 r = parse_reps(s.get("reps"))
                 if w > 0 and r > 0 and not s.get("selfWeight") and s.get("done"):
-                    if (s.get("unit") or "kg") == "lb":
-                        w *= 0.4536
+                    if str(s.get("unit") or "kg").strip().lower() in {"lb", "lbs", "pound", "pounds"}:
+                        w *= 0.45359237
                     ms["volume"] += w * r
         start = t.get("start") or t.get("started_at")
         end = t.get("end") or t.get("ended_at")
@@ -310,7 +310,7 @@ def main():
                 r = parse_reps(s.get("reps"))
                 unit = s.get("unit") or "kg"
                 if w > 0 and r > 0 and not s.get("selfWeight") and s.get("done"):
-                    w_kg = w * 0.4536 if unit == "lb" else w
+                    w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
                     vol = w_kg * r
                     cat_month_vol[cat][month] += vol
                     move_month_vol[name][month] += vol
@@ -362,8 +362,8 @@ def main():
                     w = parse_weight(s.get("weight") or s.get("weight_kg"))
                     r = parse_reps(s.get("reps"))
                     if w > 0 and r > 0 and not s.get("selfWeight") and s.get("done"):
-                        if (s.get("unit") or "kg") == "lb":
-                            w *= 0.4536
+                        if str(s.get("unit") or "kg").strip().lower() in {"lb", "lbs", "pound", "pounds"}:
+                            w *= 0.45359237
                         day_vol += w * r
                     metrics = s.get("metrics") or {}
                     day_cardio_km += parse_weight(metrics.get("distance"))
