@@ -83,6 +83,7 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 14px;
   color: var(--muted);
   font-size: 12px;
+  flex-wrap: wrap;
 }
 
 .unit-switch {
@@ -438,7 +439,14 @@ table.data tr.undone td {
   margin-bottom: 4px;
 }
 
-.chart-card.clickable-hint h3::after {
+html[lang="en"] .chart-card.clickable-hint h3::after {
+  content: " · Click to explore";
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 11px;
+}
+
+html[lang="zh-CN"] .chart-card.clickable-hint h3::after {
   content: " · 可点击下钻";
   color: var(--muted);
   font-weight: 400;

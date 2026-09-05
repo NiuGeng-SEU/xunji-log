@@ -42,7 +42,8 @@ export function metricTonsToDisplay(valueTons: number, unit: WeightUnit) {
   return unit === "lb" ? valueTons * LB_PER_KG : valueTons;
 }
 
-export function volumeScaleLabel(unit: WeightUnit) {
+export function volumeScaleLabel(unit: WeightUnit, language: "en" | "zh" = "en") {
+  if (language === "en") return unit === "lb" ? "k lb" : "t";
   return unit === "lb" ? "千磅" : "吨";
 }
 
@@ -62,9 +63,9 @@ export function formatVolume(valueKg: number, unit: WeightUnit) {
   return `${Math.round(value).toLocaleString("zh-CN")} ${unit}`;
 }
 
-export function formatScaledVolume(valueMetricTons: number, unit: WeightUnit) {
+export function formatScaledVolume(valueMetricTons: number, unit: WeightUnit, language: "en" | "zh" = "en") {
   const value = metricTonsToDisplay(valueMetricTons, unit);
-  return `${value.toLocaleString("zh-CN", { maximumFractionDigits: 2 })} ${volumeScaleLabel(unit)}`;
+  return `${value.toLocaleString(language === "en" ? "en-US" : "zh-CN", { maximumFractionDigits: 2 })} ${volumeScaleLabel(unit, language)}`;
 }
 
 export function convertInsightUnits(text: string, unit: WeightUnit) {

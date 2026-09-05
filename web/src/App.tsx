@@ -16,8 +16,18 @@ import Rhythm from "./pages/Rhythm";
 import Movements from "./pages/Movements";
 import Calendar from "./pages/Calendar";
 import { UnitProvider } from "./units";
+import { LanguageProvider, useLanguage } from "./language";
 
 export default function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
+  );
+}
+
+function AppContent() {
+  const { t } = useLanguage();
   const [data, setData] = useState<Analysis | null>(null);
   const [sync, setSync] = useState<SyncStatus | null>(null);
   const [error, setError] = useState("");
@@ -35,7 +45,7 @@ export default function App() {
       setData(analysis);
       setSync(status);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "加载失败");
+      setError(e instanceof Error ? e.message : "Failed to load data");
     } finally {
       setLoading(false);
     }
@@ -48,7 +58,7 @@ export default function App() {
       await refreshAnalysis();
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "刷新失败");
+      setError(e instanceof Error ? e.message : t("Failed to refresh", "刷新失败"));
     }
   };
 
@@ -60,14 +70,14 @@ export default function App() {
       setSync(status);
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "同步失败");
+      setError(e instanceof Error ? e.message : t("Failed to sync", "同步失败"));
     } finally {
       setSyncing(false);
     }
   };
 
-  if (loading) return <div className="loading">加载训练数据中…</div>;
-  if (error || !data) return <div className="error">{error || "无数据"}</div>;
+  if (loading) return <div className="loading">{t("Loading workout data…", "加载训练数据中…")}</div>;
+  if (error || !data) return <div className="error">{error || t("No data", "无数据")}</div>;
 
   return (
     <UnitProvider>
