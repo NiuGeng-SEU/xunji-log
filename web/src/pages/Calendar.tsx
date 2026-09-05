@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { Analysis, DrillQuery } from "../api";
-import Chart from "../components/Chart";
+import Chart, { MATLAB_COLORS } from "../components/Chart";
 import DrillPanel from "../components/DrillPanel";
 import { formatVolume, kgToDisplay, useWeightUnit } from "../units";
 
@@ -92,7 +92,7 @@ export default function Calendar({ data }: { data: Analysis }) {
               formatter: (p: { data: [string, number] }) => {
                 const has = trainedDates.has(p.data[0]);
                 return `${p.data[0]}<br/>${metricLabel}: ${p.data[1]}${
-                  has ? "<br/><span style='color:#ff6b35'>点击查看详情</span>" : ""
+                  has ? `<br/><span style='color:${MATLAB_COLORS[0]}'>点击查看详情</span>` : ""
                 }`;
               },
             },
@@ -103,8 +103,8 @@ export default function Calendar({ data }: { data: Analysis }) {
               orient: "horizontal",
               left: "center",
               bottom: 0,
-              inRange: { color: ["#1a1d27", "#ff6b35"] },
-              textStyle: { color: "#8b92a8" },
+              inRange: { color: ["#f3f2f1", MATLAB_COLORS[0]] },
+              textStyle: { color: "#666666" },
             },
             calendar: {
               top: 40,
@@ -112,9 +112,9 @@ export default function Calendar({ data }: { data: Analysis }) {
               right: 20,
               cellSize: ["auto", 14],
               range: [data.date_start, data.date_end],
-              itemStyle: { borderWidth: 2, borderColor: "#0f1117" },
-              dayLabel: { color: "#8b92a8", fontSize: 10 },
-              monthLabel: { color: "#8b92a8", fontSize: 11 },
+              itemStyle: { borderWidth: 2, borderColor: "#ffffff" },
+              dayLabel: { color: "#666666", fontSize: 10 },
+              monthLabel: { color: "#666666", fontSize: 11 },
               yearLabel: { show: false },
             },
             series: [{

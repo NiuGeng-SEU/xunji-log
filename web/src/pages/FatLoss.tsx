@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { Analysis, DrillQuery, chartClickIndex, chartClickName } from "../api";
-import Chart, { axisStyle, lineSeries } from "../components/Chart";
+import Chart, { axisStyle, lineSeries, MATLAB_COLORS } from "../components/Chart";
 import DrillPanel, { expandMonthKey } from "../components/DrillPanel";
 
 export default function FatLoss({ data }: { data: Analysis }) {
@@ -59,7 +59,7 @@ export default function FatLoss({ data }: { data: Analysis }) {
             option={{
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
               yAxis: { type: "value", name: "kcal", ...axisStyle },
-              series: [{ type: "bar", data: m.cardio_kcal, itemStyle: { color: "#34c759" } }],
+              series: [{ type: "bar", data: m.cardio_kcal, itemStyle: { color: MATLAB_COLORS[4] } }],
               tooltip: { trigger: "axis" },
             }}
           />
@@ -70,7 +70,7 @@ export default function FatLoss({ data }: { data: Analysis }) {
             height={300}
             onEvents={{ click: openMonth }}
             option={{
-              legend: { data: ["月训练次数", "有氧里程(km)"], textStyle: { color: "#8b92a8" } },
+              legend: { data: ["月训练次数", "有氧里程(km)"], textStyle: { color: "#666666" } },
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
               yAxis: [
                 { type: "value", name: "训练次数", ...axisStyle },

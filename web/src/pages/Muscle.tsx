@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { Analysis, DrillQuery, chartClickIndex, chartClickName } from "../api";
-import Chart, { axisStyle, lineSeries } from "../components/Chart";
+import Chart, { axisStyle, lineSeries, MATLAB_COLORS } from "../components/Chart";
 import DrillPanel, { expandMonthKey } from "../components/DrillPanel";
 import {
   formatScaledVolume,
@@ -74,7 +74,7 @@ export default function Muscle({ data }: { data: Analysis }) {
               },
             }}
             option={{
-              legend: { data: cm.series.map((s) => s.name), textStyle: { color: "#8b92a8", fontSize: 10 } },
+              legend: { data: cm.series.map((s) => s.name), textStyle: { color: "#666666", fontSize: 10 } },
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
               yAxis: { type: "value", name: volumeUnit, ...axisStyle },
               series: cm.series.map((s) => ({
@@ -108,7 +108,7 @@ export default function Muscle({ data }: { data: Analysis }) {
                   name: l,
                   value: data.categories.sessions[i],
                 })),
-                label: { color: "#8b92a8", fontSize: 11 },
+                label: { color: "#666666", fontSize: 11 },
               }],
             }}
           />
@@ -120,7 +120,7 @@ export default function Muscle({ data }: { data: Analysis }) {
             option={{
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
               yAxis: { type: "value", name: "小时", ...axisStyle },
-              series: [{ type: "bar", data: m.duration_hours, itemStyle: { color: "#5b8def" } }],
+              series: [{ type: "bar", data: m.duration_hours, itemStyle: { color: MATLAB_COLORS[0] } }],
               tooltip: { trigger: "axis" },
             }}
           />

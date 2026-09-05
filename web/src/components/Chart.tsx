@@ -1,6 +1,15 @@
 import ReactECharts from "echarts-for-react";
 
-const COLORS = ["#ff6b35", "#5b8def", "#34c759", "#a78bfa", "#fbbf24", "#f472b6", "#38bdf8", "#94a3b8"];
+// MATLAB classic/default axes ColorOrder (R2014b–R2024b).
+export const MATLAB_COLORS = [
+  "#0072BD",
+  "#D95319",
+  "#EDB120",
+  "#7E2F8E",
+  "#77AC30",
+  "#4DBEEE",
+  "#A2142F",
+] as const;
 
 type Props = {
   option: object;
@@ -14,9 +23,9 @@ export default function Chart({ option, height = 280, className, onEvents }: Pro
     <ReactECharts
       className={className}
       option={{
-        color: COLORS,
+        color: MATLAB_COLORS,
         backgroundColor: "transparent",
-        textStyle: { color: "#8b92a8", fontSize: 11 },
+        textStyle: { color: "#666666", fontSize: 11 },
         grid: { left: 48, right: 16, top: 32, bottom: 36 },
         ...option,
       }}
@@ -44,7 +53,7 @@ export function barSeries(name: string, data: number[]) {
 }
 
 export const axisStyle = {
-  axisLine: { lineStyle: { color: "#2e3345" } },
-  axisLabel: { color: "#8b92a8", fontSize: 10 },
-  splitLine: { lineStyle: { color: "#2e3345", type: "dashed" as const } },
+  axisLine: { lineStyle: { color: "#e2e6ed" } },
+  axisLabel: { color: "#666666", fontSize: 10 },
+  splitLine: { lineStyle: { color: "#e2e6ed", type: "dashed" as const } },
 };

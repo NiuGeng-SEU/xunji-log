@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Analysis, DrillQuery, chartClickIndex, chartClickName } from "../api";
-import Chart, { axisStyle, barSeries, lineSeries } from "../components/Chart";
+import Chart, { axisStyle, barSeries, lineSeries, MATLAB_COLORS } from "../components/Chart";
 import DrillPanel, { expandWeekKey, hourFromLabel } from "../components/DrillPanel";
 
 export default function Rhythm({ data }: { data: Analysis }) {
@@ -88,7 +88,7 @@ export default function Rhythm({ data }: { data: Analysis }) {
             option={{
               xAxis: { type: "category", data: timeBuckets.map((b) => b.name), ...axisStyle, axisLabel: { rotate: 20, fontSize: 9 } },
               yAxis: { type: "value", ...axisStyle },
-              series: [{ type: "bar", data: timeBuckets.map((b) => b.count), itemStyle: { color: "#ff6b35" } }],
+              series: [{ type: "bar", data: timeBuckets.map((b) => b.count), itemStyle: { color: MATLAB_COLORS[1] } }],
               tooltip: { trigger: "axis" },
               grid: { left: 48, right: 16, top: 24, bottom: 56 },
             }}
@@ -112,7 +112,7 @@ export default function Rhythm({ data }: { data: Analysis }) {
             option={{
               xAxis: { type: "category", data: data.hour_of_day.labels, ...axisStyle },
               yAxis: { type: "value", ...axisStyle },
-              series: [{ type: "bar", data: data.hour_of_day.sessions, itemStyle: { color: "#5b8def" } }],
+              series: [{ type: "bar", data: data.hour_of_day.sessions, itemStyle: { color: MATLAB_COLORS[0] } }],
               tooltip: { trigger: "axis" },
             }}
           />

@@ -33,7 +33,7 @@ export default function Movements({ data }: { data: Analysis }) {
             option={{
               legend: {
                 data: mt.series.map((s) => s.name),
-                textStyle: { color: "#8b92a8", fontSize: 10 },
+                textStyle: { color: "#666666", fontSize: 10 },
                 type: "scroll",
               },
               xAxis: { type: "category", data: shortLabels, ...axisStyle },

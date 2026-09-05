@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { Analysis, DrillQuery, chartClickIndex, chartClickName } from "../api";
-import Chart, { axisStyle, barSeries, lineSeries } from "../components/Chart";
+import Chart, { axisStyle, barSeries, lineSeries, MATLAB_COLORS } from "../components/Chart";
 import DrillPanel, { expandMonthKey } from "../components/DrillPanel";
 import {
   formatVolume,
@@ -132,7 +132,7 @@ export default function Overview({ data, sync, syncing, onRefresh, onSync }: Pro
             option={{
               legend: {
                 data: [`训练容量(${volumeUnit})`, "有氧里程(km)", "有氧消耗(kcal/100)"],
-                textStyle: { color: "#8b92a8" },
+                textStyle: { color: "#666666" },
               },
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
               yAxis: [
@@ -173,7 +173,7 @@ export default function Overview({ data, sync, syncing, onRefresh, onSync }: Pro
                   name: l,
                   value: data.categories.sessions[i],
                 })),
-                label: { color: "#8b92a8", fontSize: 11 },
+                label: { color: "#666666", fontSize: 11 },
               }],
             }}
           />
@@ -198,7 +198,7 @@ export default function Overview({ data, sync, syncing, onRefresh, onSync }: Pro
               series: [{
                 type: "bar",
                 data: data.top_movements.slice(0, 8).map((t) => t.days).reverse(),
-                itemStyle: { color: "#ff6b35" },
+                itemStyle: { color: MATLAB_COLORS[0] },
               }],
               tooltip: { trigger: "axis" },
               grid: { left: 100, right: 16, top: 16, bottom: 24 },

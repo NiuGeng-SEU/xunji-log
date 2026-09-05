@@ -10,7 +10,7 @@ import {
   chartClickIndex,
   chartClickName,
 } from "../api";
-import Chart, { axisStyle, barSeries, lineSeries } from "./Chart";
+import Chart, { axisStyle, barSeries, lineSeries, MATLAB_COLORS } from "./Chart";
 import {
   convertInsightUnits,
   formatVolume,
@@ -211,7 +211,7 @@ function MovementBody({
             height={240}
             onEvents={{ click: (p) => { const i = chartClickIndex(p); if (i != null && prog[i]) onOpenDay(prog[i].date); } }}
             option={{
-              legend: { data: [weightSeriesName, volumeSeriesName], textStyle: { color: "#8b92a8", fontSize: 10 } },
+              legend: { data: [weightSeriesName, volumeSeriesName], textStyle: { color: "#666666", fontSize: 10 } },
               tooltip: { trigger: "axis" },
               grid: { left: 48, right: 48, top: 36, bottom: 48 },
               xAxis: { type: "category", data: prog.map((p) => p.date.slice(5)), ...axisStyle, axisLabel: { rotate: 45, fontSize: 8 } },
@@ -232,7 +232,7 @@ function MovementBody({
           <Chart
             height={220}
             option={{
-              legend: { data: [monthlyVolumeName, monthlyWeightName], textStyle: { color: "#8b92a8", fontSize: 10 } },
+              legend: { data: [monthlyVolumeName, monthlyWeightName], textStyle: { color: "#666666", fontSize: 10 } },
               tooltip: { trigger: "axis" },
               grid: { left: 48, right: 48, top: 36, bottom: 36 },
               xAxis: { type: "category", data: monthly.labels.map((l) => l.slice(2)), ...axisStyle },
@@ -322,8 +322,8 @@ function CategoryBody({
             option={{
               grid: { left: 100, right: 24, top: 16, bottom: 28 },
               xAxis: { type: "value", ...axisStyle },
-              yAxis: { type: "category", data: [...cat.movements].reverse().map((m) => m.name), axisLabel: { width: 90, overflow: "truncate", fontSize: 10, color: "#8b92a8" } },
-              series: [{ type: "bar", data: [...cat.movements].reverse().map((m) => kgToDisplay(m.volume_kg, unit)), itemStyle: { color: "#ff6b35" } }],
+              yAxis: { type: "category", data: [...cat.movements].reverse().map((m) => m.name), axisLabel: { width: 90, overflow: "truncate", fontSize: 10, color: "#666666" } },
+              series: [{ type: "bar", data: [...cat.movements].reverse().map((m) => kgToDisplay(m.volume_kg, unit)), itemStyle: { color: MATLAB_COLORS[0] } }],
               tooltip: { trigger: "axis" },
             }}
           />
@@ -388,7 +388,7 @@ function PeriodBody({
             height={220}
             onEvents={{ click: (p) => { const i = chartClickIndex(p); if (i != null && series.dates[i]) onOpenDay(series.dates[i]); } }}
             option={{
-              legend: { data: [volumeSeriesName, "次数"], textStyle: { color: "#8b92a8", fontSize: 10 } },
+              legend: { data: [volumeSeriesName, "次数"], textStyle: { color: "#666666", fontSize: 10 } },
               tooltip: { trigger: "axis" },
               grid: { left: 48, right: 48, top: 36, bottom: 48 },
               xAxis: { type: "category", data: series.dates.map((d) => d.slice(5)), ...axisStyle, axisLabel: { rotate: 45, fontSize: 9 } },
@@ -410,8 +410,8 @@ function PeriodBody({
             option={{
               grid: { left: 100, right: 24, top: 16, bottom: 28 },
               xAxis: { type: "value", ...axisStyle },
-              yAxis: { type: "category", data: [...s.top_movements].reverse().map((m) => m.name), axisLabel: { width: 90, overflow: "truncate", fontSize: 10, color: "#8b92a8" } },
-              series: [{ type: "bar", data: [...s.top_movements].reverse().map((m) => kgToDisplay(m.volume_kg, unit)), itemStyle: { color: "#ff6b35" } }],
+              yAxis: { type: "category", data: [...s.top_movements].reverse().map((m) => m.name), axisLabel: { width: 90, overflow: "truncate", fontSize: 10, color: "#666666" } },
+              series: [{ type: "bar", data: [...s.top_movements].reverse().map((m) => kgToDisplay(m.volume_kg, unit)), itemStyle: { color: MATLAB_COLORS[0] } }],
               tooltip: { trigger: "axis" },
             }}
           />
