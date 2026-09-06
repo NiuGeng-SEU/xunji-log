@@ -72,6 +72,49 @@ export interface Analysis {
     duration_min: number;
     avg_hr: number;
   }>;
+  strength_summary?: StrengthSummary;
+}
+
+export interface StrengthSummary {
+  total_workouts: number;
+  total_volume_kg: number;
+  total_duration_hours: number;
+  total_years: number;
+  calendar_years: number;
+  latest_activity: {
+    date: string;
+    title: string;
+    duration_min: number;
+    volume_kg: number;
+  };
+  workout_dates: string[];
+  workout_details: Record<string, { date: string; title: string; duration_min: number; volume_kg: number }>;
+  streaks: {
+    current_days: number;
+    max_days: number;
+    current_weeks: number;
+    max_weeks: number;
+  };
+  goals: {
+    weekly_target: number;
+    monthly_target: number;
+    yearly_target: number;
+    this_week: {
+      workouts: number;
+      duration_hours: number;
+      diff_last_week: number;
+    };
+    this_month: {
+      workouts: number;
+      duration_hours: number;
+      diff_last_month: number;
+    };
+    this_year: {
+      workouts: number;
+      duration_hours: number;
+      diff_last_year: number;
+    };
+  };
 }
 
 export async function fetchAnalysis(): Promise<Analysis> {

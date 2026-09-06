@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Analysis } from "../api";
 import { formatVolume, useWeightUnit } from "../units";
+import { useLanguage } from "../language";
 
 type HeatmapDay = Analysis["daily"][number];
 
@@ -51,25 +52,36 @@ function cellBackground(
 export default function TrainingHeatmap({
   data,
   onOpenDay,
+  selectedYear,
+  onSelectYear,
 }: {
   data: Analysis;
   onOpenDay: (date: string) => void;
+  selectedYear: number | null;
+  onSelectYear: (year: number | null) => void;
 }) {
   const { unit } = useWeightUnit();
+  const { t, language } = useLanguage();
   const years = useMemo(() => {
     const first = Number(data.date_start.slice(0, 4));
     const last = Number(data.date_end.slice(0, 4));
     return Array.from({ length: last - first + 1 }, (_, index) => last - index);
   }, [data.date_end, data.date_start]);
-  const [year, setYear] = useState(years[0]);
   const [showStrength, setShowStrength] = useState(true);
   const [showCardio, setShowCardio] = useState(true);
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
-  const { weeks, maxVolume, maxCardio } = useMemo(() => {
-    const yearDays = data.daily.filter((day) => day.date.startsWith(`${year}-`));
-    const days = new Map(yearDays.map((day) => [day.date, day]));
-    const firstDay = `${year}-01-01`;
-    const lastDay = `${year}-12-31`;
+  const today = useMemo(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  }, []);
+  const { weeks, maxVolume, maxCardio, rangeStart, rangeEnd } = useMemo(() => {
+    const lastDay = selectedYear ? `${selectedYear}-12-31` : today;
+    const rollingStart = utcDate(lastDay);
+    rollingStart.setUTCFullYear(rollingStart.getUTCFullYear() - 1);
+    rollingStart.setUTCDate(rollingStart.getUTCDate() + 1);
+    const firstDay = selectedYear ? `${selectedYear}-01-01` : dateKey(rollingStart);
+    const rangeDays = data.daily.filter((day) => day.date >= firstDay && day.date <= lastDay);
+    const days = new Map(rangeDays.map((day) => [day.date, day]));
     const first = startOfWeek(utcDate(firstDay));
     const last = utcDate(lastDay);
     const result: Array<Array<{ date: string; day?: HeatmapDay; inYear: boolean }>> = [];
@@ -86,30 +98,45 @@ export default function TrainingHeatmap({
 
     return {
       weeks: result,
-      maxVolume: Math.max(...yearDays.map((day) => day.volume_kg), 1),
-      maxCardio: Math.max(...yearDays.map((day) => day.cardio_km), 1),
+      maxVolume: Math.max(...rangeDays.map((day) => day.volume_kg), 1),
+      maxCardio: Math.max(...rangeDays.map((day) => day.cardio_km), 1),
+      rangeStart: firstDay,
+      rangeEnd: lastDay,
     };
-  }, [data.daily, year]);
-  const months = useMemo(() => Array.from({ length: 12 }, (_, month) => {
-    const prefix = `${year}-${String(month + 1).padStart(2, "0")}-`;
-    const start = weeks.findIndex((week) => week.some(({ date }) => date.startsWith(prefix)));
-    const nextPrefix = `${year}-${String(month + 2).padStart(2, "0")}-`;
-    const next = month === 11
-      ? weeks.length
-      : weeks.findIndex((week) => week.some(({ date }) => date.startsWith(nextPrefix)));
-    return {
-      label: new Date(Date.UTC(year, month, 1)).toLocaleString("en-US", { month: "short", timeZone: "UTC" }),
-      start,
-      span: Math.max((next < 0 ? weeks.length : next) - start, 1),
-    };
-  }), [weeks, year]);
+  }, [data.daily, selectedYear, today]);
+
+  const months = useMemo(() => {
+    const result: Array<{ key: string; label: string; start: number; span: number }> = [];
+    const startDate = utcDate(rangeStart);
+    const cursor = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), 1));
+
+    while (cursor <= utcDate(rangeEnd)) {
+      const prefix = `${cursor.getUTCFullYear()}-${String(cursor.getUTCMonth() + 1).padStart(2, "0")}-`;
+      const start = weeks.findIndex((week) => week.some(({ date }) => date.startsWith(prefix)));
+      const nextDate = new Date(cursor);
+      nextDate.setUTCMonth(nextDate.getUTCMonth() + 1);
+      const nextPrefix = `${nextDate.getUTCFullYear()}-${String(nextDate.getUTCMonth() + 1).padStart(2, "0")}-`;
+      const next = weeks.findIndex((week) => week.some(({ date }) => date.startsWith(nextPrefix)));
+      const span = Math.max((next < 0 ? weeks.length : next) - start, 1);
+      if (start >= 0 && span >= 2) {
+        result.push({
+          key: prefix,
+          label: cursor.toLocaleString(language === "zh" ? "zh-CN" : "en-US", { month: "short", timeZone: "UTC" }),
+          start,
+          span,
+        });
+      }
+      cursor.setUTCMonth(cursor.getUTCMonth() + 1);
+    }
+    return result;
+  }, [language, rangeEnd, rangeStart, weeks]);
 
   return (
     <section className="chart-card full overview-heatmap">
       <div className="heatmap-layout">
         <div className="heatmap-main">
           <div className="heatmap-heading">
-            <h3>Training Heatmap</h3>
+            <h3>{t("Training Heatmap", "训练热力图")}</h3>
             <div className="heatmap-legend" aria-label="Training data filters">
               <button
                 type="button"
@@ -120,7 +147,7 @@ export default function TrainingHeatmap({
                   setTooltip(null);
                 }}
               >
-                <i className="heatmap-swatch strength" />Strength
+                <i className="heatmap-swatch strength" />{t("Strength", "力量")}
               </button>
               <button
                 type="button"
@@ -131,7 +158,7 @@ export default function TrainingHeatmap({
                   setTooltip(null);
                 }}
               >
-                <i className="heatmap-swatch cardio" />Cardio
+                <i className="heatmap-swatch cardio" />{t("Cardio", "有氧")}
               </button>
             </div>
           </div>
@@ -142,7 +169,7 @@ export default function TrainingHeatmap({
                 <div className="heatmap-months" style={{ gridTemplateColumns: `repeat(${weeks.length}, var(--heatmap-cell-size))` }}>
                   {months.map((month) => (
                     <span
-                      key={month.label}
+                      key={month.key}
                       style={{ gridColumn: `${month.start + 1} / span ${month.span}` }}
                     >
                       {month.label}
@@ -150,7 +177,15 @@ export default function TrainingHeatmap({
                   ))}
                 </div>
                 <div className="heatmap-body">
-                  <div className="heatmap-weekdays" aria-hidden="true"><span /><span>Mon</span><span /><span>Wed</span><span /><span>Fri</span><span /></div>
+                  <div className="heatmap-weekdays" aria-hidden="true">
+                    <span />
+                    <span>{t("Mon", "周一")}</span>
+                    <span />
+                    <span>{t("Wed", "周三")}</span>
+                    <span />
+                    <span>{t("Fri", "周五")}</span>
+                    <span />
+                  </div>
                   <div className="heatmap-grid" style={{ gridTemplateColumns: `repeat(${weeks.length}, var(--heatmap-cell-size))` }}>
                     {weeks.flatMap((week) => week.map(({ date, day, inYear }) => {
                       const visible = Boolean(day && (
@@ -160,8 +195,8 @@ export default function TrainingHeatmap({
                       const details = day
                         ? [
                             date,
-                            showStrength && day.volume_kg > 0 ? `Strength: ${formatVolume(day.volume_kg, unit)}` : "",
-                            showCardio && day.cardio_km > 0 ? `Cardio: ${day.cardio_km} km` : "",
+                            showStrength && day.volume_kg > 0 ? `${t("Strength", "力量")}: ${formatVolume(day.volume_kg, unit)}` : "",
+                            showCardio && day.cardio_km > 0 ? `${t("Cardio", "有氧")}: ${day.cardio_km} km` : "",
                           ].filter(Boolean).join(" · ")
                         : date;
                       return (
@@ -200,14 +235,25 @@ export default function TrainingHeatmap({
           </div>
         </div>
         <nav className="heatmap-years" aria-label="Heatmap year">
+          <button
+            type="button"
+            className={selectedYear === null ? "active" : ""}
+            aria-current={selectedYear === null ? "true" : undefined}
+            onClick={() => {
+              onSelectYear(null);
+              setTooltip(null);
+            }}
+          >
+            {t("Past Year", "近一年")}
+          </button>
           {years.map((choice) => (
             <button
               key={choice}
               type="button"
-              className={choice === year ? "active" : ""}
-              aria-current={choice === year ? "true" : undefined}
+              className={choice === selectedYear ? "active" : ""}
+              aria-current={choice === selectedYear ? "true" : undefined}
               onClick={() => {
-                setYear(choice);
+                onSelectYear(choice === selectedYear ? null : choice);
                 setTooltip(null);
               }}
             >

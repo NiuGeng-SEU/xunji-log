@@ -44,6 +44,41 @@ def is_cardio(move):
     return classify(move.get("name", "")) == "有氧"
 
 
+def is_running(move_or_name):
+    """Only running contributes to distance charts; walking stays excluded."""
+    if isinstance(move_or_name, dict):
+        name = str(move_or_name.get("name") or "")
+    else:
+        name = str(move_or_name or "")
+    n = name.strip().lower()
+    return any(keyword in n for keyword in ("running", "跑步", "treadmill", "jogging", "run"))
+
+
+def is_activity_summary(name_or_move):
+    """Exclude imported workout-type containers from movement rankings and exercise analysis."""
+    if isinstance(name_or_move, dict):
+        name = str(name_or_move.get("name") or "")
+    else:
+        name = str(name_or_move or "")
+    normalized = "".join(char for char in name.lower() if char.isalnum())
+    return (
+        "walking" in normalized
+        or "running" in normalized
+        or "traditionalstrength" in normalized
+        or "applehealth" in normalized
+        or "elliptical" in normalized
+    )
+
+
+def is_traditional_strength(name_or_move):
+    if isinstance(name_or_move, dict):
+        name = str(name_or_move.get("name") or "")
+    else:
+        name = str(name_or_move or "")
+    normalized = "".join(char for char in name.lower() if char.isalnum())
+    return "traditionalstrength" in normalized or "功能性力量训练" in normalized
+
+
 def parse_weight(s):
     try:
         return float(s)
@@ -56,6 +91,80 @@ def parse_reps(s):
         return float(s)
     except (TypeError, ValueError):
         return 0.0
+
+
+def classify_train(t):
+    title = str(t.get("title") or "")
+    movements = t.get("movements") or []
+    has_running = any(is_running(m) for m in movements) or is_running(title)
+    has_trad = is_traditional_strength(title) or any(is_traditional_strength(m) for m in movements)
+
+    dist = 0.0
+    for m in movements:
+        for s in m.get("sets") or []:
+            metrics = s.get("metrics") or {}
+            d = parse_weight(metrics.get("distance") or m.get("distance") or s.get("distance"))
+            if d > 0:
+                dist += d
+
+    is_walking = any("walking" in str(m.get("name") or "").lower() or "步行" in str(m.get("name") or "") for m in movements) or "步行" in title
+    has_gym_strength = any(
+        not is_activity_summary(m.get("name") or "") and str(m.get("name") or "").strip() != ""
+        for m in movements
+    )
+
+    if has_running:
+        return "running", dist
+    elif is_walking:
+        return "walking", dist
+    elif has_gym_strength or has_trad:
+        return "workout", dist
+    else:
+        return "other", dist
+
+
+def get_day_sessions(trains):
+    """
+    Returns valid sessions for a day:
+    - Maximal 1 workout session
+    - Maximal 1 running session
+    - Walking sessions only if distance > 1.0 km
+    - Other cardio (e.g. hiking) only if distance > 1.0 km
+    """
+    workout_train = None
+    running_train = None
+    running_dist = 0.0
+    walking_trains = []
+    other_trains = []
+
+    for t in trains:
+        kind, dist = classify_train(t)
+        if kind == "workout":
+            moves = t.get("movements") or []
+            has_gym = any(not is_activity_summary(m.get("name") or "") and str(m.get("name") or "").strip() != "" for m in moves)
+            if workout_train is None or has_gym:
+                workout_train = t
+        elif kind == "running":
+            if running_train is None or dist > running_dist:
+                running_train = t
+                running_dist = dist
+        elif kind == "walking":
+            if dist > 1.0:
+                walking_trains.append(t)
+        elif kind == "other":
+            if dist > 1.0:
+                other_trains.append(t)
+
+    valid_sessions = []
+    if workout_train:
+        valid_sessions.append(("workout", workout_train))
+    if running_train:
+        valid_sessions.append(("running", running_train))
+    for t in walking_trains:
+        valid_sessions.append(("walking", t))
+    for t in other_trains:
+        valid_sessions.append(("other", t))
+    return valid_sessions
 
 
 def main():
@@ -81,16 +190,23 @@ def main():
             for m in t.get("movements") or []:
                 all_movements.append({"train": t, "move": m})
 
-    n_sessions = len(all_trains)
-    n_days = len(day_trains)
+    all_day_sessions = {ds: get_day_sessions(ts) for ds, ts in day_trains.items()}
+    valid_sessions_flat = [
+        (ds, kind, t)
+        for ds in sorted(all_day_sessions.keys())
+        for kind, t in all_day_sessions[ds]
+    ]
+    n_sessions = len(valid_sessions_flat)
+    active_days = sorted(ds for ds, sess in all_day_sessions.items() if len(sess) > 0)
+    n_days = len(active_days)
 
-    # 总时长（分钟）
-    total_duration_min = 0
+    # 总时长（分钟）：按有效 session 统计
+    total_duration_min = 0.0
     durations = []
-    for t in all_trains:
+    for ds, kind, t in valid_sessions_flat:
         start = t.get("start") or t.get("started_at")
         end = t.get("end") or t.get("ended_at")
-        dur = 0
+        dur = 0.0
         if start and end:
             dur = (end - start) / 60000
         else:
@@ -108,44 +224,33 @@ def main():
     cat_sessions = Counter()  # 部位 -> 出现次数（按动作出现次数）
     cat_sets = Counter()
 
-    # 有氧汇总
+    # 有氧汇总（仅跑步算里程）
     total_distance_km = 0.0
     total_kcal = 0.0
     cardio_hr_avg = []
     cardio_hr_max = []
-    n_strength_sessions = 0
-    n_cardio_sessions = 0
+    n_strength_sessions = sum(1 for ds, kind, t in valid_sessions_flat if kind == "workout")
+    n_cardio_sessions = sum(1 for ds, kind, t in valid_sessions_flat if kind in ("running", "walking", "other"))
     month_cardio_km = defaultdict(float)
     month_cardio_kcal = defaultdict(float)
 
     for t in all_trains:
-        t_is_cardio = True
-        t_has_strength = False
         for m in t.get("movements") or []:
             name = m.get("name") or "(未命名)"
-            st = move_stats[name]
-            st["sessions"] += 1
-            st["days"].add(t.get("datestr"))
+            running = is_running(m)
+            summary_move = is_activity_summary(name)
             cat = classify(name)
-            st["category"] = cat
+            if not summary_move:
+                st = move_stats[name]
+                st["sessions"] += 1
+                st["days"].add(t.get("datestr"))
+                st["category"] = cat
+
             for s in m.get("sets") or []:
-                total_sets += 1
-                cat_sets[cat] += 1
-                if s.get("done"):
-                    total_done_sets += 1
-                    st["sets"] += 1
-                w = parse_weight(s.get("weight") or s.get("weight_kg"))
-                r = parse_reps(s.get("reps"))
-                if w > 0 and r > 0 and not s.get("selfWeight"):
-                    if str(s.get("unit") or "kg").strip().lower() in {"lb", "lbs", "pound", "pounds"}:
-                        w *= 0.45359237
-                    vol = w * r
-                    total_volume_kg += vol
-                    st["volume"] += vol
                 metrics = s.get("metrics") or {}
                 dist = parse_weight(metrics.get("distance") or m.get("distance"))
                 kcal = parse_weight(metrics.get("calories") or metrics.get("kcal") or m.get("calories"))
-                if dist > 0:
+                if running and dist > 0:
                     total_distance_km += dist
                     month_cardio_km[t.get("datestr", "")[:7]] += dist
                 if kcal > 0:
@@ -155,27 +260,46 @@ def main():
                     cardio_hr_avg.append(parse_weight(metrics.get("avgHeartRate")))
                 if parse_weight(metrics.get("maxHeartRate")) > 0:
                     cardio_hr_max.append(parse_weight(metrics.get("maxHeartRate")))
-            cat_sessions[cat] += 1
-            if cat != "有氧":
-                t_has_strength = True
-            if is_cardio(m):
-                pass
-        if t.get("movements"):
-            if t_has_strength:
-                n_strength_sessions += 1
-                t_is_cardio = False
-            if t_is_cardio:
-                n_cardio_sessions += 1
+
+                w = parse_weight(s.get("weight") or s.get("weight_kg"))
+                r = parse_reps(s.get("reps"))
+                if not summary_move:
+                    total_sets += 1
+                    cat_sets[cat] += 1
+                    if s.get("done"):
+                        total_done_sets += 1
+                        st["sets"] += 1
+                    if w > 0 and r > 0 and not s.get("selfWeight"):
+                        if str(s.get("unit") or "kg").strip().lower() in {"lb", "lbs", "pound", "pounds"}:
+                            w *= 0.45359237
+                        vol = w * r
+                        total_volume_kg += vol
+                        st["volume"] += vol
+
+            if not summary_move:
+                cat_sessions[cat] += 1
 
     # 月度聚合
     month_stats = defaultdict(lambda: {"sessions": 0, "days": set(), "volume": 0.0, "duration_min": 0.0})
-    for t in all_trains:
-        ds = t.get("datestr")
+    for ds, kind, t in valid_sessions_flat:
         month = ds[:7]
         ms = month_stats[month]
         ms["sessions"] += 1
         ms["days"].add(ds)
+        start = t.get("start") or t.get("started_at")
+        end = t.get("end") or t.get("ended_at")
+        if start and end:
+            ms["duration_min"] += (end - start) / 60000
+
+    for t in all_trains:
+        month = (t.get("datestr") or "")[:7]
+        if not month:
+            continue
+        ms = month_stats[month]
         for m in t.get("movements") or []:
+            name = m.get("name") or ""
+            if is_activity_summary(name):
+                continue
             for s in m.get("sets") or []:
                 w = parse_weight(s.get("weight") or s.get("weight_kg"))
                 r = parse_reps(s.get("reps"))
@@ -183,17 +307,13 @@ def main():
                     if str(s.get("unit") or "kg").strip().lower() in {"lb", "lbs", "pound", "pounds"}:
                         w *= 0.45359237
                     ms["volume"] += w * r
-        start = t.get("start") or t.get("started_at")
-        end = t.get("end") or t.get("ended_at")
-        if start and end:
-            ms["duration_min"] += (end - start) / 60000
 
     # 每周聚合
     all_days = sorted(day_trains.keys())
     week_stats = defaultdict(int)
-    for t in all_trains:
+    for ds, kind, t in valid_sessions_flat:
         try:
-            dt = datetime.date.fromisoformat(t.get("datestr"))
+            dt = datetime.date.fromisoformat(ds)
             # ISO 周
             iso = dt.isocalendar()
             week_stats[f"{iso[0]}-W{iso[1]:02d}"] += 1
@@ -201,9 +321,9 @@ def main():
             pass
     week_labels = []
     week_values = []
-    if all_days:
-        d0 = datetime.date.fromisoformat(all_days[0])
-        d1 = datetime.date.fromisoformat(all_days[-1])
+    if active_days:
+        d0 = datetime.date.fromisoformat(active_days[0])
+        d1 = datetime.date.fromisoformat(active_days[-1])
         start_monday = d0 - datetime.timedelta(days=d0.weekday())
         end_monday = d1 - datetime.timedelta(days=d1.weekday())
         w = start_monday
@@ -216,16 +336,16 @@ def main():
 
     # 星期几分布
     dow_counter = Counter()
-    for t in all_trains:
+    for ds, kind, t in valid_sessions_flat:
         try:
-            dt = datetime.date.fromisoformat(t.get("datestr"))
+            dt = datetime.date.fromisoformat(ds)
             dow_counter[dt.weekday()] += 1
         except ValueError:
             pass
 
     # 开始时段分布（按东八区）
     hour_counter = Counter()
-    for t in all_trains:
+    for ds, kind, t in valid_sessions_flat:
         start = t.get("start") or t.get("started_at")
         if not start:
             continue
@@ -236,7 +356,7 @@ def main():
     max_streak = 0
     cur = 0
     prev = None
-    for ds in all_days:
+    for ds in active_days:
         dt = datetime.date.fromisoformat(ds)
         if prev is not None and (dt - prev).days == 1:
             cur += 1
@@ -246,7 +366,7 @@ def main():
         prev = dt
     gaps = []
     prev = None
-    for ds in all_days:
+    for ds in active_days:
         dt = datetime.date.fromisoformat(ds)
         if prev is not None:
             gaps.append((dt - prev).days)
@@ -254,9 +374,9 @@ def main():
 
     # 平均每周训练次数（按实际日期跨度）
     span_days = 0
-    if all_days:
-        span_days = (datetime.date.fromisoformat(all_days[-1]) - datetime.date.fromisoformat(all_days[0])).days + 1
-    avg_per_week = n_days / (span_days / 7) if span_days else 0
+    if active_days:
+        span_days = (datetime.date.fromisoformat(active_days[-1]) - datetime.date.fromisoformat(active_days[0])).days + 1
+    avg_per_week = n_sessions / (span_days / 7) if span_days else 0
 
     # 月份序列（补全无训练月份）
     def month_iter(start, end):
@@ -278,7 +398,7 @@ def main():
 
     # 排序 top 动作
     top_moves = sorted(
-        move_stats.items(),
+        ((name, stats) for name, stats in move_stats.items() if not is_activity_summary(name)),
         key=lambda kv: len(kv[1]["days"]),
         reverse=True,
     )
@@ -304,12 +424,14 @@ def main():
 
         for m in t.get("movements") or []:
             name = m.get("name") or "(未命名)"
+            summary_move = is_activity_summary(name)
             cat = classify(name)
+            running = is_running(m)
             for s in m.get("sets") or []:
                 w = parse_weight(s.get("weight") or s.get("weight_kg"))
                 r = parse_reps(s.get("reps"))
                 unit = s.get("unit") or "kg"
-                if w > 0 and r > 0 and not s.get("selfWeight") and s.get("done"):
+                if not summary_move and w > 0 and r > 0 and not s.get("selfWeight") and s.get("done"):
                     w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
                     vol = w_kg * r
                     cat_month_vol[cat][month] += vol
@@ -326,38 +448,67 @@ def main():
                 metrics = s.get("metrics") or {}
                 dist = parse_weight(metrics.get("distance"))
                 kcal = parse_weight(metrics.get("calories") or metrics.get("kcal"))
-                t_cardio_km += dist
+                if running:
+                    t_cardio_km += dist
                 t_cardio_kcal += kcal
 
-        if not t_has_strength and (t_cardio_km > 0 or t_cardio_kcal > 0):
-            avg_hr = 0
-            for m in t.get("movements") or []:
-                for s in m.get("sets") or []:
-                    hr = parse_weight((s.get("metrics") or {}).get("avgHeartRate"))
-                    if hr > 0:
-                        avg_hr = hr
-                        break
-            cardio_sessions.append({
-                "date": ds,
-                "title": t.get("title") or "",
-                "distance_km": round(t_cardio_km, 1),
-                "kcal": round(t_cardio_kcal),
-                "duration_min": round(t_duration, 0),
-                "avg_hr": round(avg_hr, 0),
-            })
+    for ds, kind, t in valid_sessions_flat:
+        if kind not in ("running", "walking", "other"):
+            continue
+        c_km = 0.0
+        c_kcal = 0.0
+        start = t.get("start") or t.get("started_at")
+        end = t.get("end") or t.get("ended_at")
+        dur = 0.0
+        if start and end:
+            dur = (end - start) / 60000
+        avg_hr = 0.0
+        for m in t.get("movements") or []:
+            running = is_running(m)
+            for s in m.get("sets") or []:
+                met = s.get("metrics") or {}
+                d = parse_weight(met.get("distance") or m.get("distance"))
+                if (kind == "running" and running) or (kind != "running" and d > 0):
+                    c_km += d
+                k = parse_weight(met.get("calories") or met.get("kcal") or m.get("calories"))
+                if k > 0:
+                    c_kcal += k
+                hr = parse_weight(met.get("avgHeartRate"))
+                if hr > 0 and avg_hr == 0:
+                    avg_hr = hr
+        cardio_sessions.append({
+            "date": ds,
+            "title": t.get("title") or ("跑步" if kind == "running" else "步行" if kind == "walking" else "有氧"),
+            "distance_km": round(c_km, 1),
+            "kcal": round(c_kcal),
+            "duration_min": round(dur, 0),
+            "avg_hr": round(avg_hr, 0),
+        })
 
     for ds in all_days:
         trains = day_trains[ds]
+        day_sess = all_day_sessions.get(ds, [])
         day_vol = 0.0
         day_cardio_km = 0.0
         day_cardio_kcal = 0.0
         day_duration = 0.0
-        for t in trains:
+        for kind, t in day_sess:
             start = t.get("start") or t.get("started_at")
             end = t.get("end") or t.get("ended_at")
             if start and end:
                 day_duration += (end - start) / 60000
             for m in t.get("movements") or []:
+                running = is_running(m)
+                for s in m.get("sets") or []:
+                    metrics = s.get("metrics") or {}
+                    if running:
+                        day_cardio_km += parse_weight(metrics.get("distance"))
+                    day_cardio_kcal += parse_weight(metrics.get("calories") or metrics.get("kcal"))
+        # 确保当日所有真实力量训练动作的容量均被统计
+        for t in trains:
+            for m in t.get("movements") or []:
+                if is_activity_summary(m.get("name") or ""):
+                    continue
                 for s in m.get("sets") or []:
                     w = parse_weight(s.get("weight") or s.get("weight_kg"))
                     r = parse_reps(s.get("reps"))
@@ -365,17 +516,173 @@ def main():
                         if str(s.get("unit") or "kg").strip().lower() in {"lb", "lbs", "pound", "pounds"}:
                             w *= 0.45359237
                         day_vol += w * r
-                    metrics = s.get("metrics") or {}
-                    day_cardio_km += parse_weight(metrics.get("distance"))
-                    day_cardio_kcal += parse_weight(metrics.get("calories") or metrics.get("kcal"))
         daily_stats.append({
             "date": ds,
-            "sessions": len(trains),
+            "sessions": len(day_sess),
             "volume_kg": round(day_vol, 0),
             "duration_min": round(day_duration, 0),
             "cardio_km": round(day_cardio_km, 1),
             "cardio_kcal": round(day_cardio_kcal),
         })
+
+    # 力量训练专项指标与目标汇总 (Strength Summary)
+    workout_by_date = {}
+    for ds, ts in sorted(day_trains.items()):
+        sess = all_day_sessions.get(ds, [])
+        for kind, t in sess:
+            if kind == "workout":
+                start = t.get("start") or t.get("started_at")
+                end = t.get("end") or t.get("ended_at")
+                dur = (end - start) / 60000 if (start and end) else 0
+                vol = 0.0
+                for tr in ts:
+                    k, _ = classify_train(tr)
+                    if k == "workout":
+                        for m in tr.get("movements") or []:
+                            if is_activity_summary(m.get("name") or ""):
+                                continue
+                            for s in m.get("sets") or []:
+                                w = parse_weight(s.get("weight") or s.get("weight_kg"))
+                                r = parse_reps(s.get("reps"))
+                                if w > 0 and r > 0 and not s.get("selfWeight") and s.get("done"):
+                                    if str(s.get("unit") or "kg").strip().lower() in {"lb", "lbs", "pound", "pounds"}:
+                                        w *= 0.45359237
+                                    vol += w * r
+                workout_by_date[ds] = {
+                    "date": ds,
+                    "title": t.get("title") or "力量训练",
+                    "duration_min": round(dur, 0),
+                    "volume_kg": round(vol, 1),
+                }
+
+    workout_dates = sorted(workout_by_date.keys())
+    latest_workout = workout_by_date[workout_dates[-1]] if workout_dates else {
+        "date": "", "title": "力量训练", "duration_min": 0, "volume_kg": 0
+    }
+
+    # 锚点日期：取最新训练日
+    anchor_dt = datetime.date.fromisoformat(workout_dates[-1]) if workout_dates else datetime.date.today()
+    curr_year = anchor_dt.year
+    curr_month_str = anchor_dt.strftime("%Y-%m")
+
+    # 年度目标（52周 × 3次 = 156次）
+    this_year_dates = [d for d in workout_dates if d.startswith(str(curr_year))]
+    last_year_dates = [d for d in workout_dates if d.startswith(str(curr_year - 1))]
+    this_year_dur_hours = sum(workout_by_date[d]["duration_min"] for d in this_year_dates) / 60
+
+    # 月度目标（52周 × 3次 / 12月 = 13次）
+    this_month_dates = [d for d in workout_dates if d.startswith(curr_month_str)]
+    prev_month_last_day = datetime.date(curr_year, anchor_dt.month, 1) - datetime.timedelta(days=1)
+    prev_month_str = prev_month_last_day.strftime("%Y-%m")
+    last_month_dates = [d for d in workout_dates if d.startswith(prev_month_str)]
+    this_month_dur_hours = sum(workout_by_date[d]["duration_min"] for d in this_month_dates) / 60
+
+    # 周目标（每周 3 次）
+    cur_mon = anchor_dt - datetime.timedelta(days=anchor_dt.weekday())
+    cur_sun = cur_mon + datetime.timedelta(days=6)
+    prev_mon = cur_mon - datetime.timedelta(days=7)
+    prev_sun = cur_sun - datetime.timedelta(days=7)
+    this_week_dates = [d for d in workout_dates if cur_mon.isoformat() <= d <= cur_sun.isoformat()]
+    last_week_dates = [d for d in workout_dates if prev_mon.isoformat() <= d <= prev_sun.isoformat()]
+    this_week_dur_hours = sum(workout_by_date[d]["duration_min"] for d in this_week_dates) / 60
+
+    # 连续天数 Streak (仅计算力量训练)
+    cur_day_streak = 0
+    check_d = anchor_dt
+    while check_d.isoformat() in workout_by_date:
+        cur_day_streak += 1
+        check_d -= datetime.timedelta(days=1)
+    if cur_day_streak == 0:
+        check_d = anchor_dt - datetime.timedelta(days=1)
+        while check_d.isoformat() in workout_by_date:
+            cur_day_streak += 1
+            check_d -= datetime.timedelta(days=1)
+
+    max_day_streak = 0
+    cur_s = 0
+    prev_d = None
+    for d_str in workout_dates:
+        d = datetime.date.fromisoformat(d_str)
+        if prev_d is not None and (d - prev_d).days == 1:
+            cur_s += 1
+        else:
+            cur_s = 1
+        max_day_streak = max(max_day_streak, cur_s)
+        prev_d = d
+
+    # 连续周数 Streak (按每周至少1次训练)
+    workout_weeks = set()
+    for ds in workout_dates:
+        dt = datetime.date.fromisoformat(ds)
+        iso = dt.isocalendar()
+        workout_weeks.add((iso[0], iso[1]))
+
+    cur_week_streak = 0
+    cur_w = anchor_dt
+    while True:
+        iso = cur_w.isocalendar()
+        if (iso[0], iso[1]) in workout_weeks:
+            cur_week_streak += 1
+            cur_w -= datetime.timedelta(days=7)
+        else:
+            break
+
+    sorted_w = sorted(list(workout_weeks))
+    max_week_streak = 0
+    cur_ws = 0
+    prev_w_dt = None
+    for y, w in sorted_w:
+        dt = datetime.date.fromisocalendar(y, w, 1)
+        if prev_w_dt is not None and (dt - prev_w_dt).days == 7:
+            cur_ws += 1
+        else:
+            cur_ws = 1
+        max_week_streak = max(max_week_streak, cur_ws)
+        prev_w_dt = dt
+
+    # 生涯统计
+    tot_strength_dur_hours = sum(workout_by_date[d]["duration_min"] for d in workout_dates) / 60
+    first_dt = datetime.date.fromisoformat(workout_dates[0]) if workout_dates else anchor_dt
+    last_dt = datetime.date.fromisoformat(workout_dates[-1]) if workout_dates else anchor_dt
+    years_span = round((last_dt - first_dt).days / 365.25, 1)
+    calendar_years = max(1, last_dt.year - first_dt.year + 1)
+
+    strength_summary = {
+        "total_workouts": len(workout_dates),
+        "total_volume_kg": round(total_volume_kg, 1),
+        "total_duration_hours": round(tot_strength_dur_hours, 1),
+        "total_years": years_span,
+        "calendar_years": calendar_years,
+        "latest_activity": latest_workout,
+        "workout_dates": workout_dates,
+        "workout_details": workout_by_date,
+        "streaks": {
+            "current_days": cur_day_streak,
+            "max_days": max_day_streak,
+            "current_weeks": cur_week_streak,
+            "max_weeks": max_week_streak,
+        },
+        "goals": {
+            "weekly_target": 3,
+            "monthly_target": 13,
+            "yearly_target": 156,
+            "this_week": {
+                "workouts": len(this_week_dates),
+                "duration_hours": round(this_week_dur_hours, 1),
+                "diff_last_week": len(this_week_dates) - len(last_week_dates),
+            },
+            "this_month": {
+                "workouts": len(this_month_dates),
+                "duration_hours": round(this_month_dur_hours, 1),
+                "diff_last_month": len(this_month_dates) - len(last_month_dates),
+            },
+            "this_year": {
+                "workouts": len(this_year_dates),
+                "duration_hours": round(this_year_dur_hours, 1),
+                "diff_last_year": len(this_year_dates) - len(last_year_dates),
+            },
+        },
+    }
 
     top8_names = [name for name, _ in top_moves[:8]]
     category_labels = ["背", "胸", "手臂", "腿", "核心", "肩", "有氧", "其他"]
@@ -466,6 +773,7 @@ def main():
             reverse=True,
         )[:30],
         "cardio_sessions": sorted(cardio_sessions, key=lambda x: x["date"], reverse=True),
+        "strength_summary": strength_summary,
     }
 
     with open(OUT, "w", encoding="utf-8") as f:

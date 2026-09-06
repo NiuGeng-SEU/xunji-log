@@ -19,8 +19,44 @@ export default function Overview({ data }: Props) {
   const { language, t, label, rawLabel } = useLanguage();
   const m = data.monthly;
   const volumeUnit = volumeScaleLabel(unit, language);
-  const monthlyVolume = m.volume_tons.map((v) => metricTonsToDisplay(v, unit));
-  const shortLabels = m.labels.map((l) => l.slice(2));
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const todayMonthKey = (() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  })();
+  const monthKeys = (() => {
+    if (selectedYear) {
+      return Array.from({ length: 12 }, (_, month) => `${selectedYear}-${String(month + 1).padStart(2, "0")}`);
+    }
+    const now = new Date();
+    return Array.from({ length: 12 }, (_, index) => {
+      const date = new Date(now.getFullYear(), now.getMonth() - 11 + index, 1);
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    });
+  })();
+  const monthIndex = new Map(m.labels.map((month, index) => [month, index]));
+  const monthlyVolume = monthKeys.map((month) => {
+    const index = monthIndex.get(month);
+    return metricTonsToDisplay(index == null ? 0 : m.volume_tons[index], unit);
+  });
+  const monthlyCardio = monthKeys.map((month) => {
+    if (selectedYear && month > todayMonthKey) {
+      return null;
+    }
+    const index = monthIndex.get(month);
+    return index == null ? 0 : m.cardio_km[index];
+  });
+  const shortLabels = monthKeys.map((month) => month.slice(2));
+  const topMovements = data.top_movements
+    .filter(({ name }) => {
+      const normalized = name.trim().toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g, "");
+      return !normalized.includes("walking")
+        && !normalized.includes("running")
+        && !normalized.includes("traditionalstrength")
+        && !normalized.includes("applehealth")
+        && !normalized.includes("elliptical");
+    })
+    .slice(0, 8);
   const [drill, setDrill] = useState<DrillQuery | null>(null);
 
   const openMonth = useCallback(
@@ -28,11 +64,11 @@ export default function Overview({ data }: Props) {
       const name = chartClickName(params);
       const idx = chartClickIndex(params);
       const key =
-        (name && expandMonthKey(name, m.labels)) ||
-        (idx != null ? m.labels[idx] : null);
+        (name && expandMonthKey(name, monthKeys)) ||
+        (idx != null ? monthKeys[idx] : null);
       if (key) setDrill({ type: "month", key });
     },
-    [m.labels],
+    [monthKeys],
   );
 
   return (
@@ -42,33 +78,11 @@ export default function Overview({ data }: Props) {
       <TrainingHeatmap
         data={data}
         onOpenDay={(date) => setDrill({ type: "day", key: date })}
+        selectedYear={selectedYear}
+        onSelectYear={setSelectedYear}
       />
 
       <div className="charts-grid">
-        <div className="chart-card clickable-hint">
-          <h3>{t("Monthly Training Volume", "月度训练容量")} ({volumeUnit})</h3>
-          <Chart
-            onEvents={{ click: openMonth }}
-            option={{
-              xAxis: { type: "category", data: shortLabels, ...axisStyle },
-              yAxis: { type: "value", ...axisStyle },
-              series: [lineSeries(t("Volume", "容量"), monthlyVolume, true)],
-              tooltip: { trigger: "axis" },
-            }}
-          />
-        </div>
-        <div className="chart-card clickable-hint">
-          <h3>{t("Monthly Cardio Distance (km)", "月度有氧里程（km）")}</h3>
-          <Chart
-            onEvents={{ click: openMonth }}
-            option={{
-              xAxis: { type: "category", data: shortLabels, ...axisStyle },
-              yAxis: { type: "value", name: "km", ...axisStyle },
-              series: [lineSeries(t("Cardio Distance", "有氧里程"), m.cardio_km, true)],
-              tooltip: { trigger: "axis" },
-            }}
-          />
-        </div>
         <div className="chart-card full clickable-hint">
           <h3>{t("Strength vs Cardio · Monthly", "力量 vs 有氧 · 月度对比")}</h3>
           <Chart
@@ -76,29 +90,22 @@ export default function Overview({ data }: Props) {
             onEvents={{ click: openMonth }}
             option={{
               legend: {
-                data: [`${t("Training Volume", "训练容量")}(${volumeUnit})`, t("Cardio Distance (km)", "有氧里程(km)"), t("Cardio Calories (kcal/100)", "有氧消耗(kcal/100)")],
+                data: [`${t("Training Volume", "训练容量")} (${volumeUnit})`, t("Cardio Distance (km)", "有氧里程(km)")],
                 textStyle: { color: "#666666" },
               },
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
               yAxis: [
-                { type: "value", name: `${t("Volume", "容量")}(${volumeUnit})`, ...axisStyle },
-                { type: "value", name: t("Distance / Calories", "里程/消耗"), ...axisStyle },
+                { type: "value", name: `${t("Volume", "容量")} (${volumeUnit})`, ...axisStyle },
+                { type: "value", name: t("Distance (km)", "里程 (km)"), ...axisStyle },
               ],
               series: [
-                { ...barSeries(`${t("Training Volume", "训练容量")}(${volumeUnit})`, monthlyVolume), yAxisIndex: 0 },
-                { ...lineSeries(t("Cardio Distance (km)", "有氧里程(km)"), m.cardio_km), yAxisIndex: 1 },
-                {
-                  ...lineSeries(
-                    t("Cardio Calories (kcal/100)", "有氧消耗(kcal/100)"),
-                    m.cardio_kcal.map((k) => k / 100),
-                  ),
-                  yAxisIndex: 1,
-                },
+                { ...barSeries(`${t("Training Volume", "训练容量")} (${volumeUnit})`, monthlyVolume), yAxisIndex: 0 },
+                { ...lineSeries(t("Cardio Distance (km)", "有氧里程(km)"), monthlyCardio), yAxisIndex: 1 },
               ],
               tooltip: { trigger: "axis" },
+              grid: { left: 24, right: 32, top: 52, bottom: 28, containLabel: true },
             }}
           />
-          <p className="caption">{t("Cardio calories are divided by 100 for a shared scale", "有氧消耗已除以 100 以便同轴展示")}</p>
         </div>
         <div className="chart-card clickable-hint">
           <h3>{t("Training by Body Area", "训练部位分布")}</h3>
@@ -136,13 +143,13 @@ export default function Overview({ data }: Props) {
               xAxis: { type: "value", ...axisStyle },
               yAxis: {
                 type: "category",
-                data: data.top_movements.slice(0, 8).map((item) => label(item.name)).reverse(),
+                data: topMovements.map((item) => label(item.name)).reverse(),
                 ...axisStyle,
                 axisLabel: { width: 80, overflow: "truncate", fontSize: 10 },
               },
               series: [{
                 type: "bar",
-                data: data.top_movements.slice(0, 8).map((t) => t.days).reverse(),
+                data: topMovements.map((movement) => movement.days).reverse(),
                 itemStyle: { color: MATLAB_COLORS[0] },
               }],
               tooltip: { trigger: "axis" },

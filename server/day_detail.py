@@ -29,11 +29,111 @@ def classify(name: str) -> str:
     return "其他"
 
 
+def is_running(name_or_move: Any) -> bool:
+    if isinstance(name_or_move, dict):
+        name = str(name_or_move.get("name") or "")
+    else:
+        name = str(name_or_move or "")
+    n = name.strip().lower()
+    return any(keyword in n for keyword in ("running", "跑步", "treadmill", "jogging", "run"))
+
+
+def is_traditional_strength(name_or_move: Any) -> bool:
+    if isinstance(name_or_move, dict):
+        name = str(name_or_move.get("name") or "")
+    else:
+        name = str(name_or_move or "")
+    n = "".join(char for char in name.lower() if char.isalnum())
+    return "traditionalstrength" in n
+
+
+def is_activity_summary(name_or_move: Any) -> bool:
+    if isinstance(name_or_move, dict):
+        name = str(name_or_move.get("name") or "")
+    else:
+        name = str(name_or_move or "")
+    normalized = "".join(char for char in name.lower() if char.isalnum())
+    return (
+        "walking" in normalized
+        or "running" in normalized
+        or "traditionalstrength" in normalized
+        or "applehealth" in normalized
+        or "elliptical" in normalized
+    )
+
+
 def _f(v: Any) -> float:
     try:
         return float(v)
     except (TypeError, ValueError):
         return 0.0
+
+
+def classify_train(t: dict) -> tuple[str, float]:
+    title = str(t.get("title") or "")
+    movements = t.get("movements") or []
+    has_running = any(is_running(m) for m in movements) or is_running(title)
+    has_trad = is_traditional_strength(title) or any(is_traditional_strength(m) for m in movements)
+
+    dist = 0.0
+    for m in movements:
+        for s in m.get("sets") or []:
+            metrics = s.get("metrics") or {}
+            d = _f(metrics.get("distance") or m.get("distance") or s.get("distance"))
+            if d > 0:
+                dist += d
+
+    is_walking = any("walking" in str(m.get("name") or "").lower() or "步行" in str(m.get("name") or "") for m in movements) or "步行" in title
+    has_gym_strength = any(
+        not is_activity_summary(m.get("name") or "") and str(m.get("name") or "").strip() != ""
+        for m in movements
+    )
+
+    if has_running:
+        return "running", dist
+    elif is_walking:
+        return "walking", dist
+    elif has_gym_strength or has_trad:
+        return "workout", dist
+    else:
+        return "other", dist
+
+
+def get_day_sessions(trains: list[dict]) -> list[tuple[str, dict]]:
+    workout_train = None
+    running_train = None
+    running_dist = 0.0
+    walking_trains = []
+    other_trains = []
+
+    for t in trains:
+        kind, dist = classify_train(t)
+        if kind == "workout":
+            moves = t.get("movements") or []
+            has_gym = any(not is_activity_summary(m.get("name") or "") and str(m.get("name") or "").strip() != "" for m in moves)
+            if workout_train is None or has_gym:
+                workout_train = t
+        elif kind == "running":
+            if running_train is None or dist > running_dist:
+                running_train = t
+                running_dist = dist
+        elif kind == "walking":
+            if dist > 1.0:
+                walking_trains.append(t)
+        elif kind == "other":
+            if dist > 1.0:
+                other_trains.append(t)
+
+    valid_sessions: list[tuple[str, dict]] = []
+    if workout_train:
+        valid_sessions.append(("workout", workout_train))
+    if running_train:
+        valid_sessions.append(("running", running_train))
+    for t in walking_trains:
+        valid_sessions.append(("walking", t))
+    for t in other_trains:
+        valid_sessions.append(("other", t))
+    return valid_sessions
 
 
 def _ms_to_min(start: Any, end: Any) -> float:
@@ -89,10 +189,11 @@ def _parse_set(s: dict) -> dict:
 def _parse_movement(m: dict) -> dict:
     name = m.get("name") or "(未命名)"
     cat = classify(name)
+    running = is_running(name)
     sets = [_parse_set(s) for s in (m.get("sets") or [])]
     volume = sum(s["volume_kg"] for s in sets)
     done_sets = sum(1 for s in sets if s["done"])
-    cardio_km = sum((s["cardio"] or {}).get("distance_km") or 0 for s in sets)
+    cardio_km = sum((s["cardio"] or {}).get("distance_km") or 0 for s in sets) if running else 0.0
     cardio_kcal = sum((s["cardio"] or {}).get("kcal") or 0 for s in sets)
     is_cardio = bool(m.get("cardio") or m.get("exetype") == "cardio" or cat == "有氧" or cardio_km or cardio_kcal)
     max_w = max((s["weight_kg"] or 0 for s in sets), default=0)
@@ -117,7 +218,7 @@ def _parse_session(t: dict) -> dict:
     volume = sum(m["volume_kg"] for m in movements)
     cardio_km = sum(m["cardio_km"] for m in movements)
     cardio_kcal = sum(m["cardio_kcal"] for m in movements)
-    cats = Counter(m["category"] for m in movements)
+    cats = Counter(m["category"] for m in movements if not is_activity_summary(m["name"]))
     return {
         "localid": t.get("localid"),
         "title": t.get("title") or "未命名训练",
@@ -137,7 +238,9 @@ def _parse_session(t: dict) -> dict:
 
 def build_day_detail(datestr: str, trains: list[dict], baseline: dict | None = None) -> dict:
     """baseline: 可选全局均值，用于简单对比分析。"""
-    sessions = [_parse_session(t) for t in trains]
+    valid_sessions = get_day_sessions(trains)
+    session_trains = [t for _, t in valid_sessions] if valid_sessions else trains
+    sessions = [_parse_session(t) for t in session_trains]
     volume = sum(s["volume_kg"] for s in sessions)
     duration = sum(s["duration_min"] for s in sessions)
     cardio_km = sum(s["cardio_km"] for s in sessions)
@@ -149,7 +252,8 @@ def build_day_detail(datestr: str, trains: list[dict], baseline: dict | None = N
     move_vols: list[tuple[str, float, str]] = []
     for s in sessions:
         for m in s["movements"]:
-            cat_counter[m["category"]] += 1
+            if not is_activity_summary(m["name"]):
+                cat_counter[m["category"]] += 1
             if m["volume_kg"] > 0:
                 move_vols.append((m["name"], m["volume_kg"], m["category"]))
 

@@ -15,6 +15,7 @@ from server.day_detail import (
     build_day_detail,
     classify,
     _parse_session,
+    get_day_sessions,
 )
 
 DOW_LABELS = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
@@ -37,6 +38,30 @@ def invalidate_train_cache() -> None:
     with _lock:
         _cache = None
         _cache_sig = None
+
+
+def is_running(move_or_name: Any) -> bool:
+    if isinstance(move_or_name, dict):
+        name = str(move_or_name.get("name") or "")
+    else:
+        name = str(move_or_name or "")
+    n = name.strip().lower()
+    return any(keyword in n for keyword in ("running", "跑步", "treadmill", "jogging", "run"))
+
+
+def is_activity_summary(name_or_move: Any) -> bool:
+    if isinstance(name_or_move, dict):
+        name = str(name_or_move.get("name") or "")
+    else:
+        name = str(name_or_move or "")
+    normalized = "".join(char for char in name.lower() if char.isalnum())
+    return (
+        "walking" in normalized
+        or "running" in normalized
+        or "traditionalstrength" in normalized
+        or "applehealth" in normalized
+        or "elliptical" in normalized
+    )
 
 
 def _cache_signature(cache_dir: Path) -> str:
@@ -112,19 +137,24 @@ def _train_metrics(t: dict) -> dict:
     move_names: list[str] = []
     for m in t.get("movements") or []:
         name = m.get("name") or "(未命名)"
+        summary_move = is_activity_summary(name)
         cat = classify(name)
-        cats[cat] += 1
-        move_names.append(name)
+        running = is_running(m)
+        if not summary_move:
+            cats[cat] += 1
+            move_names.append(name)
         for s in m.get("sets") or []:
-            n_sets += 1
-            w = _f(s.get("weight") or s.get("weight_kg"))
-            r = _f(s.get("reps"))
-            unit = s.get("unit") or "kg"
-            if w > 0 and r > 0 and not s.get("selfWeight") and s.get("done"):
-                w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
-                volume += w_kg * r
+            if not summary_move:
+                n_sets += 1
+                w = _f(s.get("weight") or s.get("weight_kg"))
+                r = _f(s.get("reps"))
+                unit = s.get("unit") or "kg"
+                if w > 0 and r > 0 and not s.get("selfWeight") and s.get("done"):
+                    w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
+                    volume += w_kg * r
             metrics = s.get("metrics") or {}
-            cardio_km += _f(metrics.get("distance"))
+            if running:
+                cardio_km += _f(metrics.get("distance"))
             cardio_kcal += _f(metrics.get("calories") or metrics.get("kcal"))
     start = t.get("start") or t.get("started_at")
     end = t.get("end") or t.get("ended_at")
@@ -133,7 +163,7 @@ def _train_metrics(t: dict) -> dict:
         "cardio_km": cardio_km,
         "cardio_kcal": cardio_kcal,
         "n_sets": n_sets,
-        "n_movements": len(t.get("movements") or []),
+        "n_movements": len(move_names),
         "duration_min": _ms_to_min(start, end),
         "categories": cats,
         "move_names": move_names,
@@ -141,7 +171,17 @@ def _train_metrics(t: dict) -> dict:
 
 
 def _aggregate(trains: list[dict]) -> dict:
-    days = sorted({t.get("datestr") for t in trains if t.get("datestr")})
+    day_trains: dict[str, list[dict]] = defaultdict(list)
+    for t in trains:
+        ds = t.get("datestr")
+        if ds:
+            day_trains[ds].append(t)
+
+    day_valid_sessions = {ds: get_day_sessions(ts) for ds, ts in day_trains.items()}
+    total_sessions = sum(len(sess) for sess in day_valid_sessions.values())
+    active_days = sorted(ds for ds, sess in day_valid_sessions.items() if len(sess) > 0)
+    all_days = sorted(day_trains.keys())
+
     volume = 0.0
     duration = 0.0
     cardio_km = 0.0
@@ -163,35 +203,38 @@ def _aggregate(trains: list[dict]) -> dict:
         }
     )
 
-    for t in trains:
-        ds = t.get("datestr")
-        m = _train_metrics(t)
-        volume += m["volume_kg"]
-        duration += m["duration_min"]
-        cardio_km += m["cardio_km"]
-        cardio_kcal += m["cardio_kcal"]
-        n_sets += m["n_sets"]
-        n_moves += m["n_movements"]
-        cat_counter.update(m["categories"])
-        daily[ds]["sessions"] += 1
-        daily[ds]["volume_kg"] += m["volume_kg"]
-        daily[ds]["duration_min"] += m["duration_min"]
-        daily[ds]["cardio_km"] += m["cardio_km"]
-        daily[ds]["cardio_kcal"] += m["cardio_kcal"]
+    for ds in all_days:
+        day_sess = day_valid_sessions.get(ds, [])
+        daily[ds]["sessions"] = len(day_sess)
+        for _, t in day_sess:
+            m = _train_metrics(t)
+            volume += m["volume_kg"]
+            duration += m["duration_min"]
+            cardio_km += m["cardio_km"]
+            cardio_kcal += m["cardio_kcal"]
+            n_sets += m["n_sets"]
+            n_moves += m["n_movements"]
+            cat_counter.update(m["categories"])
+            daily[ds]["volume_kg"] += m["volume_kg"]
+            daily[ds]["duration_min"] += m["duration_min"]
+            daily[ds]["cardio_km"] += m["cardio_km"]
+            daily[ds]["cardio_kcal"] += m["cardio_kcal"]
 
-        for move in t.get("movements") or []:
-            name = move.get("name") or "(未命名)"
-            cat = classify(name)
-            move_cat[name] = cat
-            for s in move.get("sets") or []:
-                move_sets[name] += 1
-                w = _f(s.get("weight") or s.get("weight_kg"))
-                r = _f(s.get("reps"))
-                unit = s.get("unit") or "kg"
-                if w > 0 and r > 0 and not s.get("selfWeight") and s.get("done"):
-                    w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
-                    move_vol[name] += w_kg * r
-                    move_days[name].add(ds)
+            for move in t.get("movements") or []:
+                name = move.get("name") or "(未命名)"
+                if is_activity_summary(name):
+                    continue
+                cat = classify(name)
+                move_cat[name] = cat
+                for s in move.get("sets") or []:
+                    move_sets[name] += 1
+                    w = _f(s.get("weight") or s.get("weight_kg"))
+                    r = _f(s.get("reps"))
+                    unit = s.get("unit") or "kg"
+                    if w > 0 and r > 0 and not s.get("selfWeight") and s.get("done"):
+                        w_kg = w * 0.45359237 if str(unit).strip().lower() in {"lb", "lbs", "pound", "pounds"} else w
+                        move_vol[name] += w_kg * r
+                        move_days[name].add(ds)
 
     top_moves = sorted(move_vol.items(), key=lambda kv: kv[1], reverse=True)[:10]
     daily_list = [
@@ -204,12 +247,13 @@ def _aggregate(trains: list[dict]) -> dict:
             "cardio_kcal": round(daily[d]["cardio_kcal"]),
         }
         for d in sorted(daily.keys(), reverse=True)
+        if daily[d]["sessions"] > 0 or daily[d]["volume_kg"] > 0 or daily[d]["cardio_km"] > 0
     ]
 
     return {
         "summary": {
-            "sessions": len(trains),
-            "days": len(days),
+            "sessions": total_sessions,
+            "days": len(active_days),
             "volume_kg": round(volume, 1),
             "duration_min": round(duration, 0),
             "cardio_km": round(cardio_km, 2),
@@ -229,8 +273,8 @@ def _aggregate(trains: list[dict]) -> dict:
             ],
         },
         "daily": daily_list,
-        "date_start": days[0] if days else None,
-        "date_end": days[-1] if days else None,
+        "date_start": active_days[0] if active_days else (all_days[0] if all_days else None),
+        "date_end": active_days[-1] if active_days else (all_days[-1] if all_days else None),
     }
 
 
@@ -663,8 +707,18 @@ def build_drill(
     agg = _aggregate(subset)
     daily_asc = sorted(agg["daily"], key=lambda d: d["date"])
 
+    day_subset: dict[str, list[dict]] = defaultdict(list)
+    for t in subset:
+        ds = t.get("datestr")
+        if ds:
+            day_subset[ds].append(t)
+    valid_trains = []
+    for ds in sorted(day_subset.keys(), reverse=True):
+        for _, vt in get_day_sessions(day_subset[ds]):
+            valid_trains.append(vt)
+
     previews = []
-    for t in sorted(subset, key=lambda x: x.get("datestr") or "", reverse=True)[:12]:
+    for t in valid_trains[:12]:
         sess = _parse_session(t)
         previews.append({
             "datestr": t.get("datestr"),
@@ -700,8 +754,16 @@ def build_drill(
         "date_end": agg["date_end"],
     }
 
+    all_day_map: dict[str, list[dict]] = defaultdict(list)
+    for t in trains:
+        ds = t.get("datestr")
+        if ds:
+            all_day_map[ds].append(t)
+    total_sessions = sum(len(get_day_sessions(ts)) for ts in all_day_map.values())
+    subset_sessions = agg["summary"]["sessions"]
+
     if kind in ("month", "week"):
-        result["insights"] = _period_insights(kind, key, agg, len(subset), len(trains))
+        result["insights"] = _period_insights(kind, key, agg, subset_sessions, total_sessions)
     elif kind == "category":
         month_vol: dict[str, float] = defaultdict(float)
         move_rank: dict[str, dict] = {}
@@ -746,8 +808,8 @@ def build_drill(
                 reverse=True,
             )[:15],
         }
-        result["insights"] = _category_insights(key, agg, len(subset), len(trains), monthly)
+        result["insights"] = _category_insights(key, agg, subset_sessions, total_sessions, monthly)
     else:
-        result["insights"] = _rhythm_insights(kind, key, agg, len(subset), len(trains))
+        result["insights"] = _rhythm_insights(kind, key, agg, subset_sessions, total_sessions)
 
     return result
