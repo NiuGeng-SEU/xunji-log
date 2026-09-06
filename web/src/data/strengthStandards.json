@@ -1,0 +1,2389 @@
+{
+  "levels": {
+    "beginner": {
+      "percentile": 5,
+      "name_en": "Beginner",
+      "name_zh": "初学者",
+      "desc_en": "Stronger than 5% of lifters",
+      "desc_zh": "超越 5% 训练者，掌握标准动作训练超1个月"
+    },
+    "novice": {
+      "percentile": 20,
+      "name_en": "Novice",
+      "name_zh": "新手",
+      "desc_en": "Stronger than 20% of lifters",
+      "desc_zh": "超越 20% 训练者，系统规律训练超6个月"
+    },
+    "intermediate": {
+      "percentile": 50,
+      "name_en": "Intermediate",
+      "name_zh": "中级",
+      "desc_en": "Stronger than 50% of lifters",
+      "desc_zh": "超越 50% 训练者，规律训练超2年"
+    },
+    "advanced": {
+      "percentile": 80,
+      "name_en": "Advanced",
+      "name_zh": "高级",
+      "desc_en": "Stronger than 80% of lifters",
+      "desc_zh": "超越 80% 训练者，持续进阶训练超5年"
+    },
+    "elite": {
+      "percentile": 95,
+      "name_en": "Elite",
+      "name_zh": "精英",
+      "desc_en": "Stronger than 95% of lifters",
+      "desc_zh": "超越 95% 训练者，达到力量举/竞技水准"
+    }
+  },
+  "exercises": {
+    "bench_press": {
+      "key": "bench_press",
+      "slug": "bench-press",
+      "name_en": "Bench Press",
+      "name_zh": "杠铃卧推",
+      "icon": "/exercises/bench_press.png",
+      "gif": "/exercises/bench_press.gif",
+      "aliases": [
+        "杠铃卧推",
+        "卧推",
+        "Bench Press"
+      ],
+      "standards": {
+        "by_weight_kg": [
+          {
+            "bw_kg": 50.0,
+            "beginner": 27.0,
+            "novice": 41.0,
+            "intermediate": 58.0,
+            "advanced": 78.0,
+            "elite": 101.0
+          },
+          {
+            "bw_kg": 55.0,
+            "beginner": 32.0,
+            "novice": 47.0,
+            "intermediate": 65.0,
+            "advanced": 87.0,
+            "elite": 110.0
+          },
+          {
+            "bw_kg": 60.0,
+            "beginner": 37.0,
+            "novice": 53.0,
+            "intermediate": 72.0,
+            "advanced": 95.0,
+            "elite": 119.0
+          },
+          {
+            "bw_kg": 65.0,
+            "beginner": 42.0,
+            "novice": 59.0,
+            "intermediate": 79.0,
+            "advanced": 102.0,
+            "elite": 128.0
+          },
+          {
+            "bw_kg": 70.0,
+            "beginner": 47.0,
+            "novice": 64.0,
+            "intermediate": 85.0,
+            "advanced": 110.0,
+            "elite": 136.0
+          },
+          {
+            "bw_kg": 75.0,
+            "beginner": 51.0,
+            "novice": 70.0,
+            "intermediate": 92.0,
+            "advanced": 117.0,
+            "elite": 144.0
+          },
+          {
+            "bw_kg": 80.0,
+            "beginner": 56.0,
+            "novice": 75.0,
+            "intermediate": 98.0,
+            "advanced": 124.0,
+            "elite": 151.0
+          },
+          {
+            "bw_kg": 85.0,
+            "beginner": 60.0,
+            "novice": 80.0,
+            "intermediate": 104.0,
+            "advanced": 130.0,
+            "elite": 158.0
+          },
+          {
+            "bw_kg": 90.0,
+            "beginner": 65.0,
+            "novice": 85.0,
+            "intermediate": 109.0,
+            "advanced": 137.0,
+            "elite": 165.0
+          },
+          {
+            "bw_kg": 95.0,
+            "beginner": 69.0,
+            "novice": 90.0,
+            "intermediate": 115.0,
+            "advanced": 143.0,
+            "elite": 172.0
+          },
+          {
+            "bw_kg": 100.0,
+            "beginner": 73.0,
+            "novice": 95.0,
+            "intermediate": 120.0,
+            "advanced": 149.0,
+            "elite": 179.0
+          },
+          {
+            "bw_kg": 105.0,
+            "beginner": 77.0,
+            "novice": 99.0,
+            "intermediate": 125.0,
+            "advanced": 155.0,
+            "elite": 185.0
+          },
+          {
+            "bw_kg": 110.0,
+            "beginner": 81.0,
+            "novice": 104.0,
+            "intermediate": 131.0,
+            "advanced": 160.0,
+            "elite": 191.0
+          },
+          {
+            "bw_kg": 115.0,
+            "beginner": 85.0,
+            "novice": 108.0,
+            "intermediate": 135.0,
+            "advanced": 166.0,
+            "elite": 197.0
+          },
+          {
+            "bw_kg": 120.0,
+            "beginner": 89.0,
+            "novice": 113.0,
+            "intermediate": 140.0,
+            "advanced": 171.0,
+            "elite": 203.0
+          },
+          {
+            "bw_kg": 125.0,
+            "beginner": 93.0,
+            "novice": 117.0,
+            "intermediate": 145.0,
+            "advanced": 176.0,
+            "elite": 209.0
+          },
+          {
+            "bw_kg": 130.0,
+            "beginner": 97.0,
+            "novice": 121.0,
+            "intermediate": 150.0,
+            "advanced": 181.0,
+            "elite": 214.0
+          },
+          {
+            "bw_kg": 135.0,
+            "beginner": 100.0,
+            "novice": 125.0,
+            "intermediate": 154.0,
+            "advanced": 186.0,
+            "elite": 220.0
+          },
+          {
+            "bw_kg": 140.0,
+            "beginner": 104.0,
+            "novice": 129.0,
+            "intermediate": 158.0,
+            "advanced": 191.0,
+            "elite": 225.0
+          }
+        ],
+        "by_weight_lb": [
+          {
+            "bw_lb": 110.0,
+            "beginner": 60.0,
+            "novice": 90.0,
+            "intermediate": 128.0,
+            "advanced": 172.0,
+            "elite": 221.0
+          },
+          {
+            "bw_lb": 120.0,
+            "beginner": 70.0,
+            "novice": 102.0,
+            "intermediate": 142.0,
+            "advanced": 189.0,
+            "elite": 240.0
+          },
+          {
+            "bw_lb": 130.0,
+            "beginner": 80.0,
+            "novice": 114.0,
+            "intermediate": 156.0,
+            "advanced": 205.0,
+            "elite": 258.0
+          },
+          {
+            "bw_lb": 140.0,
+            "beginner": 89.0,
+            "novice": 125.0,
+            "intermediate": 170.0,
+            "advanced": 221.0,
+            "elite": 276.0
+          },
+          {
+            "bw_lb": 150.0,
+            "beginner": 99.0,
+            "novice": 137.0,
+            "intermediate": 183.0,
+            "advanced": 236.0,
+            "elite": 292.0
+          },
+          {
+            "bw_lb": 160.0,
+            "beginner": 108.0,
+            "novice": 148.0,
+            "intermediate": 196.0,
+            "advanced": 250.0,
+            "elite": 308.0
+          },
+          {
+            "bw_lb": 170.0,
+            "beginner": 118.0,
+            "novice": 158.0,
+            "intermediate": 208.0,
+            "advanced": 264.0,
+            "elite": 324.0
+          },
+          {
+            "bw_lb": 180.0,
+            "beginner": 127.0,
+            "novice": 169.0,
+            "intermediate": 220.0,
+            "advanced": 277.0,
+            "elite": 339.0
+          },
+          {
+            "bw_lb": 190.0,
+            "beginner": 136.0,
+            "novice": 179.0,
+            "intermediate": 231.0,
+            "advanced": 290.0,
+            "elite": 353.0
+          },
+          {
+            "bw_lb": 200.0,
+            "beginner": 144.0,
+            "novice": 189.0,
+            "intermediate": 243.0,
+            "advanced": 303.0,
+            "elite": 367.0
+          },
+          {
+            "bw_lb": 210.0,
+            "beginner": 153.0,
+            "novice": 199.0,
+            "intermediate": 254.0,
+            "advanced": 315.0,
+            "elite": 380.0
+          },
+          {
+            "bw_lb": 220.0,
+            "beginner": 161.0,
+            "novice": 208.0,
+            "intermediate": 265.0,
+            "advanced": 327.0,
+            "elite": 394.0
+          },
+          {
+            "bw_lb": 230.0,
+            "beginner": 169.0,
+            "novice": 218.0,
+            "intermediate": 275.0,
+            "advanced": 339.0,
+            "elite": 406.0
+          },
+          {
+            "bw_lb": 240.0,
+            "beginner": 177.0,
+            "novice": 227.0,
+            "intermediate": 285.0,
+            "advanced": 350.0,
+            "elite": 419.0
+          },
+          {
+            "bw_lb": 250.0,
+            "beginner": 185.0,
+            "novice": 236.0,
+            "intermediate": 295.0,
+            "advanced": 361.0,
+            "elite": 431.0
+          },
+          {
+            "bw_lb": 260.0,
+            "beginner": 193.0,
+            "novice": 244.0,
+            "intermediate": 305.0,
+            "advanced": 372.0,
+            "elite": 442.0
+          },
+          {
+            "bw_lb": 270.0,
+            "beginner": 200.0,
+            "novice": 253.0,
+            "intermediate": 314.0,
+            "advanced": 383.0,
+            "elite": 454.0
+          },
+          {
+            "bw_lb": 280.0,
+            "beginner": 208.0,
+            "novice": 261.0,
+            "intermediate": 324.0,
+            "advanced": 393.0,
+            "elite": 465.0
+          },
+          {
+            "bw_lb": 290.0,
+            "beginner": 215.0,
+            "novice": 269.0,
+            "intermediate": 333.0,
+            "advanced": 403.0,
+            "elite": 476.0
+          },
+          {
+            "bw_lb": 300.0,
+            "beginner": 222.0,
+            "novice": 278.0,
+            "intermediate": 342.0,
+            "advanced": 413.0,
+            "elite": 487.0
+          },
+          {
+            "bw_lb": 310.0,
+            "beginner": 229.0,
+            "novice": 285.0,
+            "intermediate": 351.0,
+            "advanced": 422.0,
+            "elite": 497.0
+          }
+        ],
+        "by_age": [
+          {
+            "age": 15,
+            "beginner": 41.0,
+            "novice": 60.0,
+            "intermediate": 82.0,
+            "advanced": 108.0,
+            "elite": 137.0
+          },
+          {
+            "age": 20,
+            "beginner": 47.0,
+            "novice": 68.0,
+            "intermediate": 94.0,
+            "advanced": 124.0,
+            "elite": 156.0
+          },
+          {
+            "age": 25,
+            "beginner": 49.0,
+            "novice": 70.0,
+            "intermediate": 96.0,
+            "advanced": 127.0,
+            "elite": 160.0
+          },
+          {
+            "age": 30,
+            "beginner": 49.0,
+            "novice": 70.0,
+            "intermediate": 96.0,
+            "advanced": 127.0,
+            "elite": 160.0
+          },
+          {
+            "age": 35,
+            "beginner": 49.0,
+            "novice": 70.0,
+            "intermediate": 96.0,
+            "advanced": 127.0,
+            "elite": 160.0
+          },
+          {
+            "age": 40,
+            "beginner": 49.0,
+            "novice": 70.0,
+            "intermediate": 96.0,
+            "advanced": 127.0,
+            "elite": 160.0
+          },
+          {
+            "age": 45,
+            "beginner": 46.0,
+            "novice": 66.0,
+            "intermediate": 91.0,
+            "advanced": 120.0,
+            "elite": 152.0
+          },
+          {
+            "age": 50,
+            "beginner": 43.0,
+            "novice": 62.0,
+            "intermediate": 85.0,
+            "advanced": 112.0,
+            "elite": 142.0
+          },
+          {
+            "age": 55,
+            "beginner": 40.0,
+            "novice": 57.0,
+            "intermediate": 79.0,
+            "advanced": 104.0,
+            "elite": 131.0
+          },
+          {
+            "age": 60,
+            "beginner": 36.0,
+            "novice": 52.0,
+            "intermediate": 72.0,
+            "advanced": 95.0,
+            "elite": 120.0
+          },
+          {
+            "age": 65,
+            "beginner": 33.0,
+            "novice": 47.0,
+            "intermediate": 65.0,
+            "advanced": 86.0,
+            "elite": 108.0
+          },
+          {
+            "age": 70,
+            "beginner": 29.0,
+            "novice": 42.0,
+            "intermediate": 59.0,
+            "advanced": 77.0,
+            "elite": 97.0
+          },
+          {
+            "age": 75,
+            "beginner": 26.0,
+            "novice": 38.0,
+            "intermediate": 52.0,
+            "advanced": 69.0,
+            "elite": 87.0
+          },
+          {
+            "age": 80,
+            "beginner": 24.0,
+            "novice": 34.0,
+            "intermediate": 47.0,
+            "advanced": 62.0,
+            "elite": 78.0
+          },
+          {
+            "age": 85,
+            "beginner": 21.0,
+            "novice": 31.0,
+            "intermediate": 42.0,
+            "advanced": 56.0,
+            "elite": 70.0
+          },
+          {
+            "age": 90,
+            "beginner": 19.0,
+            "novice": 27.0,
+            "intermediate": 38.0,
+            "advanced": 50.0,
+            "elite": 63.0
+          }
+        ]
+      }
+    },
+    "barbell_row": {
+      "key": "barbell_row",
+      "slug": "barbell-row",
+      "name_en": "Barbell Row",
+      "name_zh": "杠铃划船",
+      "icon": "/exercises/barbell_row.png",
+      "gif": "/exercises/barbell_row.gif",
+      "aliases": [
+        "杠铃划船",
+        "俯身杠铃划船",
+        "Barbell Row"
+      ],
+      "standards": {
+        "by_weight_kg": [
+          {
+            "bw_kg": 50.0,
+            "beginner": 23.0,
+            "novice": 36.0,
+            "intermediate": 52.0,
+            "advanced": 72.0,
+            "elite": 94.0
+          },
+          {
+            "bw_kg": 55.0,
+            "beginner": 27.0,
+            "novice": 41.0,
+            "intermediate": 59.0,
+            "advanced": 80.0,
+            "elite": 103.0
+          },
+          {
+            "bw_kg": 60.0,
+            "beginner": 31.0,
+            "novice": 46.0,
+            "intermediate": 65.0,
+            "advanced": 87.0,
+            "elite": 111.0
+          },
+          {
+            "bw_kg": 65.0,
+            "beginner": 36.0,
+            "novice": 51.0,
+            "intermediate": 71.0,
+            "advanced": 94.0,
+            "elite": 119.0
+          },
+          {
+            "bw_kg": 70.0,
+            "beginner": 40.0,
+            "novice": 56.0,
+            "intermediate": 77.0,
+            "advanced": 101.0,
+            "elite": 127.0
+          },
+          {
+            "bw_kg": 75.0,
+            "beginner": 44.0,
+            "novice": 61.0,
+            "intermediate": 83.0,
+            "advanced": 107.0,
+            "elite": 134.0
+          },
+          {
+            "bw_kg": 80.0,
+            "beginner": 48.0,
+            "novice": 66.0,
+            "intermediate": 88.0,
+            "advanced": 114.0,
+            "elite": 141.0
+          },
+          {
+            "bw_kg": 85.0,
+            "beginner": 52.0,
+            "novice": 71.0,
+            "intermediate": 93.0,
+            "advanced": 120.0,
+            "elite": 147.0
+          },
+          {
+            "bw_kg": 90.0,
+            "beginner": 56.0,
+            "novice": 75.0,
+            "intermediate": 99.0,
+            "advanced": 125.0,
+            "elite": 154.0
+          },
+          {
+            "bw_kg": 95.0,
+            "beginner": 59.0,
+            "novice": 79.0,
+            "intermediate": 104.0,
+            "advanced": 131.0,
+            "elite": 160.0
+          },
+          {
+            "bw_kg": 100.0,
+            "beginner": 63.0,
+            "novice": 84.0,
+            "intermediate": 108.0,
+            "advanced": 136.0,
+            "elite": 166.0
+          },
+          {
+            "bw_kg": 105.0,
+            "beginner": 67.0,
+            "novice": 88.0,
+            "intermediate": 113.0,
+            "advanced": 142.0,
+            "elite": 172.0
+          },
+          {
+            "bw_kg": 110.0,
+            "beginner": 70.0,
+            "novice": 92.0,
+            "intermediate": 118.0,
+            "advanced": 147.0,
+            "elite": 178.0
+          },
+          {
+            "bw_kg": 115.0,
+            "beginner": 74.0,
+            "novice": 96.0,
+            "intermediate": 122.0,
+            "advanced": 152.0,
+            "elite": 183.0
+          },
+          {
+            "bw_kg": 120.0,
+            "beginner": 77.0,
+            "novice": 100.0,
+            "intermediate": 127.0,
+            "advanced": 157.0,
+            "elite": 188.0
+          },
+          {
+            "bw_kg": 125.0,
+            "beginner": 80.0,
+            "novice": 103.0,
+            "intermediate": 131.0,
+            "advanced": 161.0,
+            "elite": 194.0
+          },
+          {
+            "bw_kg": 130.0,
+            "beginner": 84.0,
+            "novice": 107.0,
+            "intermediate": 135.0,
+            "advanced": 166.0,
+            "elite": 199.0
+          },
+          {
+            "bw_kg": 135.0,
+            "beginner": 87.0,
+            "novice": 111.0,
+            "intermediate": 139.0,
+            "advanced": 170.0,
+            "elite": 203.0
+          },
+          {
+            "bw_kg": 140.0,
+            "beginner": 90.0,
+            "novice": 114.0,
+            "intermediate": 143.0,
+            "advanced": 175.0,
+            "elite": 208.0
+          }
+        ],
+        "by_weight_lb": [
+          {
+            "bw_lb": 110.0,
+            "beginner": 50.0,
+            "novice": 78.0,
+            "intermediate": 115.0,
+            "advanced": 159.0,
+            "elite": 207.0
+          },
+          {
+            "bw_lb": 120.0,
+            "beginner": 58.0,
+            "novice": 89.0,
+            "intermediate": 128.0,
+            "advanced": 174.0,
+            "elite": 225.0
+          },
+          {
+            "bw_lb": 130.0,
+            "beginner": 67.0,
+            "novice": 100.0,
+            "intermediate": 141.0,
+            "advanced": 189.0,
+            "elite": 241.0
+          },
+          {
+            "bw_lb": 140.0,
+            "beginner": 76.0,
+            "novice": 110.0,
+            "intermediate": 153.0,
+            "advanced": 203.0,
+            "elite": 257.0
+          },
+          {
+            "bw_lb": 150.0,
+            "beginner": 84.0,
+            "novice": 120.0,
+            "intermediate": 165.0,
+            "advanced": 217.0,
+            "elite": 273.0
+          },
+          {
+            "bw_lb": 160.0,
+            "beginner": 92.0,
+            "novice": 130.0,
+            "intermediate": 176.0,
+            "advanced": 230.0,
+            "elite": 287.0
+          },
+          {
+            "bw_lb": 170.0,
+            "beginner": 100.0,
+            "novice": 140.0,
+            "intermediate": 187.0,
+            "advanced": 242.0,
+            "elite": 302.0
+          },
+          {
+            "bw_lb": 180.0,
+            "beginner": 108.0,
+            "novice": 149.0,
+            "intermediate": 198.0,
+            "advanced": 255.0,
+            "elite": 315.0
+          },
+          {
+            "bw_lb": 190.0,
+            "beginner": 116.0,
+            "novice": 158.0,
+            "intermediate": 209.0,
+            "advanced": 267.0,
+            "elite": 328.0
+          },
+          {
+            "bw_lb": 200.0,
+            "beginner": 124.0,
+            "novice": 167.0,
+            "intermediate": 219.0,
+            "advanced": 278.0,
+            "elite": 341.0
+          },
+          {
+            "bw_lb": 210.0,
+            "beginner": 131.0,
+            "novice": 176.0,
+            "intermediate": 229.0,
+            "advanced": 289.0,
+            "elite": 354.0
+          },
+          {
+            "bw_lb": 220.0,
+            "beginner": 139.0,
+            "novice": 184.0,
+            "intermediate": 239.0,
+            "advanced": 300.0,
+            "elite": 366.0
+          },
+          {
+            "bw_lb": 230.0,
+            "beginner": 146.0,
+            "novice": 192.0,
+            "intermediate": 248.0,
+            "advanced": 311.0,
+            "elite": 377.0
+          },
+          {
+            "bw_lb": 240.0,
+            "beginner": 153.0,
+            "novice": 201.0,
+            "intermediate": 257.0,
+            "advanced": 321.0,
+            "elite": 389.0
+          },
+          {
+            "bw_lb": 250.0,
+            "beginner": 160.0,
+            "novice": 208.0,
+            "intermediate": 266.0,
+            "advanced": 331.0,
+            "elite": 400.0
+          },
+          {
+            "bw_lb": 260.0,
+            "beginner": 167.0,
+            "novice": 216.0,
+            "intermediate": 275.0,
+            "advanced": 341.0,
+            "elite": 410.0
+          },
+          {
+            "bw_lb": 270.0,
+            "beginner": 173.0,
+            "novice": 224.0,
+            "intermediate": 284.0,
+            "advanced": 350.0,
+            "elite": 421.0
+          },
+          {
+            "bw_lb": 280.0,
+            "beginner": 180.0,
+            "novice": 231.0,
+            "intermediate": 292.0,
+            "advanced": 360.0,
+            "elite": 431.0
+          },
+          {
+            "bw_lb": 290.0,
+            "beginner": 186.0,
+            "novice": 239.0,
+            "intermediate": 300.0,
+            "advanced": 369.0,
+            "elite": 441.0
+          },
+          {
+            "bw_lb": 300.0,
+            "beginner": 193.0,
+            "novice": 246.0,
+            "intermediate": 308.0,
+            "advanced": 378.0,
+            "elite": 451.0
+          },
+          {
+            "bw_lb": 310.0,
+            "beginner": 199.0,
+            "novice": 253.0,
+            "intermediate": 316.0,
+            "advanced": 387.0,
+            "elite": 460.0
+          }
+        ],
+        "by_age": [
+          {
+            "age": 15,
+            "beginner": 36.0,
+            "novice": 53.0,
+            "intermediate": 74.0,
+            "advanced": 99.0,
+            "elite": 126.0
+          },
+          {
+            "age": 20,
+            "beginner": 41.0,
+            "novice": 61.0,
+            "intermediate": 85.0,
+            "advanced": 113.0,
+            "elite": 143.0
+          },
+          {
+            "age": 25,
+            "beginner": 43.0,
+            "novice": 62.0,
+            "intermediate": 87.0,
+            "advanced": 116.0,
+            "elite": 147.0
+          },
+          {
+            "age": 30,
+            "beginner": 43.0,
+            "novice": 62.0,
+            "intermediate": 87.0,
+            "advanced": 116.0,
+            "elite": 147.0
+          },
+          {
+            "age": 35,
+            "beginner": 43.0,
+            "novice": 62.0,
+            "intermediate": 87.0,
+            "advanced": 116.0,
+            "elite": 147.0
+          },
+          {
+            "age": 40,
+            "beginner": 43.0,
+            "novice": 62.0,
+            "intermediate": 87.0,
+            "advanced": 116.0,
+            "elite": 147.0
+          },
+          {
+            "age": 45,
+            "beginner": 40.0,
+            "novice": 59.0,
+            "intermediate": 82.0,
+            "advanced": 110.0,
+            "elite": 140.0
+          },
+          {
+            "age": 50,
+            "beginner": 38.0,
+            "novice": 55.0,
+            "intermediate": 77.0,
+            "advanced": 103.0,
+            "elite": 130.0
+          },
+          {
+            "age": 55,
+            "beginner": 35.0,
+            "novice": 51.0,
+            "intermediate": 71.0,
+            "advanced": 95.0,
+            "elite": 120.0
+          },
+          {
+            "age": 60,
+            "beginner": 32.0,
+            "novice": 46.0,
+            "intermediate": 65.0,
+            "advanced": 86.0,
+            "elite": 110.0
+          },
+          {
+            "age": 65,
+            "beginner": 29.0,
+            "novice": 42.0,
+            "intermediate": 59.0,
+            "advanced": 78.0,
+            "elite": 99.0
+          },
+          {
+            "age": 70,
+            "beginner": 26.0,
+            "novice": 38.0,
+            "intermediate": 53.0,
+            "advanced": 70.0,
+            "elite": 90.0
+          },
+          {
+            "age": 75,
+            "beginner": 23.0,
+            "novice": 34.0,
+            "intermediate": 47.0,
+            "advanced": 63.0,
+            "elite": 80.0
+          },
+          {
+            "age": 80,
+            "beginner": 21.0,
+            "novice": 30.0,
+            "intermediate": 42.0,
+            "advanced": 57.0,
+            "elite": 72.0
+          },
+          {
+            "age": 85,
+            "beginner": 19.0,
+            "novice": 27.0,
+            "intermediate": 38.0,
+            "advanced": 51.0,
+            "elite": 64.0
+          },
+          {
+            "age": 90,
+            "beginner": 17.0,
+            "novice": 24.0,
+            "intermediate": 34.0,
+            "advanced": 45.0,
+            "elite": 58.0
+          }
+        ]
+      }
+    },
+    "squat": {
+      "key": "squat",
+      "slug": "squat",
+      "name_en": "Squat",
+      "name_zh": "深蹲",
+      "icon": "/exercises/squat.png",
+      "gif": "/exercises/squat.gif",
+      "aliases": [
+        "深蹲",
+        "杠铃深蹲",
+        "Squat"
+      ],
+      "standards": {
+        "by_weight_kg": [
+          {
+            "bw_kg": 50.0,
+            "beginner": 36.0,
+            "novice": 55.0,
+            "intermediate": 78.0,
+            "advanced": 106.0,
+            "elite": 137.0
+          },
+          {
+            "bw_kg": 55.0,
+            "beginner": 43.0,
+            "novice": 63.0,
+            "intermediate": 88.0,
+            "advanced": 118.0,
+            "elite": 150.0
+          },
+          {
+            "bw_kg": 60.0,
+            "beginner": 49.0,
+            "novice": 71.0,
+            "intermediate": 98.0,
+            "advanced": 129.0,
+            "elite": 162.0
+          },
+          {
+            "bw_kg": 65.0,
+            "beginner": 56.0,
+            "novice": 79.0,
+            "intermediate": 107.0,
+            "advanced": 139.0,
+            "elite": 174.0
+          },
+          {
+            "bw_kg": 70.0,
+            "beginner": 62.0,
+            "novice": 86.0,
+            "intermediate": 116.0,
+            "advanced": 149.0,
+            "elite": 185.0
+          },
+          {
+            "bw_kg": 75.0,
+            "beginner": 69.0,
+            "novice": 94.0,
+            "intermediate": 124.0,
+            "advanced": 159.0,
+            "elite": 196.0
+          },
+          {
+            "bw_kg": 80.0,
+            "beginner": 75.0,
+            "novice": 101.0,
+            "intermediate": 132.0,
+            "advanced": 168.0,
+            "elite": 206.0
+          },
+          {
+            "bw_kg": 85.0,
+            "beginner": 81.0,
+            "novice": 108.0,
+            "intermediate": 140.0,
+            "advanced": 177.0,
+            "elite": 216.0
+          },
+          {
+            "bw_kg": 90.0,
+            "beginner": 87.0,
+            "novice": 115.0,
+            "intermediate": 148.0,
+            "advanced": 186.0,
+            "elite": 226.0
+          },
+          {
+            "bw_kg": 95.0,
+            "beginner": 93.0,
+            "novice": 121.0,
+            "intermediate": 156.0,
+            "advanced": 194.0,
+            "elite": 235.0
+          },
+          {
+            "bw_kg": 100.0,
+            "beginner": 98.0,
+            "novice": 128.0,
+            "intermediate": 163.0,
+            "advanced": 203.0,
+            "elite": 244.0
+          },
+          {
+            "bw_kg": 105.0,
+            "beginner": 104.0,
+            "novice": 134.0,
+            "intermediate": 170.0,
+            "advanced": 211.0,
+            "elite": 253.0
+          },
+          {
+            "bw_kg": 110.0,
+            "beginner": 109.0,
+            "novice": 140.0,
+            "intermediate": 177.0,
+            "advanced": 218.0,
+            "elite": 261.0
+          },
+          {
+            "bw_kg": 115.0,
+            "beginner": 115.0,
+            "novice": 147.0,
+            "intermediate": 184.0,
+            "advanced": 226.0,
+            "elite": 270.0
+          },
+          {
+            "bw_kg": 120.0,
+            "beginner": 120.0,
+            "novice": 152.0,
+            "intermediate": 191.0,
+            "advanced": 233.0,
+            "elite": 278.0
+          },
+          {
+            "bw_kg": 125.0,
+            "beginner": 125.0,
+            "novice": 158.0,
+            "intermediate": 197.0,
+            "advanced": 240.0,
+            "elite": 285.0
+          },
+          {
+            "bw_kg": 130.0,
+            "beginner": 130.0,
+            "novice": 164.0,
+            "intermediate": 203.0,
+            "advanced": 247.0,
+            "elite": 293.0
+          },
+          {
+            "bw_kg": 135.0,
+            "beginner": 135.0,
+            "novice": 169.0,
+            "intermediate": 209.0,
+            "advanced": 254.0,
+            "elite": 300.0
+          },
+          {
+            "bw_kg": 140.0,
+            "beginner": 140.0,
+            "novice": 175.0,
+            "intermediate": 215.0,
+            "advanced": 261.0,
+            "elite": 307.0
+          }
+        ],
+        "by_weight_lb": [
+          {
+            "bw_lb": 110.0,
+            "beginner": 79.0,
+            "novice": 120.0,
+            "intermediate": 172.0,
+            "advanced": 234.0,
+            "elite": 301.0
+          },
+          {
+            "bw_lb": 120.0,
+            "beginner": 92.0,
+            "novice": 136.0,
+            "intermediate": 192.0,
+            "advanced": 257.0,
+            "elite": 327.0
+          },
+          {
+            "bw_lb": 130.0,
+            "beginner": 106.0,
+            "novice": 153.0,
+            "intermediate": 211.0,
+            "advanced": 279.0,
+            "elite": 352.0
+          },
+          {
+            "bw_lb": 140.0,
+            "beginner": 119.0,
+            "novice": 168.0,
+            "intermediate": 229.0,
+            "advanced": 300.0,
+            "elite": 376.0
+          },
+          {
+            "bw_lb": 150.0,
+            "beginner": 132.0,
+            "novice": 184.0,
+            "intermediate": 247.0,
+            "advanced": 320.0,
+            "elite": 399.0
+          },
+          {
+            "bw_lb": 160.0,
+            "beginner": 145.0,
+            "novice": 199.0,
+            "intermediate": 265.0,
+            "advanced": 340.0,
+            "elite": 421.0
+          },
+          {
+            "bw_lb": 170.0,
+            "beginner": 157.0,
+            "novice": 213.0,
+            "intermediate": 282.0,
+            "advanced": 359.0,
+            "elite": 442.0
+          },
+          {
+            "bw_lb": 180.0,
+            "beginner": 169.0,
+            "novice": 228.0,
+            "intermediate": 298.0,
+            "advanced": 377.0,
+            "elite": 462.0
+          },
+          {
+            "bw_lb": 190.0,
+            "beginner": 182.0,
+            "novice": 242.0,
+            "intermediate": 314.0,
+            "advanced": 395.0,
+            "elite": 482.0
+          },
+          {
+            "bw_lb": 200.0,
+            "beginner": 193.0,
+            "novice": 255.0,
+            "intermediate": 329.0,
+            "advanced": 413.0,
+            "elite": 501.0
+          },
+          {
+            "bw_lb": 210.0,
+            "beginner": 205.0,
+            "novice": 269.0,
+            "intermediate": 344.0,
+            "advanced": 430.0,
+            "elite": 520.0
+          },
+          {
+            "bw_lb": 220.0,
+            "beginner": 216.0,
+            "novice": 281.0,
+            "intermediate": 359.0,
+            "advanced": 446.0,
+            "elite": 538.0
+          },
+          {
+            "bw_lb": 230.0,
+            "beginner": 227.0,
+            "novice": 294.0,
+            "intermediate": 373.0,
+            "advanced": 462.0,
+            "elite": 555.0
+          },
+          {
+            "bw_lb": 240.0,
+            "beginner": 238.0,
+            "novice": 307.0,
+            "intermediate": 387.0,
+            "advanced": 477.0,
+            "elite": 572.0
+          },
+          {
+            "bw_lb": 250.0,
+            "beginner": 249.0,
+            "novice": 319.0,
+            "intermediate": 401.0,
+            "advanced": 493.0,
+            "elite": 589.0
+          },
+          {
+            "bw_lb": 260.0,
+            "beginner": 260.0,
+            "novice": 331.0,
+            "intermediate": 414.0,
+            "advanced": 507.0,
+            "elite": 605.0
+          },
+          {
+            "bw_lb": 270.0,
+            "beginner": 270.0,
+            "novice": 342.0,
+            "intermediate": 427.0,
+            "advanced": 522.0,
+            "elite": 621.0
+          },
+          {
+            "bw_lb": 280.0,
+            "beginner": 280.0,
+            "novice": 354.0,
+            "intermediate": 440.0,
+            "advanced": 536.0,
+            "elite": 636.0
+          },
+          {
+            "bw_lb": 290.0,
+            "beginner": 290.0,
+            "novice": 365.0,
+            "intermediate": 452.0,
+            "advanced": 550.0,
+            "elite": 651.0
+          },
+          {
+            "bw_lb": 300.0,
+            "beginner": 300.0,
+            "novice": 376.0,
+            "intermediate": 465.0,
+            "advanced": 563.0,
+            "elite": 666.0
+          },
+          {
+            "bw_lb": 310.0,
+            "beginner": 309.0,
+            "novice": 387.0,
+            "intermediate": 477.0,
+            "advanced": 576.0,
+            "elite": 680.0
+          }
+        ],
+        "by_age": [
+          {
+            "age": 15,
+            "beginner": 56.0,
+            "novice": 81.0,
+            "intermediate": 112.0,
+            "advanced": 148.0,
+            "elite": 186.0
+          },
+          {
+            "age": 20,
+            "beginner": 64.0,
+            "novice": 93.0,
+            "intermediate": 128.0,
+            "advanced": 169.0,
+            "elite": 213.0
+          },
+          {
+            "age": 25,
+            "beginner": 66.0,
+            "novice": 95.0,
+            "intermediate": 131.0,
+            "advanced": 173.0,
+            "elite": 219.0
+          },
+          {
+            "age": 30,
+            "beginner": 66.0,
+            "novice": 95.0,
+            "intermediate": 131.0,
+            "advanced": 173.0,
+            "elite": 219.0
+          },
+          {
+            "age": 35,
+            "beginner": 66.0,
+            "novice": 95.0,
+            "intermediate": 131.0,
+            "advanced": 173.0,
+            "elite": 219.0
+          },
+          {
+            "age": 40,
+            "beginner": 66.0,
+            "novice": 95.0,
+            "intermediate": 131.0,
+            "advanced": 173.0,
+            "elite": 219.0
+          },
+          {
+            "age": 45,
+            "beginner": 62.0,
+            "novice": 90.0,
+            "intermediate": 124.0,
+            "advanced": 164.0,
+            "elite": 207.0
+          },
+          {
+            "age": 50,
+            "beginner": 58.0,
+            "novice": 84.0,
+            "intermediate": 116.0,
+            "advanced": 153.0,
+            "elite": 194.0
+          },
+          {
+            "age": 55,
+            "beginner": 54.0,
+            "novice": 78.0,
+            "intermediate": 107.0,
+            "advanced": 141.0,
+            "elite": 179.0
+          },
+          {
+            "age": 60,
+            "beginner": 49.0,
+            "novice": 71.0,
+            "intermediate": 98.0,
+            "advanced": 129.0,
+            "elite": 163.0
+          },
+          {
+            "age": 65,
+            "beginner": 45.0,
+            "novice": 64.0,
+            "intermediate": 89.0,
+            "advanced": 117.0,
+            "elite": 148.0
+          },
+          {
+            "age": 70,
+            "beginner": 40.0,
+            "novice": 58.0,
+            "intermediate": 80.0,
+            "advanced": 105.0,
+            "elite": 133.0
+          },
+          {
+            "age": 75,
+            "beginner": 36.0,
+            "novice": 52.0,
+            "intermediate": 71.0,
+            "advanced": 94.0,
+            "elite": 119.0
+          },
+          {
+            "age": 80,
+            "beginner": 32.0,
+            "novice": 46.0,
+            "intermediate": 64.0,
+            "advanced": 84.0,
+            "elite": 107.0
+          },
+          {
+            "age": 85,
+            "beginner": 29.0,
+            "novice": 42.0,
+            "intermediate": 57.0,
+            "advanced": 76.0,
+            "elite": 96.0
+          },
+          {
+            "age": 90,
+            "beginner": 26.0,
+            "novice": 37.0,
+            "intermediate": 51.0,
+            "advanced": 68.0,
+            "elite": 86.0
+          }
+        ]
+      }
+    },
+    "shoulder_press": {
+      "key": "shoulder_press",
+      "slug": "shoulder-press",
+      "name_en": "Barbell Shoulder Press",
+      "name_zh": "站姿杠铃推举",
+      "icon": "/exercises/shoulder_press.png",
+      "gif": "/exercises/shoulder_press.gif",
+      "aliases": [
+        "站姿杠铃推举",
+        "杠铃推举",
+        "推举",
+        "肩推",
+        "Barbell Shoulder Press"
+      ],
+      "standards": {
+        "by_weight_kg": [
+          {
+            "bw_kg": 50.0,
+            "beginner": 15.0,
+            "novice": 24.0,
+            "intermediate": 36.0,
+            "advanced": 51.0,
+            "elite": 67.0
+          },
+          {
+            "bw_kg": 55.0,
+            "beginner": 18.0,
+            "novice": 28.0,
+            "intermediate": 41.0,
+            "advanced": 56.0,
+            "elite": 73.0
+          },
+          {
+            "bw_kg": 60.0,
+            "beginner": 21.0,
+            "novice": 32.0,
+            "intermediate": 45.0,
+            "advanced": 62.0,
+            "elite": 79.0
+          },
+          {
+            "bw_kg": 65.0,
+            "beginner": 24.0,
+            "novice": 35.0,
+            "intermediate": 50.0,
+            "advanced": 67.0,
+            "elite": 85.0
+          },
+          {
+            "bw_kg": 70.0,
+            "beginner": 27.0,
+            "novice": 39.0,
+            "intermediate": 54.0,
+            "advanced": 72.0,
+            "elite": 90.0
+          },
+          {
+            "bw_kg": 75.0,
+            "beginner": 30.0,
+            "novice": 43.0,
+            "intermediate": 58.0,
+            "advanced": 76.0,
+            "elite": 96.0
+          },
+          {
+            "bw_kg": 80.0,
+            "beginner": 33.0,
+            "novice": 46.0,
+            "intermediate": 62.0,
+            "advanced": 81.0,
+            "elite": 101.0
+          },
+          {
+            "bw_kg": 85.0,
+            "beginner": 36.0,
+            "novice": 49.0,
+            "intermediate": 66.0,
+            "advanced": 85.0,
+            "elite": 106.0
+          },
+          {
+            "bw_kg": 90.0,
+            "beginner": 38.0,
+            "novice": 53.0,
+            "intermediate": 70.0,
+            "advanced": 90.0,
+            "elite": 111.0
+          },
+          {
+            "bw_kg": 95.0,
+            "beginner": 41.0,
+            "novice": 56.0,
+            "intermediate": 74.0,
+            "advanced": 94.0,
+            "elite": 115.0
+          },
+          {
+            "bw_kg": 100.0,
+            "beginner": 44.0,
+            "novice": 59.0,
+            "intermediate": 77.0,
+            "advanced": 98.0,
+            "elite": 120.0
+          },
+          {
+            "bw_kg": 105.0,
+            "beginner": 47.0,
+            "novice": 62.0,
+            "intermediate": 81.0,
+            "advanced": 102.0,
+            "elite": 124.0
+          },
+          {
+            "bw_kg": 110.0,
+            "beginner": 49.0,
+            "novice": 65.0,
+            "intermediate": 84.0,
+            "advanced": 105.0,
+            "elite": 128.0
+          },
+          {
+            "bw_kg": 115.0,
+            "beginner": 52.0,
+            "novice": 68.0,
+            "intermediate": 87.0,
+            "advanced": 109.0,
+            "elite": 132.0
+          },
+          {
+            "bw_kg": 120.0,
+            "beginner": 54.0,
+            "novice": 71.0,
+            "intermediate": 90.0,
+            "advanced": 113.0,
+            "elite": 136.0
+          },
+          {
+            "bw_kg": 125.0,
+            "beginner": 56.0,
+            "novice": 73.0,
+            "intermediate": 94.0,
+            "advanced": 116.0,
+            "elite": 140.0
+          },
+          {
+            "bw_kg": 130.0,
+            "beginner": 59.0,
+            "novice": 76.0,
+            "intermediate": 97.0,
+            "advanced": 119.0,
+            "elite": 144.0
+          },
+          {
+            "bw_kg": 135.0,
+            "beginner": 61.0,
+            "novice": 79.0,
+            "intermediate": 100.0,
+            "advanced": 123.0,
+            "elite": 147.0
+          },
+          {
+            "bw_kg": 140.0,
+            "beginner": 63.0,
+            "novice": 81.0,
+            "intermediate": 102.0,
+            "advanced": 126.0,
+            "elite": 151.0
+          }
+        ],
+        "by_weight_lb": [
+          {
+            "bw_lb": 110.0,
+            "beginner": 33.0,
+            "novice": 53.0,
+            "intermediate": 79.0,
+            "advanced": 111.0,
+            "elite": 147.0
+          },
+          {
+            "bw_lb": 120.0,
+            "beginner": 39.0,
+            "novice": 61.0,
+            "intermediate": 89.0,
+            "advanced": 123.0,
+            "elite": 160.0
+          },
+          {
+            "bw_lb": 130.0,
+            "beginner": 45.0,
+            "novice": 68.0,
+            "intermediate": 98.0,
+            "advanced": 133.0,
+            "elite": 172.0
+          },
+          {
+            "bw_lb": 140.0,
+            "beginner": 51.0,
+            "novice": 76.0,
+            "intermediate": 107.0,
+            "advanced": 144.0,
+            "elite": 183.0
+          },
+          {
+            "bw_lb": 150.0,
+            "beginner": 57.0,
+            "novice": 83.0,
+            "intermediate": 116.0,
+            "advanced": 154.0,
+            "elite": 195.0
+          },
+          {
+            "bw_lb": 160.0,
+            "beginner": 63.0,
+            "novice": 90.0,
+            "intermediate": 124.0,
+            "advanced": 163.0,
+            "elite": 206.0
+          },
+          {
+            "bw_lb": 170.0,
+            "beginner": 69.0,
+            "novice": 97.0,
+            "intermediate": 132.0,
+            "advanced": 172.0,
+            "elite": 216.0
+          },
+          {
+            "bw_lb": 180.0,
+            "beginner": 75.0,
+            "novice": 104.0,
+            "intermediate": 140.0,
+            "advanced": 181.0,
+            "elite": 226.0
+          },
+          {
+            "bw_lb": 190.0,
+            "beginner": 80.0,
+            "novice": 111.0,
+            "intermediate": 148.0,
+            "advanced": 190.0,
+            "elite": 236.0
+          },
+          {
+            "bw_lb": 200.0,
+            "beginner": 86.0,
+            "novice": 117.0,
+            "intermediate": 155.0,
+            "advanced": 199.0,
+            "elite": 245.0
+          },
+          {
+            "bw_lb": 210.0,
+            "beginner": 91.0,
+            "novice": 123.0,
+            "intermediate": 163.0,
+            "advanced": 207.0,
+            "elite": 254.0
+          },
+          {
+            "bw_lb": 220.0,
+            "beginner": 97.0,
+            "novice": 130.0,
+            "intermediate": 170.0,
+            "advanced": 215.0,
+            "elite": 263.0
+          },
+          {
+            "bw_lb": 230.0,
+            "beginner": 102.0,
+            "novice": 136.0,
+            "intermediate": 177.0,
+            "advanced": 223.0,
+            "elite": 272.0
+          },
+          {
+            "bw_lb": 240.0,
+            "beginner": 107.0,
+            "novice": 142.0,
+            "intermediate": 183.0,
+            "advanced": 230.0,
+            "elite": 280.0
+          },
+          {
+            "bw_lb": 250.0,
+            "beginner": 112.0,
+            "novice": 147.0,
+            "intermediate": 190.0,
+            "advanced": 238.0,
+            "elite": 288.0
+          },
+          {
+            "bw_lb": 260.0,
+            "beginner": 117.0,
+            "novice": 153.0,
+            "intermediate": 196.0,
+            "advanced": 245.0,
+            "elite": 296.0
+          },
+          {
+            "bw_lb": 270.0,
+            "beginner": 122.0,
+            "novice": 159.0,
+            "intermediate": 203.0,
+            "advanced": 252.0,
+            "elite": 304.0
+          },
+          {
+            "bw_lb": 280.0,
+            "beginner": 127.0,
+            "novice": 164.0,
+            "intermediate": 209.0,
+            "advanced": 259.0,
+            "elite": 312.0
+          },
+          {
+            "bw_lb": 290.0,
+            "beginner": 131.0,
+            "novice": 170.0,
+            "intermediate": 215.0,
+            "advanced": 266.0,
+            "elite": 319.0
+          },
+          {
+            "bw_lb": 300.0,
+            "beginner": 136.0,
+            "novice": 175.0,
+            "intermediate": 221.0,
+            "advanced": 272.0,
+            "elite": 326.0
+          },
+          {
+            "bw_lb": 310.0,
+            "beginner": 141.0,
+            "novice": 180.0,
+            "intermediate": 227.0,
+            "advanced": 279.0,
+            "elite": 333.0
+          }
+        ],
+        "by_age": [
+          {
+            "age": 15,
+            "beginner": 25.0,
+            "novice": 37.0,
+            "intermediate": 53.0,
+            "advanced": 71.0,
+            "elite": 91.0
+          },
+          {
+            "age": 20,
+            "beginner": 29.0,
+            "novice": 43.0,
+            "intermediate": 61.0,
+            "advanced": 82.0,
+            "elite": 104.0
+          },
+          {
+            "age": 25,
+            "beginner": 29.0,
+            "novice": 44.0,
+            "intermediate": 62.0,
+            "advanced": 84.0,
+            "elite": 107.0
+          },
+          {
+            "age": 30,
+            "beginner": 29.0,
+            "novice": 44.0,
+            "intermediate": 62.0,
+            "advanced": 84.0,
+            "elite": 107.0
+          },
+          {
+            "age": 35,
+            "beginner": 29.0,
+            "novice": 44.0,
+            "intermediate": 62.0,
+            "advanced": 84.0,
+            "elite": 107.0
+          },
+          {
+            "age": 40,
+            "beginner": 29.0,
+            "novice": 44.0,
+            "intermediate": 62.0,
+            "advanced": 84.0,
+            "elite": 107.0
+          },
+          {
+            "age": 45,
+            "beginner": 28.0,
+            "novice": 42.0,
+            "intermediate": 59.0,
+            "advanced": 79.0,
+            "elite": 102.0
+          },
+          {
+            "age": 50,
+            "beginner": 26.0,
+            "novice": 39.0,
+            "intermediate": 55.0,
+            "advanced": 74.0,
+            "elite": 95.0
+          },
+          {
+            "age": 55,
+            "beginner": 24.0,
+            "novice": 36.0,
+            "intermediate": 51.0,
+            "advanced": 68.0,
+            "elite": 88.0
+          },
+          {
+            "age": 60,
+            "beginner": 22.0,
+            "novice": 33.0,
+            "intermediate": 46.0,
+            "advanced": 62.0,
+            "elite": 80.0
+          },
+          {
+            "age": 65,
+            "beginner": 20.0,
+            "novice": 30.0,
+            "intermediate": 42.0,
+            "advanced": 57.0,
+            "elite": 72.0
+          },
+          {
+            "age": 70,
+            "beginner": 18.0,
+            "novice": 27.0,
+            "intermediate": 38.0,
+            "advanced": 51.0,
+            "elite": 65.0
+          },
+          {
+            "age": 75,
+            "beginner": 16.0,
+            "novice": 24.0,
+            "intermediate": 34.0,
+            "advanced": 46.0,
+            "elite": 58.0
+          },
+          {
+            "age": 80,
+            "beginner": 14.0,
+            "novice": 21.0,
+            "intermediate": 30.0,
+            "advanced": 41.0,
+            "elite": 52.0
+          },
+          {
+            "age": 85,
+            "beginner": 13.0,
+            "novice": 19.0,
+            "intermediate": 27.0,
+            "advanced": 37.0,
+            "elite": 47.0
+          },
+          {
+            "age": 90,
+            "beginner": 12.0,
+            "novice": 17.0,
+            "intermediate": 24.0,
+            "advanced": 33.0,
+            "elite": 42.0
+          }
+        ]
+      }
+    },
+    "deadlift": {
+      "key": "deadlift",
+      "slug": "deadlift",
+      "name_en": "Deadlift",
+      "name_zh": "硬拉 / 罗马尼亚硬拉",
+      "icon": "/exercises/deadlift.png",
+      "gif": "/exercises/deadlift.gif",
+      "aliases": [
+        "杠铃罗马尼亚硬拉",
+        "罗马尼亚硬拉",
+        "硬拉",
+        "Deadlift"
+      ],
+      "standards": {
+        "by_weight_kg": [
+          {
+            "bw_kg": 50.0,
+            "beginner": 46.0,
+            "novice": 68.0,
+            "intermediate": 96.0,
+            "advanced": 129.0,
+            "elite": 164.0
+          },
+          {
+            "bw_kg": 55.0,
+            "beginner": 54.0,
+            "novice": 77.0,
+            "intermediate": 107.0,
+            "advanced": 141.0,
+            "elite": 178.0
+          },
+          {
+            "bw_kg": 60.0,
+            "beginner": 61.0,
+            "novice": 86.0,
+            "intermediate": 117.0,
+            "advanced": 153.0,
+            "elite": 191.0
+          },
+          {
+            "bw_kg": 65.0,
+            "beginner": 68.0,
+            "novice": 95.0,
+            "intermediate": 127.0,
+            "advanced": 164.0,
+            "elite": 204.0
+          },
+          {
+            "bw_kg": 70.0,
+            "beginner": 75.0,
+            "novice": 103.0,
+            "intermediate": 137.0,
+            "advanced": 175.0,
+            "elite": 216.0
+          },
+          {
+            "bw_kg": 75.0,
+            "beginner": 82.0,
+            "novice": 111.0,
+            "intermediate": 146.0,
+            "advanced": 186.0,
+            "elite": 228.0
+          },
+          {
+            "bw_kg": 80.0,
+            "beginner": 89.0,
+            "novice": 119.0,
+            "intermediate": 155.0,
+            "advanced": 196.0,
+            "elite": 239.0
+          },
+          {
+            "bw_kg": 85.0,
+            "beginner": 96.0,
+            "novice": 127.0,
+            "intermediate": 164.0,
+            "advanced": 205.0,
+            "elite": 250.0
+          },
+          {
+            "bw_kg": 90.0,
+            "beginner": 102.0,
+            "novice": 134.0,
+            "intermediate": 172.0,
+            "advanced": 215.0,
+            "elite": 260.0
+          },
+          {
+            "bw_kg": 95.0,
+            "beginner": 108.0,
+            "novice": 141.0,
+            "intermediate": 180.0,
+            "advanced": 224.0,
+            "elite": 270.0
+          },
+          {
+            "bw_kg": 100.0,
+            "beginner": 114.0,
+            "novice": 148.0,
+            "intermediate": 188.0,
+            "advanced": 232.0,
+            "elite": 279.0
+          },
+          {
+            "bw_kg": 105.0,
+            "beginner": 120.0,
+            "novice": 155.0,
+            "intermediate": 195.0,
+            "advanced": 241.0,
+            "elite": 289.0
+          },
+          {
+            "bw_kg": 110.0,
+            "beginner": 126.0,
+            "novice": 161.0,
+            "intermediate": 203.0,
+            "advanced": 249.0,
+            "elite": 298.0
+          },
+          {
+            "bw_kg": 115.0,
+            "beginner": 132.0,
+            "novice": 168.0,
+            "intermediate": 210.0,
+            "advanced": 257.0,
+            "elite": 306.0
+          },
+          {
+            "bw_kg": 120.0,
+            "beginner": 137.0,
+            "novice": 174.0,
+            "intermediate": 217.0,
+            "advanced": 265.0,
+            "elite": 315.0
+          },
+          {
+            "bw_kg": 125.0,
+            "beginner": 143.0,
+            "novice": 180.0,
+            "intermediate": 224.0,
+            "advanced": 272.0,
+            "elite": 323.0
+          },
+          {
+            "bw_kg": 130.0,
+            "beginner": 148.0,
+            "novice": 186.0,
+            "intermediate": 231.0,
+            "advanced": 280.0,
+            "elite": 331.0
+          },
+          {
+            "bw_kg": 135.0,
+            "beginner": 153.0,
+            "novice": 192.0,
+            "intermediate": 237.0,
+            "advanced": 287.0,
+            "elite": 339.0
+          },
+          {
+            "bw_kg": 140.0,
+            "beginner": 159.0,
+            "novice": 198.0,
+            "intermediate": 243.0,
+            "advanced": 294.0,
+            "elite": 346.0
+          }
+        ],
+        "by_weight_lb": [
+          {
+            "bw_lb": 110.0,
+            "beginner": 101.0,
+            "novice": 150.0,
+            "intermediate": 211.0,
+            "advanced": 283.0,
+            "elite": 361.0
+          },
+          {
+            "bw_lb": 120.0,
+            "beginner": 116.0,
+            "novice": 168.0,
+            "intermediate": 233.0,
+            "advanced": 308.0,
+            "elite": 389.0
+          },
+          {
+            "bw_lb": 130.0,
+            "beginner": 131.0,
+            "novice": 186.0,
+            "intermediate": 254.0,
+            "advanced": 332.0,
+            "elite": 416.0
+          },
+          {
+            "bw_lb": 140.0,
+            "beginner": 146.0,
+            "novice": 203.0,
+            "intermediate": 274.0,
+            "advanced": 355.0,
+            "elite": 442.0
+          },
+          {
+            "bw_lb": 150.0,
+            "beginner": 160.0,
+            "novice": 220.0,
+            "intermediate": 293.0,
+            "advanced": 377.0,
+            "elite": 466.0
+          },
+          {
+            "bw_lb": 160.0,
+            "beginner": 174.0,
+            "novice": 236.0,
+            "intermediate": 312.0,
+            "advanced": 398.0,
+            "elite": 490.0
+          },
+          {
+            "bw_lb": 170.0,
+            "beginner": 188.0,
+            "novice": 252.0,
+            "intermediate": 330.0,
+            "advanced": 419.0,
+            "elite": 513.0
+          },
+          {
+            "bw_lb": 180.0,
+            "beginner": 201.0,
+            "novice": 268.0,
+            "intermediate": 348.0,
+            "advanced": 438.0,
+            "elite": 535.0
+          },
+          {
+            "bw_lb": 190.0,
+            "beginner": 214.0,
+            "novice": 283.0,
+            "intermediate": 365.0,
+            "advanced": 458.0,
+            "elite": 556.0
+          },
+          {
+            "bw_lb": 200.0,
+            "beginner": 227.0,
+            "novice": 297.0,
+            "intermediate": 382.0,
+            "advanced": 476.0,
+            "elite": 576.0
+          },
+          {
+            "bw_lb": 210.0,
+            "beginner": 239.0,
+            "novice": 312.0,
+            "intermediate": 398.0,
+            "advanced": 494.0,
+            "elite": 596.0
+          },
+          {
+            "bw_lb": 220.0,
+            "beginner": 252.0,
+            "novice": 326.0,
+            "intermediate": 413.0,
+            "advanced": 512.0,
+            "elite": 615.0
+          },
+          {
+            "bw_lb": 230.0,
+            "beginner": 263.0,
+            "novice": 339.0,
+            "intermediate": 429.0,
+            "advanced": 529.0,
+            "elite": 634.0
+          },
+          {
+            "bw_lb": 240.0,
+            "beginner": 275.0,
+            "novice": 352.0,
+            "intermediate": 443.0,
+            "advanced": 545.0,
+            "elite": 652.0
+          },
+          {
+            "bw_lb": 250.0,
+            "beginner": 287.0,
+            "novice": 365.0,
+            "intermediate": 458.0,
+            "advanced": 561.0,
+            "elite": 669.0
+          },
+          {
+            "bw_lb": 260.0,
+            "beginner": 298.0,
+            "novice": 378.0,
+            "intermediate": 472.0,
+            "advanced": 577.0,
+            "elite": 686.0
+          },
+          {
+            "bw_lb": 270.0,
+            "beginner": 309.0,
+            "novice": 390.0,
+            "intermediate": 486.0,
+            "advanced": 592.0,
+            "elite": 703.0
+          },
+          {
+            "bw_lb": 280.0,
+            "beginner": 320.0,
+            "novice": 402.0,
+            "intermediate": 499.0,
+            "advanced": 607.0,
+            "elite": 719.0
+          },
+          {
+            "bw_lb": 290.0,
+            "beginner": 330.0,
+            "novice": 414.0,
+            "intermediate": 513.0,
+            "advanced": 622.0,
+            "elite": 735.0
+          },
+          {
+            "bw_lb": 300.0,
+            "beginner": 341.0,
+            "novice": 426.0,
+            "intermediate": 526.0,
+            "advanced": 636.0,
+            "elite": 751.0
+          },
+          {
+            "bw_lb": 310.0,
+            "beginner": 351.0,
+            "novice": 437.0,
+            "intermediate": 538.0,
+            "advanced": 650.0,
+            "elite": 766.0
+          }
+        ],
+        "by_age": [
+          {
+            "age": 15,
+            "beginner": 68.0,
+            "novice": 96.0,
+            "intermediate": 131.0,
+            "advanced": 172.0,
+            "elite": 216.0
+          },
+          {
+            "age": 20,
+            "beginner": 78.0,
+            "novice": 110.0,
+            "intermediate": 150.0,
+            "advanced": 196.0,
+            "elite": 246.0
+          },
+          {
+            "age": 25,
+            "beginner": 80.0,
+            "novice": 113.0,
+            "intermediate": 154.0,
+            "advanced": 202.0,
+            "elite": 253.0
+          },
+          {
+            "age": 30,
+            "beginner": 80.0,
+            "novice": 113.0,
+            "intermediate": 154.0,
+            "advanced": 202.0,
+            "elite": 253.0
+          },
+          {
+            "age": 35,
+            "beginner": 80.0,
+            "novice": 113.0,
+            "intermediate": 154.0,
+            "advanced": 202.0,
+            "elite": 253.0
+          },
+          {
+            "age": 40,
+            "beginner": 80.0,
+            "novice": 113.0,
+            "intermediate": 154.0,
+            "advanced": 202.0,
+            "elite": 253.0
+          },
+          {
+            "age": 45,
+            "beginner": 75.0,
+            "novice": 107.0,
+            "intermediate": 146.0,
+            "advanced": 191.0,
+            "elite": 240.0
+          },
+          {
+            "age": 50,
+            "beginner": 71.0,
+            "novice": 100.0,
+            "intermediate": 136.0,
+            "advanced": 179.0,
+            "elite": 224.0
+          },
+          {
+            "age": 55,
+            "beginner": 65.0,
+            "novice": 92.0,
+            "intermediate": 126.0,
+            "advanced": 165.0,
+            "elite": 207.0
+          },
+          {
+            "age": 60,
+            "beginner": 59.0,
+            "novice": 84.0,
+            "intermediate": 115.0,
+            "advanced": 150.0,
+            "elite": 189.0
+          },
+          {
+            "age": 65,
+            "beginner": 54.0,
+            "novice": 76.0,
+            "intermediate": 104.0,
+            "advanced": 136.0,
+            "elite": 171.0
+          },
+          {
+            "age": 70,
+            "beginner": 48.0,
+            "novice": 69.0,
+            "intermediate": 94.0,
+            "advanced": 123.0,
+            "elite": 154.0
+          },
+          {
+            "age": 75,
+            "beginner": 43.0,
+            "novice": 62.0,
+            "intermediate": 84.0,
+            "advanced": 110.0,
+            "elite": 138.0
+          },
+          {
+            "age": 80,
+            "beginner": 39.0,
+            "novice": 55.0,
+            "intermediate": 75.0,
+            "advanced": 98.0,
+            "elite": 123.0
+          },
+          {
+            "age": 85,
+            "beginner": 35.0,
+            "novice": 49.0,
+            "intermediate": 67.0,
+            "advanced": 88.0,
+            "elite": 111.0
+          },
+          {
+            "age": 90,
+            "beginner": 31.0,
+            "novice": 44.0,
+            "intermediate": 60.0,
+            "advanced": 79.0,
+            "elite": 99.0
+          }
+        ]
+      }
+    }
+  }
+}

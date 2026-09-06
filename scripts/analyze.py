@@ -647,6 +647,162 @@ def main():
     years_span = round((last_dt - first_dt).days / 365.25, 1)
     calendar_years = max(1, last_dt.year - first_dt.year + 1)
 
+    # 五大黄金复合动作 Max & PR 统计
+    COMPOUND_EXERCISES_DEF = [
+        {
+            "key": "bench_press",
+            "name_en": "Bench Press",
+            "name_zh": "杠铃卧推",
+            "icon": "/exercises/bench_press.png",
+            "gif": "/exercises/bench_press.gif",
+            "matches": ["杠铃卧推", "平板杠铃卧推", "bench press"],
+            "excludes": ["哑铃", "上斜", "下斜", "器械", "史密斯", "悍马"],
+        },
+        {
+            "key": "barbell_row",
+            "name_en": "Barbell Row",
+            "name_zh": "杠铃划船",
+            "icon": "/exercises/barbell_row.png",
+            "gif": "/exercises/barbell_row.gif",
+            "matches": ["杠铃划船", "bent over row", "barbell row"],
+            "excludes": ["哑铃", "坐姿", "单臂", "t杠", "绳索", "器械", "划船机"],
+        },
+        {
+            "key": "squat",
+            "name_en": "Squat",
+            "name_zh": "深蹲",
+            "icon": "/exercises/squat.png",
+            "gif": "/exercises/squat.gif",
+            "matches": ["深蹲", "杠铃深蹲", "squat", "barbell squat"],
+            "excludes": ["哑铃", "保加利亚", "分腿", "箭步", "弓步", "高脚杯", "器械", "哈克"],
+        },
+        {
+            "key": "shoulder_press",
+            "name_en": "Barbell Shoulder Press",
+            "name_zh": "站姿杠铃推举",
+            "icon": "/exercises/shoulder_press.png",
+            "gif": "/exercises/shoulder_press.gif",
+            "matches": ["站姿杠铃推举", "杠铃推举", "推举", "shoulder press", "overhead press", "ohp"],
+            "excludes": ["哑铃", "坐姿", "阿诺德", "器械", "史密斯"],
+        },
+        {
+            "key": "deadlift",
+            "name_en": "Deadlift",
+            "name_zh": "硬拉 / 罗马尼亚硬拉",
+            "icon": "/exercises/deadlift.png",
+            "gif": "/exercises/deadlift.gif",
+            "matches": ["硬拉", "杠铃罗马尼亚硬拉", "罗马尼亚硬拉", "deadlift", "romanian deadlift"],
+            "excludes": ["哑铃", "单腿", "器械"],
+        },
+    ]
+
+    compound_records = {
+        c["key"]: {
+            **c,
+            "max_weight_kg": 0.0,
+            "max_weight_lb": 0.0,
+            "max_reps": 0,
+            "max_date": "",
+            "max_orig_weight": 0.0,
+            "max_orig_unit": "kg",
+            "best_1rm_kg": 0.0,
+            "best_1rm_lb": 0.0,
+            "best_1rm_weight": 0.0,
+            "best_1rm_reps": 0,
+            "best_1rm_date": "",
+            "best_1rm_unit": "kg",
+            "total_sets": 0,
+            "history": [],
+        }
+        for c in COMPOUND_EXERCISES_DEF
+    }
+
+    for t in all_trains:
+        ds = t.get("datestr") or ""
+        for m in t.get("movements") or []:
+            mname = (m.get("name") or "").strip()
+            if not mname:
+                continue
+            matched_key = None
+            for c in COMPOUND_EXERCISES_DEF:
+                if any(mat in mname for mat in c["matches"]):
+                    if not any(ex in mname for ex in c["excludes"]):
+                        matched_key = c["key"]
+                        break
+            if not matched_key:
+                continue
+
+            for s in m.get("sets") or []:
+                if not s.get("done") or s.get("selfWeight"):
+                    continue
+                w = parse_weight(s.get("weight") or s.get("weight_kg"))
+                r = parse_reps(s.get("reps"))
+                unit = str(s.get("unit") or "kg").strip().lower()
+                if w <= 0 or r <= 0:
+                    continue
+                is_lb = unit in {"lb", "lbs", "pound", "pounds"}
+                w_kg = w * 0.45359237 if is_lb else w
+                w_lb = w if is_lb else w / 0.45359237
+                e1rm_kg = w_kg * (1.0 + r / 30.0) if r > 1 else w_kg
+                e1rm_lb = e1rm_kg / 0.45359237
+
+                entry = compound_records[matched_key]
+                entry["total_sets"] += 1
+                entry["history"].append({
+                    "date": ds,
+                    "weight": round(w, 1),
+                    "reps": int(r),
+                    "unit": "lb" if is_lb else "kg",
+                    "weight_kg": round(w_kg, 1),
+                    "weight_lb": round(w_lb, 1),
+                    "est_1rm_kg": round(e1rm_kg, 1),
+                    "est_1rm_lb": round(e1rm_lb, 1),
+                })
+
+                if w_kg > entry["max_weight_kg"]:
+                    entry["max_weight_kg"] = round(w_kg, 1)
+                    entry["max_weight_lb"] = round(w_lb, 1)
+                    entry["max_reps"] = int(r)
+                    entry["max_date"] = ds
+                    entry["max_orig_weight"] = round(w, 1)
+                    entry["max_orig_unit"] = "lb" if is_lb else "kg"
+
+                if e1rm_kg > entry["best_1rm_kg"]:
+                    entry["best_1rm_kg"] = round(e1rm_kg, 1)
+                    entry["best_1rm_lb"] = round(e1rm_lb, 1)
+                    entry["best_1rm_weight"] = round(w, 1)
+                    entry["best_1rm_reps"] = int(r)
+                    entry["best_1rm_date"] = ds
+                    entry["best_1rm_unit"] = "lb" if is_lb else "kg"
+
+    compound_prs = []
+    for c in COMPOUND_EXERCISES_DEF:
+        rec = compound_records[c["key"]]
+        top_by_1rm = sorted(rec["history"], key=lambda x: x["est_1rm_kg"], reverse=True)[:5]
+        top_by_date = sorted(rec["history"], key=lambda x: x["date"], reverse=True)[:5]
+        compound_prs.append({
+            "key": rec["key"],
+            "name_en": rec["name_en"],
+            "name_zh": rec["name_zh"],
+            "icon": rec["icon"],
+            "gif": rec["gif"],
+            "max_weight_kg": rec["max_weight_kg"],
+            "max_weight_lb": rec["max_weight_lb"],
+            "max_reps": rec["max_reps"],
+            "max_date": rec["max_date"],
+            "max_orig_weight": rec["max_orig_weight"],
+            "max_orig_unit": rec["max_orig_unit"],
+            "best_1rm_kg": rec["best_1rm_kg"],
+            "best_1rm_lb": rec["best_1rm_lb"],
+            "best_1rm_weight": rec["best_1rm_weight"],
+            "best_1rm_reps": rec["best_1rm_reps"],
+            "best_1rm_date": rec["best_1rm_date"],
+            "best_1rm_unit": rec["best_1rm_unit"],
+            "total_sets": rec["total_sets"],
+            "top_sets": top_by_1rm,
+            "recent_sets": top_by_date,
+        })
+
     strength_summary = {
         "total_workouts": len(workout_dates),
         "total_volume_kg": round(total_volume_kg, 1),
@@ -656,6 +812,7 @@ def main():
         "latest_activity": latest_workout,
         "workout_dates": workout_dates,
         "workout_details": workout_by_date,
+        "compound_prs": compound_prs,
         "streaks": {
             "current_days": cur_day_streak,
             "max_days": max_day_streak,
@@ -774,6 +931,7 @@ def main():
         )[:30],
         "cardio_sessions": sorted(cardio_sessions, key=lambda x: x["date"], reverse=True),
         "strength_summary": strength_summary,
+        "compound_prs": compound_prs,
     }
 
     with open(OUT, "w", encoding="utf-8") as f:

@@ -73,6 +73,41 @@ export interface Analysis {
     avg_hr: number;
   }>;
   strength_summary?: StrengthSummary;
+  compound_prs?: CompoundPr[];
+}
+
+export interface CompoundPrSet {
+  date: string;
+  weight: number;
+  reps: number;
+  unit: string;
+  weight_kg: number;
+  weight_lb: number;
+  est_1rm_kg: number;
+  est_1rm_lb: number;
+}
+
+export interface CompoundPr {
+  key: string;
+  name_en: string;
+  name_zh: string;
+  icon: string;
+  gif: string;
+  max_weight_kg: number;
+  max_weight_lb: number;
+  max_reps: number;
+  max_date: string;
+  max_orig_weight: number;
+  max_orig_unit: string;
+  best_1rm_kg: number;
+  best_1rm_lb: number;
+  best_1rm_weight: number;
+  best_1rm_reps: number;
+  best_1rm_date: string;
+  best_1rm_unit: string;
+  total_sets: number;
+  top_sets?: CompoundPrSet[];
+  recent_sets?: CompoundPrSet[];
 }
 
 export interface StrengthSummary {
@@ -89,6 +124,7 @@ export interface StrengthSummary {
   };
   workout_dates: string[];
   workout_details: Record<string, { date: string; title: string; duration_min: number; volume_kg: number }>;
+  compound_prs?: CompoundPr[];
   streaks: {
     current_days: number;
     max_days: number;

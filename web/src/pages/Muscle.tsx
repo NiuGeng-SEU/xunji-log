@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from "react";
 import { Analysis, DrillQuery, chartClickIndex, chartClickName } from "../api";
-import Chart, { axisStyle, lineSeries, MATLAB_COLORS } from "../components/Chart";
+import Chart, { axisStyle, MATLAB_COLORS } from "../components/Chart";
 import DrillPanel, { expandMonthKey } from "../components/DrillPanel";
+import MaxPrCard from "../components/MaxPrCard";
 import {
-  formatScaledVolume,
   formatVolume,
   metricTonsToDisplay,
   useWeightUnit,
@@ -15,10 +15,41 @@ export default function Muscle({ data }: { data: Analysis }) {
   const { unit } = useWeightUnit();
   const { language, t, label, rawLabel } = useLanguage();
   const m = data.monthly;
-  const volumeUnit = volumeScaleLabel(unit, language);
-  const monthlyVolume = m.volume_tons.map((v) => metricTonsToDisplay(v, unit));
-  const shortLabels = m.labels.map((l) => l.slice(2));
   const cm = data.category_monthly;
+  const volumeUnit = volumeScaleLabel(unit, language);
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+
+  const years = useMemo(() => {
+    const fromDates = [Number(data.date_start.slice(0, 4)), Number(data.date_end.slice(0, 4))];
+    const fromMonthly = m.labels.map((l) => Number(l.slice(0, 4)));
+    const allYears = [...fromDates, ...fromMonthly].filter((y) => !isNaN(y) && y > 2000);
+    const minYear = Math.min(...allYears);
+    const maxYear = Math.max(...allYears);
+    return Array.from({ length: maxYear - minYear + 1 }, (_, i) => maxYear - i);
+  }, [data.date_start, data.date_end, m.labels]);
+
+  const todayMonthKey = useMemo(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  }, []);
+
+  const monthKeys = useMemo(() => {
+    if (selectedYear) {
+      return Array.from({ length: 12 }, (_, month) => `${selectedYear}-${String(month + 1).padStart(2, "0")}`);
+    }
+    const now = new Date();
+    return Array.from({ length: 12 }, (_, index) => {
+      const date = new Date(now.getFullYear(), now.getMonth() - 11 + index, 1);
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    });
+  }, [selectedYear]);
+
+  const shortLabels = useMemo(() => monthKeys.map((month) => month.slice(2)), [monthKeys]);
+
+  const monthIndex = useMemo(
+    () => new Map(m.labels.map((month, index) => [month, index])),
+    [m.labels]
+  );
   const topMovements = data.top_movements.filter(({ name }) => {
     const normalized = name.trim().toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g, "");
     return !normalized.includes("walking")
@@ -97,11 +128,85 @@ export default function Muscle({ data }: { data: Analysis }) {
       const name = chartClickName(params);
       const idx = chartClickIndex(params);
       const key =
-        (name && expandMonthKey(name, m.labels)) ||
-        (idx != null ? m.labels[idx] : null);
+        (name && expandMonthKey(name, monthKeys)) ||
+        (idx != null ? monthKeys[idx] : null);
       if (key) setDrill({ type: "month", key });
     },
-    [m.labels],
+    [monthKeys],
+  );
+
+  const filteredCategorySeries = useMemo(() => {
+    return cm.series.map((s) => ({
+      name: label(s.name),
+      rawName: s.name,
+      type: "line" as const,
+      smooth: true,
+      stack: "total",
+      areaStyle: { opacity: 0.4 },
+      data: monthKeys.map((month) => {
+        if (selectedYear && month > todayMonthKey) {
+          return null;
+        }
+        const index = monthIndex.get(month);
+        const valTons = index == null ? 0 : s.data[index] ?? 0;
+        return metricTonsToDisplay(valTons, unit);
+      }),
+    }));
+  }, [cm.series, monthKeys, selectedYear, todayMonthKey, monthIndex, unit, label]);
+
+  const filteredMonthlyHours = useMemo(() => {
+    return monthKeys.map((month) => {
+      if (selectedYear && month > todayMonthKey) {
+        return null;
+      }
+      const index = monthIndex.get(month);
+      return index == null ? 0 : m.duration_hours[index] ?? 0;
+    });
+  }, [monthKeys, selectedYear, todayMonthKey, monthIndex, m.duration_hours]);
+
+  const filteredCategoryShare = useMemo(() => {
+    const items = cm.series.map((s) => {
+      const totalTons = monthKeys.reduce((acc, month) => {
+        const index = monthIndex.get(month);
+        return acc + (index == null ? 0 : s.data[index] ?? 0);
+      }, 0);
+      return {
+        name: label(s.name),
+        rawName: s.name,
+        value: metricTonsToDisplay(totalTons, unit),
+      };
+    }).filter((item) => item.value > 0);
+
+    if (items.length > 0) return items;
+    return data.categories.labels.slice(0, 7).map((l, i) => ({
+      name: label(l),
+      rawName: l,
+      value: data.categories.sessions[i],
+    }));
+  }, [cm.series, monthKeys, monthIndex, unit, label, data.categories]);
+
+  const renderYearSelector = () => (
+    <nav className="chart-years-nav" aria-label={t("Year filter", "年份筛选")}>
+      <button
+        type="button"
+        className={selectedYear === null ? "active" : ""}
+        aria-current={selectedYear === null ? "true" : undefined}
+        onClick={() => setSelectedYear(null)}
+      >
+        {t("Past Year", "近一年")}
+      </button>
+      {years.map((choice) => (
+        <button
+          key={choice}
+          type="button"
+          className={selectedYear === choice ? "active" : ""}
+          aria-current={selectedYear === choice ? "true" : undefined}
+          onClick={() => setSelectedYear(choice)}
+        >
+          {choice}
+        </button>
+      ))}
+    </nav>
   );
 
   const renderDiff = (diff: number, periodLabel: string) => {
@@ -314,23 +419,15 @@ export default function Muscle({ data }: { data: Analysis }) {
         </div>
       </div>
 
+      {/* 5 Compound Movements Max & PR Card */}
+      <MaxPrCard prs={data.compound_prs || summary?.compound_prs} />
+
       <div className="charts-grid">
         <div className="chart-card full clickable-hint">
-          <h3>{t("Monthly Volume Growth", "月度训练容量增长")} ({volumeUnit})</h3>
-          <Chart
-            height={300}
-            onEvents={{ click: openMonth }}
-            option={{
-              xAxis: { type: "category", data: shortLabels, ...axisStyle },
-              yAxis: { type: "value", name: volumeUnit, ...axisStyle },
-              series: [lineSeries(t("Volume", "容量"), monthlyVolume, true)],
-              tooltip: { trigger: "axis" },
-            }}
-          />
-          <p className="caption">{t("Progressive overload", "渐进超负荷")}：{formatScaledVolume(m.volume_tons[0], unit, language)} → {formatScaledVolume(m.volume_tons[m.volume_tons.length - 1], unit, language)}</p>
-        </div>
-        <div className="chart-card full clickable-hint">
-          <h3>{t("Monthly Volume by Body Area", "各部位月度容量")} ({volumeUnit})</h3>
+          <div className="chart-card-header">
+            <h3>{t("Monthly Volume by Body Area", "各部位月度容量")} ({volumeUnit})</h3>
+            {renderYearSelector()}
+          </div>
           <Chart
             height={320}
             onEvents={{
@@ -344,25 +441,25 @@ export default function Muscle({ data }: { data: Analysis }) {
               legend: { data: cm.series.map((s) => label(s.name)), textStyle: { color: "#666666", fontSize: 10 } },
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
               yAxis: { type: "value", name: volumeUnit, ...axisStyle },
-              series: cm.series.map((s) => ({
-                name: label(s.name),
-                type: "line",
-                smooth: true,
-                stack: "total",
-                areaStyle: { opacity: 0.4 },
-                data: s.data.map((v) => metricTonsToDisplay(v, unit)),
-              })),
+              series: filteredCategorySeries,
               tooltip: { trigger: "axis" },
             }}
           />
         </div>
         <div className="chart-card clickable-hint">
-          <h3>{t("Training Share by Body Area", "部位训练占比")}</h3>
+          <div className="chart-card-header">
+            <h3>{t("Training Share by Body Area", "部位训练占比")}</h3>
+            <span className="chart-period-badge">
+              {selectedYear ? `${selectedYear}` : t("Past Year", "近一年")}
+            </span>
+          </div>
           <Chart
             onEvents={{
               click: (p) => {
                 const name = chartClickName(p);
-                if (name) setDrill({ type: "category", key: rawLabel(name) });
+                const matched = filteredCategoryShare.find((item) => item.name === name);
+                if (matched) setDrill({ type: "category", key: matched.rawName });
+                else if (name) setDrill({ type: "category", key: rawLabel(name) });
               },
             }}
             option={{
@@ -370,9 +467,9 @@ export default function Muscle({ data }: { data: Analysis }) {
               series: [{
                 type: "pie",
                 radius: ["40%", "65%"],
-                data: data.categories.labels.slice(0, 7).map((l, i) => ({
-                  name: label(l),
-                  value: data.categories.sessions[i],
+                data: filteredCategoryShare.map((item) => ({
+                  name: item.name,
+                  value: item.value,
                 })),
                 label: { color: "#666666", fontSize: 11 },
               }],
@@ -380,13 +477,16 @@ export default function Muscle({ data }: { data: Analysis }) {
           />
         </div>
         <div className="chart-card clickable-hint">
-          <h3>{t("Monthly Training Time (hours)", "月度训练时长（小时）")}</h3>
+          <div className="chart-card-header">
+            <h3>{t("Monthly Training Time (hours)", "月度训练时长（小时）")}</h3>
+            {renderYearSelector()}
+          </div>
           <Chart
             onEvents={{ click: openMonth }}
             option={{
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
               yAxis: { type: "value", name: t("hours", "小时"), ...axisStyle },
-              series: [{ type: "bar", data: m.duration_hours, itemStyle: { color: MATLAB_COLORS[0] } }],
+              series: [{ type: "bar", data: filteredMonthlyHours, itemStyle: { color: MATLAB_COLORS[0] } }],
               tooltip: { trigger: "axis" },
             }}
           />
