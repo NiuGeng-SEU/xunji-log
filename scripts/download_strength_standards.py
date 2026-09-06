@@ -72,6 +72,105 @@ EXERCISES = {
         "gif_url": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/videos/0032-ila4NZS.gif",
         "aliases": ["杠铃罗马尼亚硬拉", "罗马尼亚硬拉", "硬拉", "Deadlift"],
     },
+    "incline-bench-press": {
+        "key": "incline_bench_press",
+        "name_en": "Incline Barbell Bench Press",
+        "name_zh": "上斜杠铃卧推",
+        "url": "https://strengthlevel.com/strength-standards/incline-bench-press",
+        "icon_url": "https://static.strengthlevel.com/images/exercises/incline-bench-press/icons/incline-bench-press-icon-128.png",
+        "gif_url": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/videos/0047-3TZduzM.gif",
+        "aliases": ["上斜杠铃卧推", "上斜卧推", "Incline Bench Press"],
+    },
+    "ez-bar-curl": {
+        "key": "ez_bar_curl",
+        "name_en": "EZ Bar Curl",
+        "name_zh": "EZ杆二头弯举",
+        "url": "https://strengthlevel.com/strength-standards/ez-bar-curl",
+        "icon_url": "https://static.strengthlevel.com/images/exercises/ez-bar-curl/icons/ez-bar-curl-icon-128.png",
+        "gif_url": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/videos/0447-6TG6x2w.gif",
+        "aliases": ["EZ杆二头弯举", "EZ杠铃弯举", "EZ Bar Curl"],
+    },
+    "dumbbell-row": {
+        "key": "dumbbell_row",
+        "name_en": "Dumbbell Row",
+        "name_zh": "哑铃划船",
+        "url": "https://strengthlevel.com/strength-standards/dumbbell-row",
+        "icon_url": "https://static.strengthlevel.com/images/exercises/dumbbell-row/icons/dumbbell-row-icon-128.png",
+        "gif_url": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/videos/0292-C0MA9bC.gif",
+        "aliases": ["哑铃划船", "单臂哑铃划船", "Dumbbell Row"],
+    },
+    "tricep-pushdown": {
+        "key": "tricep_pushdown",
+        "name_en": "Tricep Pushdown",
+        "name_zh": "直杆绳索下压",
+        "url": "https://strengthlevel.com/strength-standards/tricep-pushdown",
+        "icon_url": "https://static.strengthlevel.com/images/exercises/tricep-pushdown/icons/tricep-pushdown-icon-128.png",
+        "gif_url": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/videos/0201-3ZflifB.gif",
+        "aliases": ["直杆绳索下压", "绳索下压", "器械臂屈伸", "Tricep Pushdown"],
+    },
+    "dips": {
+        "key": "dips",
+        "name_en": "Dips (Weighted)",
+        "name_zh": "双杠臂屈伸（负重）",
+        "url": "https://strengthlevel.com/strength-standards/dips",
+        "icon_url": "https://static.strengthlevel.com/images/exercises/dips/icons/dips-icon-128.png",
+        "gif_url": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/videos/0251-9WTm7dq.gif",
+        "aliases": ["双杠臂屈伸（负重）", "双杠臂屈伸", "Dips"],
+    },
+    "lat-pulldown": {
+        "key": "lat_pulldown",
+        "name_en": "Lat Pulldown",
+        "name_zh": "宽距下拉",
+        "url": "https://strengthlevel.com/strength-standards/lat-pulldown",
+        "icon_url": "https://static.strengthlevel.com/images/exercises/lat-pulldown/icons/lat-pulldown-icon-128.png",
+        "gif_url": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/videos/2330-LEprlgG.gif",
+        "aliases": ["宽距下拉", "高位下拉", "Lat Pulldown"],
+    },
+    "dumbbell-shoulder-press": {
+        "key": "dumbbell_shoulder_press",
+        "name_en": "Dumbbell Shoulder Press",
+        "name_zh": "哑铃推肩",
+        "url": "https://strengthlevel.com/strength-standards/dumbbell-shoulder-press",
+        "icon_url": "https://static.strengthlevel.com/images/exercises/dumbbell-shoulder-press/icons/dumbbell-shoulder-press-icon-128.png",
+        "gif_url": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/videos/0405-znQUdHY.gif",
+        "aliases": ["哑铃推肩", "坐姿哑铃推肩", "Dumbbell Shoulder Press"],
+    },
+    "seated-cable-row": {
+        "key": "seated_cable_row",
+        "name_en": "Seated Cable Row",
+        "name_zh": "坐姿划船",
+        "url": "https://strengthlevel.com/strength-standards/seated-cable-row",
+        "icon_url": "https://static.strengthlevel.com/images/exercises/seated-cable-row/icons/seated-cable-row-icon-128.png",
+        "gif_url": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/videos/0180-hvV79Si.gif",
+        "aliases": ["坐姿划船", "器械坐姿划船", "Seated Cable Row"],
+    },
+    "lateral-raise": {
+        "key": "lateral_raise",
+        "name_en": "Dumbbell Lateral Raise",
+        "name_zh": "侧平举",
+        "url": "https://strengthlevel.com/strength-standards/lateral-raise",
+        "icon_url": "https://static.strengthlevel.com/images/exercises/dumbbell-lateral-raise/icons/dumbbell-lateral-raise-icon-128.png",
+        "gif_url": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/videos/0334-DsgkuIt.gif",
+        "aliases": ["侧平举", "哑铃侧平举", "Lateral Raise"],
+    },
+    "dumbbell-bench-press": {
+        "key": "dumbbell_bench_press",
+        "name_en": "Dumbbell Bench Press",
+        "name_zh": "哑铃卧推",
+        "url": "https://strengthlevel.com/strength-standards/dumbbell-bench-press",
+        "icon_url": "https://static.strengthlevel.com/images/exercises/dumbbell-bench-press/icons/dumbbell-bench-press-icon-128.png",
+        "gif_url": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/videos/0289-SpYC0Kp.gif",
+        "aliases": ["哑铃卧推", "平板哑铃卧推", "Dumbbell Bench Press"],
+    },
+    "hammer-curl": {
+        "key": "hammer_curl",
+        "name_en": "Hammer Curl",
+        "name_zh": "锤式弯举",
+        "url": "https://strengthlevel.com/strength-standards/hammer-curl",
+        "icon_url": "https://static.strengthlevel.com/images/exercises/hammer-curl/icons/hammer-curl-icon-128.png",
+        "gif_url": "https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/main/videos/1648-6em2Dxj.gif",
+        "aliases": ["锤式弯举", "哑铃锤式弯举", "Hammer Curl"],
+    },
 }
 
 PERCENTILE_LEVELS = {
@@ -107,7 +206,7 @@ def fetch_exercise_standards(slug, info):
 
     # 1. Fetch KG standards
     try:
-        req = urllib.request.Request(f"{info["url"]}/kg", headers=HEADERS)
+        req = urllib.request.Request(f"{info['url']}/kg", headers=HEADERS)
         html_kg = urllib.request.urlopen(req, timeout=15).read().decode("utf-8")
         tables = re.findall(r"<table.*?</table>", html_kg, re.DOTALL)
         for t in tables:
@@ -128,7 +227,7 @@ def fetch_exercise_standards(slug, info):
 
     # 2. Fetch LB standards
     try:
-        req = urllib.request.Request(f"{info["url"]}/lb", headers=HEADERS)
+        req = urllib.request.Request(f"{info['url']}/lb", headers=HEADERS)
         html_lb = urllib.request.urlopen(req, timeout=15).read().decode("utf-8")
         tables = re.findall(r"<table.*?</table>", html_lb, re.DOTALL)
         for t in tables:
@@ -159,42 +258,45 @@ def download_asset(url, dest_path):
         return False
 
 def main():
-    standards_data = {
+    output_data = {
         "levels": PERCENTILE_LEVELS,
         "exercises": {},
     }
 
     for slug, info in EXERCISES.items():
-        std = fetch_exercise_standards(slug, info)
+        key = info["key"]
+        print(f"\nProcessing {key} ({info['name_en']})...")
 
-        icon_filename = f"{info["key"]}.png"
-        icon_dest = os.path.join(PUBLIC_EXERCISES_DIR, icon_filename)
-        download_asset(info["icon_url"], icon_dest)
+        icon_filename = f"{key}.png"
+        gif_filename = f"{key}.gif"
+        icon_path = os.path.join(PUBLIC_EXERCISES_DIR, icon_filename)
+        gif_path = os.path.join(PUBLIC_EXERCISES_DIR, gif_filename)
 
-        gif_filename = f"{info["key"]}.gif"
-        gif_dest = os.path.join(PUBLIC_EXERCISES_DIR, gif_filename)
-        download_asset(info["gif_url"], gif_dest)
+        download_asset(info["icon_url"], icon_path)
+        download_asset(info["gif_url"], gif_path)
 
-        standards_data["exercises"][info["key"]] = {
-            "key": info["key"],
+        standards = fetch_exercise_standards(slug, info)
+
+        output_data["exercises"][key] = {
+            "key": key,
             "slug": slug,
             "name_en": info["name_en"],
             "name_zh": info["name_zh"],
             "icon": f"/exercises/{icon_filename}",
             "gif": f"/exercises/{gif_filename}",
             "aliases": info["aliases"],
-            "standards": std,
+            "standards": standards,
         }
 
-    out_file1 = os.path.join(DATA_DIR, "strength_standards.json")
-    with open(out_file1, "w", encoding="utf-8") as f:
-        json.dump(standards_data, f, indent=2, ensure_ascii=False)
-    print(f"Wrote standards to {out_file1}")
+    out_file = os.path.join(DATA_DIR, "strength_standards.json")
+    with open(out_file, "w", encoding="utf-8") as f:
+        json.dump(output_data, f, ensure_ascii=False, indent=2)
+    print(f"\nWrote standards to {out_file}")
 
-    out_file2 = os.path.join(WEB_DATA_DIR, "strengthStandards.json")
-    with open(out_file2, "w", encoding="utf-8") as f:
-        json.dump(standards_data, f, indent=2, ensure_ascii=False)
-    print(f"Wrote standards to {out_file2}")
+    web_out_file = os.path.join(WEB_DATA_DIR, "strengthStandards.json")
+    with open(web_out_file, "w", encoding="utf-8") as f:
+        json.dump(output_data, f, ensure_ascii=False, indent=2)
+    print(f"Wrote standards to {web_out_file}")
 
 if __name__ == "__main__":
     main()

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { CompoundPr, CompoundPrSet } from "../api";
 import { useWeightUnit } from "../units";
 import { useLanguage } from "../language";
+import Chart, { axisStyle } from "./Chart";
 import strengthStandardsRaw from "../data/strengthStandards.json";
 
 interface StandardsData {
@@ -216,6 +217,14 @@ interface MaxPrCardProps {
   prs?: CompoundPr[];
 }
 
+const FIXED_TOP_5_KEYS = [
+  "bench_press",
+  "barbell_row",
+  "squat",
+  "shoulder_press",
+  "deadlift",
+];
+
 export default function MaxPrCard({ prs }: MaxPrCardProps) {
   const { unit } = useWeightUnit();
   const { language, t } = useLanguage();
@@ -225,7 +234,26 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
     return saved ? Number(saved) : 75;
   });
 
-  const [activeModalExercise, setActiveModalExercise] = useState<CompoundPr | null>(null);
+  const [activeModalExercise, setActiveModalExercise] = useState<CompoundPr | null>(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const exKey = params.get("exercise");
+      if (exKey && prs) {
+        return prs.find((p) => p.key === exKey) || null;
+      }
+    } catch {
+      // ignore
+    }
+    return null;
+  });
+  const [isExpanded, setIsExpanded] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("expand") === "1";
+    } catch {
+      return false;
+    }
+  });
 
   const handleSetBw = (bw: number) => {
     setBodyweightKg(bw);
@@ -242,9 +270,31 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeModalExercise]);
 
+  const orderedPrs = useMemo(() => {
+    if (!prs) return [];
+    const withTiers = prs.map((pr) => {
+      const benchmarks = getBenchmarksForBw(pr.key, bodyweightKg);
+      const tier = calculateStrengthTier(pr.best_1rm_kg, benchmarks);
+      return { ...pr, benchmarks, tier };
+    });
+
+    const itemMap = new Map(withTiers.map((p) => [p.key, p]));
+    const fixedTop5 = FIXED_TOP_5_KEYS.map((key) => itemMap.get(key)).filter(
+      (p): p is typeof withTiers[0] => Boolean(p)
+    );
+
+    const remaining = withTiers
+      .filter((p) => !FIXED_TOP_5_KEYS.includes(p.key))
+      .sort((a, b) => b.tier.percentile - a.tier.percentile);
+
+    return [...fixedTop5, ...remaining];
+  }, [prs, bodyweightKg]);
+
   if (!prs || prs.length === 0) {
     return null;
   }
+
+  const visiblePrs = isExpanded ? orderedPrs : orderedPrs.slice(0, 5);
 
   const formatWeightVal = (valKg: number, valLb: number) => {
     const val = unit === "lb" ? valLb : valKg;
@@ -260,7 +310,7 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
           <div className="max-pr-title-group">
             <h2 className="max-pr-title">Max & PR</h2>
             <span className="max-pr-subtitle">
-              {t("Strength Standards · 1RM Benchmark", "五大黄金复合动作 · 力量评级与预估极限")}
+              {t("Five Core Lifts & Strength Standards", "五大黄金复合动作 · 核心力量评级与预估极限")}
             </span>
           </div>
 
@@ -283,11 +333,10 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
           </div>
         </div>
 
-        {/* 5 Compound Lift Items */}
+        {/* Movements List */}
         <div className="max-pr-list">
-          {prs.map((pr) => {
-            const benchmarks = getBenchmarksForBw(pr.key, bodyweightKg);
-            const tier = calculateStrengthTier(pr.best_1rm_kg, benchmarks);
+          {visiblePrs.map((pr) => {
+            const { tier } = pr;
             const isZh = language === "zh";
 
             return (
@@ -363,6 +412,34 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
             );
           })}
         </div>
+
+        {/* Expand / Collapse Button */}
+        {orderedPrs.length > 5 && (
+          <div className="max-pr-expand-row">
+            <button
+              type="button"
+              className="max-pr-expand-btn"
+              onClick={() => setIsExpanded((prev) => !prev)}
+            >
+              {isExpanded ? (
+                <>
+                  <span>{t("Show Less", "收起动作")}</span>
+                  <span className="expand-arrow">▲</span>
+                </>
+              ) : (
+                <>
+                  <span>
+                    {t(
+                      `Show All Movements (${orderedPrs.length - 5} more)`,
+                      `展开全部动作 (还有 ${orderedPrs.length - 5} 个)`
+                    )}
+                  </span>
+                  <span className="expand-arrow">▼</span>
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Modal / Detail View */}
@@ -409,6 +486,162 @@ function ExerciseDetailModal({
     { key: "elite", nameEn: "Elite", nameZh: "精英", pct: 95, weightKg: benchmarks.elite, color: "#f59e0b" },
   ];
 
+  const toUnit = (kg: number) => {
+    const val = unit === "lb" ? kg * 2.20462 : kg;
+    return Math.round(val * 10) / 10;
+  };
+
+  const userWeightVal = toUnit(exercise.best_1rm_kg);
+
+  const curveData = useMemo(() => {
+    return [
+      [0, toUnit(benchmarks.beginner * 0.75)],
+      [5, toUnit(benchmarks.beginner)],
+      [20, toUnit(benchmarks.novice)],
+      [50, toUnit(benchmarks.intermediate)],
+      [80, toUnit(benchmarks.advanced)],
+      [95, toUnit(benchmarks.elite)],
+      [100, toUnit(benchmarks.elite * 1.15)],
+    ];
+  }, [benchmarks, unit]);
+
+  const milestonePoints = useMemo(() => {
+    return [
+      { name: isZh ? "初学 (5%)" : "Beginner (5%)", coord: [5, toUnit(benchmarks.beginner)] },
+      { name: isZh ? "新手 (20%)" : "Novice (20%)", coord: [20, toUnit(benchmarks.novice)] },
+      { name: isZh ? "中级 (50%)" : "Intermediate (50%)", coord: [50, toUnit(benchmarks.intermediate)] },
+      { name: isZh ? "高级 (80%)" : "Advanced (80%)", coord: [80, toUnit(benchmarks.advanced)] },
+      { name: isZh ? "精英 (95%)" : "Elite (95%)", coord: [95, toUnit(benchmarks.elite)] },
+    ];
+  }, [benchmarks, unit, isZh]);
+
+  const curveOption = useMemo(() => {
+    return {
+      animation: false,
+      grid: { left: 52, right: 36, top: 36, bottom: 44 },
+      tooltip: {
+        trigger: "item",
+        formatter: (params: any) => {
+          if (params.seriesName === "User") {
+            return `<div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:4px">${isZh ? "我的预估极限 (Est. 1RM)" : "My Est. 1RM"}</div>
+                    <div style="font-size:12px;color:#475569;margin-bottom:2px">${isZh ? "重量" : "Weight"}: <strong style="color:#0f172a">${userWeightVal} ${unit}</strong></div>
+                    <div style="font-size:12px;color:#475569">${isZh ? "超越" : "Percentile"}: <strong style="color:#0f172a">${tier.percentile}%</strong> (${isZh ? tier.tierNameZh : tier.tierNameEn})</div>`;
+          }
+          return "";
+        },
+        backgroundColor: "#ffffff",
+        borderColor: "#e2e8f0",
+        borderWidth: 1,
+        padding: [10, 14],
+        textStyle: { color: "#1e293b" },
+        extraCssText: "box-shadow: 0 4px 14px rgba(0,0,0,0.1); border-radius: 8px;",
+      },
+      xAxis: {
+        type: "value",
+        min: 0,
+        max: 100,
+        interval: 20,
+        name: isZh ? "百分位 (%)" : "Percentile (%)",
+        nameLocation: "middle",
+        nameGap: 24,
+        nameTextStyle: { color: "#64748b", fontSize: 11, fontWeight: 500 },
+        axisLabel: {
+          formatter: "{value}%",
+          color: "#64748b",
+          fontSize: 10,
+        },
+        ...axisStyle,
+      },
+      yAxis: {
+        type: "value",
+        name: unit,
+        nameTextStyle: { color: "#64748b", fontSize: 11, fontWeight: 500 },
+        axisLabel: {
+          color: "#64748b",
+          fontSize: 10,
+        },
+        ...axisStyle,
+      },
+      series: [
+        {
+          name: "Standard Curve",
+          type: "line",
+          smooth: true,
+          data: curveData,
+          showSymbol: false,
+          silent: true,
+          tooltip: { show: false },
+          lineStyle: {
+            width: 3,
+            color: "#6366f1",
+          },
+          areaStyle: {
+            color: {
+              type: "linear",
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [
+                { offset: 0, color: "rgba(99, 102, 241, 0.2)" },
+                { offset: 1, color: "rgba(99, 102, 241, 0.02)" },
+              ],
+            },
+          },
+          markPoint: {
+            symbol: "circle",
+            symbolSize: 8,
+            silent: true,
+            tooltip: { show: false },
+            itemStyle: {
+              color: "#4f46e5",
+              borderColor: "#ffffff",
+              borderWidth: 2,
+            },
+            label: {
+              show: true,
+              position: "bottom",
+              distance: 6,
+              formatter: (param: any) => param.name,
+              color: "#64748b",
+              fontSize: 9,
+            },
+            data: milestonePoints,
+          },
+        },
+        {
+          name: "User",
+          type: "scatter",
+          data: [[tier.percentile, userWeightVal]],
+          symbol: "circle",
+          symbolSize: 14,
+          itemStyle: {
+            color: tier.tierColor,
+            borderColor: "#ffffff",
+            borderWidth: 2.5,
+            shadowBlur: 8,
+            shadowColor: "rgba(0,0,0,0.25)",
+          },
+          label: {
+            show: true,
+            position: "top",
+            distance: 8,
+            formatter: () => `${isZh ? "你" : "You"}: ${userWeightVal} ${unit} (${tier.percentile}%)`,
+            color: tier.tierColor,
+            fontWeight: 700,
+            fontSize: 11,
+            backgroundColor: "#ffffff",
+            borderColor: tier.tierColor,
+            borderWidth: 1,
+            borderRadius: 4,
+            padding: [3, 6],
+          },
+          z: 10,
+        },
+      ],
+    };
+  }, [curveData, milestonePoints, userWeightVal, tier, unit, isZh]);
+
   return (
     <div className="max-pr-modal-backdrop" onClick={onClose}>
       <div className="max-pr-modal" onClick={(e) => e.stopPropagation()}>
@@ -423,7 +656,7 @@ function ExerciseDetailModal({
                 {isZh ? exercise.name_zh : exercise.name_en}
               </h3>
               <p className="max-pr-modal-sub">
-                {isZh ? exercise.name_en : exercise.name_zh} · {t("Standards @", "参考体重")} {displayBw}
+                {isZh ? exercise.name_en : exercise.name_zh}
               </p>
             </div>
           </div>
@@ -442,7 +675,6 @@ function ExerciseDetailModal({
                 alt={`${exercise.name_en} Demonstration`}
                 className="max-pr-modal-gif"
               />
-              <span className="max-pr-modal-gif-tag">{t("Biomechanics Demo", "动作轨迹演示")}</span>
             </div>
 
             <div className="max-pr-modal-stats">
@@ -484,10 +716,10 @@ function ExerciseDetailModal({
             </div>
           </div>
 
-          {/* Strength Level Gauge & Fitting Line */}
+          {/* Strength Level Curve */}
           <div className="max-pr-gauge-card">
             <div className="max-pr-gauge-header">
-              <h4>{t("Strength Level Milestone Curve", "力量进阶曲线与同体重百分位")}</h4>
+              <h4>{t("Strength Level Curve", "力量等级曲线")}</h4>
               <span className="tier-standing-pill" style={{ backgroundColor: `${tier.tierColor}20`, color: tier.tierColor }}>
                 {t(
                   `Stronger than ${tier.percentile}% of lifters`,
@@ -496,59 +728,11 @@ function ExerciseDetailModal({
               </span>
             </div>
 
-            {/* Visual Milestones Bar */}
-            <div className="max-pr-milestones-track">
-              {/* Markers for 5 tiers */}
-              {levelsList.map((lvl) => (
-                <div
-                  key={lvl.key}
-                  className="milestone-mark"
-                  style={{ left: `${Math.min(98, Math.max(2, lvl.pct))}%` }}
-                >
-                  <div className="milestone-dot" style={{ borderColor: lvl.color }} />
-                  <span className="milestone-lbl">{isZh ? lvl.nameZh : lvl.nameEn} ({lvl.pct}%)</span>
-                  <span className="milestone-wt">{formatVal(lvl.weightKg)} {unit}</span>
-                </div>
-              ))}
-
-              {/* User Position Pin */}
-              <div
-                className="user-pin"
-                style={{
-                  left: `${Math.min(97, Math.max(3, tier.percentile))}%`,
-                  borderColor: tier.tierColor,
-                }}
-              >
-                <div className="user-pin-bubble" style={{ backgroundColor: tier.tierColor }}>
-                  {formatVal(exercise.best_1rm_kg)} {unit} ({tier.percentile}%)
-                </div>
-                <div className="user-pin-arrow" style={{ borderTopColor: tier.tierColor }} />
-              </div>
-            </div>
-
-            {/* Next Tier Incentive Hint */}
-            <div className="max-pr-next-hint">
-              {tier.nextTierNameEn ? (
-                <>
-                  <span className="next-icon">🎯</span>
-                  <span>
-                    {t(
-                      `Next Goal: Add +${formatVal(tier.weightToNextKg)} ${unit} to Est. 1RM to reach ${tier.nextTierNameEn} (${isZh ? tier.nextTierNameZh : tier.nextTierNameEn})!`,
-                      `下一进阶目标：Est. 1RM 再提升 +${formatVal(tier.weightToNextKg)} ${unit}，即可晋级 ${tier.nextTierNameZh} (${tier.nextTierNameEn})！`
-                    )}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="next-icon">🏆</span>
-                  <span>
-                    {t(
-                      "Incredible achievement! You have attained Elite standard in this lift.",
-                      "无可匹敌！你已经达到该动作的精英 (Elite) 级别！"
-                    )}
-                  </span>
-                </>
-              )}
+            <div className="max-pr-curve-chart">
+              <Chart
+                height={260}
+                option={curveOption}
+              />
             </div>
           </div>
 

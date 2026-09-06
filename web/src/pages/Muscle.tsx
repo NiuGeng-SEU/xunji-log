@@ -94,31 +94,33 @@ export default function Muscle({ data }: { data: Analysis }) {
   const currentWeekDays = useMemo(() => {
     const anchorStr = latestActivity?.date || "2026-09-04";
     const anchorDate = new Date(`${anchorStr}T12:00:00Z`);
-    const dayOfWeek = (anchorDate.getUTCDay() + 6) % 7; // 0 for Monday, 6 for Sunday
-    const monday = new Date(anchorDate);
-    monday.setUTCDate(anchorDate.getUTCDate() - dayOfWeek);
+    const dayOfWeek = anchorDate.getUTCDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+    const sunday = new Date(anchorDate);
+    sunday.setUTCDate(anchorDate.getUTCDate() - dayOfWeek);
 
     const now = new Date();
     const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
     const workoutDatesSet = new Set(summary?.workout_dates || []);
 
     const weekdayLabels = language === "zh"
-      ? ["一", "二", "三", "四", "五", "六", "日"]
-      : ["M", "T", "W", "T", "F", "S", "S"];
+      ? ["日", "一", "二", "三", "四", "五", "六"]
+      : ["S", "M", "T", "W", "T", "F", "S"];
 
     return Array.from({ length: 7 }, (_, i) => {
-      const d = new Date(monday);
-      d.setUTCDate(monday.getUTCDate() + i);
+      const d = new Date(sunday);
+      d.setUTCDate(sunday.getUTCDate() + i);
       const dateStr = d.toISOString().slice(0, 10);
       const dayNum = d.getUTCDate();
       const isTrained = workoutDatesSet.has(dateStr);
-      const isToday = dateStr === todayStr || dateStr === anchorStr;
+      const isToday = dateStr === todayStr;
+      const isPast = dateStr < todayStr || dateStr <= anchorStr;
       return {
         date: dateStr,
         label: weekdayLabels[i],
         dayNum,
         isTrained,
         isToday,
+        isPast,
       };
     });
   }, [latestActivity?.date, summary?.workout_dates, language]);
@@ -419,33 +421,10 @@ export default function Muscle({ data }: { data: Analysis }) {
         </div>
       </div>
 
-      {/* 5 Compound Movements Max & PR Card */}
+      {/* Compound & Major Movements Max & PR Card */}
       <MaxPrCard prs={data.compound_prs || summary?.compound_prs} />
 
       <div className="charts-grid">
-        <div className="chart-card full clickable-hint">
-          <div className="chart-card-header">
-            <h3>{t("Monthly Volume by Body Area", "各部位月度容量")} ({volumeUnit})</h3>
-            {renderYearSelector()}
-          </div>
-          <Chart
-            height={320}
-            onEvents={{
-              click: (p) => {
-                const seriesName = (p as { seriesName?: string }).seriesName;
-                if (seriesName) setDrill({ type: "category", key: rawLabel(seriesName) });
-                else openMonth(p);
-              },
-            }}
-            option={{
-              legend: { data: cm.series.map((s) => label(s.name)), textStyle: { color: "#666666", fontSize: 10 } },
-              xAxis: { type: "category", data: shortLabels, ...axisStyle },
-              yAxis: { type: "value", name: volumeUnit, ...axisStyle },
-              series: filteredCategorySeries,
-              tooltip: { trigger: "axis" },
-            }}
-          />
-        </div>
         <div className="chart-card clickable-hint">
           <div className="chart-card-header">
             <h3>{t("Training Share by Body Area", "部位训练占比")}</h3>

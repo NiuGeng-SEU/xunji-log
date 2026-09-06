@@ -577,13 +577,14 @@ def main():
     last_month_dates = [d for d in workout_dates if d.startswith(prev_month_str)]
     this_month_dur_hours = sum(workout_by_date[d]["duration_min"] for d in this_month_dates) / 60
 
-    # 周目标（每周 3 次）
-    cur_mon = anchor_dt - datetime.timedelta(days=anchor_dt.weekday())
-    cur_sun = cur_mon + datetime.timedelta(days=6)
-    prev_mon = cur_mon - datetime.timedelta(days=7)
+    # 周目标（每周 3 次，周日开始）
+    sun_offset = (anchor_dt.weekday() + 1) % 7
+    cur_sun = anchor_dt - datetime.timedelta(days=sun_offset)
+    cur_sat = cur_sun + datetime.timedelta(days=6)
     prev_sun = cur_sun - datetime.timedelta(days=7)
-    this_week_dates = [d for d in workout_dates if cur_mon.isoformat() <= d <= cur_sun.isoformat()]
-    last_week_dates = [d for d in workout_dates if prev_mon.isoformat() <= d <= prev_sun.isoformat()]
+    prev_sat = cur_sat - datetime.timedelta(days=7)
+    this_week_dates = [d for d in workout_dates if cur_sun.isoformat() <= d <= cur_sat.isoformat()]
+    last_week_dates = [d for d in workout_dates if prev_sun.isoformat() <= d <= prev_sat.isoformat()]
     this_week_dur_hours = sum(workout_by_date[d]["duration_min"] for d in this_week_dates) / 60
 
     # 连续天数 Streak (仅计算力量训练)
@@ -610,35 +611,30 @@ def main():
         max_day_streak = max(max_day_streak, cur_s)
         prev_d = d
 
-    # 连续周数 Streak (按每周至少1次训练)
+    # 连续周数 Streak (按每周至少1次训练，周日开始)
     workout_weeks = set()
     for ds in workout_dates:
         dt = datetime.date.fromisoformat(ds)
-        iso = dt.isocalendar()
-        workout_weeks.add((iso[0], iso[1]))
+        sun_d = dt - datetime.timedelta(days=(dt.weekday() + 1) % 7)
+        workout_weeks.add(sun_d)
 
     cur_week_streak = 0
-    cur_w = anchor_dt
-    while True:
-        iso = cur_w.isocalendar()
-        if (iso[0], iso[1]) in workout_weeks:
-            cur_week_streak += 1
-            cur_w -= datetime.timedelta(days=7)
-        else:
-            break
+    cur_sun_w = anchor_dt - datetime.timedelta(days=(anchor_dt.weekday() + 1) % 7)
+    while cur_sun_w in workout_weeks:
+        cur_week_streak += 1
+        cur_sun_w -= datetime.timedelta(days=7)
 
     sorted_w = sorted(list(workout_weeks))
     max_week_streak = 0
     cur_ws = 0
     prev_w_dt = None
-    for y, w in sorted_w:
-        dt = datetime.date.fromisocalendar(y, w, 1)
-        if prev_w_dt is not None and (dt - prev_w_dt).days == 7:
+    for sun_d in sorted_w:
+        if prev_w_dt is not None and (sun_d - prev_w_dt).days == 7:
             cur_ws += 1
         else:
             cur_ws = 1
         max_week_streak = max(max_week_streak, cur_ws)
-        prev_w_dt = dt
+        prev_w_dt = sun_d
 
     # 生涯统计
     tot_strength_dur_hours = sum(workout_by_date[d]["duration_min"] for d in workout_dates) / 60
@@ -647,7 +643,7 @@ def main():
     years_span = round((last_dt - first_dt).days / 365.25, 1)
     calendar_years = max(1, last_dt.year - first_dt.year + 1)
 
-    # 五大黄金复合动作 Max & PR 统计
+    # 常见与核心动作 Max & PR 统计
     COMPOUND_EXERCISES_DEF = [
         {
             "key": "bench_press",
@@ -659,13 +655,13 @@ def main():
             "excludes": ["哑铃", "上斜", "下斜", "器械", "史密斯", "悍马"],
         },
         {
-            "key": "barbell_row",
-            "name_en": "Barbell Row",
-            "name_zh": "杠铃划船",
-            "icon": "/exercises/barbell_row.png",
-            "gif": "/exercises/barbell_row.gif",
-            "matches": ["杠铃划船", "bent over row", "barbell row"],
-            "excludes": ["哑铃", "坐姿", "单臂", "t杠", "绳索", "器械", "划船机"],
+            "key": "incline_bench_press",
+            "name_en": "Incline Barbell Bench Press",
+            "name_zh": "上斜杠铃卧推",
+            "icon": "/exercises/incline_bench_press.png",
+            "gif": "/exercises/incline_bench_press.gif",
+            "matches": ["上斜杠铃卧推", "上斜卧推", "incline barbell bench", "incline bench press"],
+            "excludes": ["哑铃", "史密斯", "器械"],
         },
         {
             "key": "squat",
@@ -675,6 +671,15 @@ def main():
             "gif": "/exercises/squat.gif",
             "matches": ["深蹲", "杠铃深蹲", "squat", "barbell squat"],
             "excludes": ["哑铃", "保加利亚", "分腿", "箭步", "弓步", "高脚杯", "器械", "哈克"],
+        },
+        {
+            "key": "barbell_row",
+            "name_en": "Barbell Row",
+            "name_zh": "杠铃划船",
+            "icon": "/exercises/barbell_row.png",
+            "gif": "/exercises/barbell_row.gif",
+            "matches": ["杠铃划船", "bent over row", "barbell row"],
+            "excludes": ["哑铃", "坐姿", "单臂", "t杠", "绳索", "器械", "划船机"],
         },
         {
             "key": "shoulder_press",
@@ -693,6 +698,96 @@ def main():
             "gif": "/exercises/deadlift.gif",
             "matches": ["硬拉", "杠铃罗马尼亚硬拉", "罗马尼亚硬拉", "deadlift", "romanian deadlift"],
             "excludes": ["哑铃", "单腿", "器械"],
+        },
+        {
+            "key": "ez_bar_curl",
+            "name_en": "EZ Bar Curl",
+            "name_zh": "EZ杆二头弯举",
+            "icon": "/exercises/ez_bar_curl.png",
+            "gif": "/exercises/ez_bar_curl.gif",
+            "matches": ["ez杆二头弯举", "ez杆", "ez杠铃弯举", "ez bar curl"],
+            "excludes": [],
+        },
+        {
+            "key": "dumbbell_row",
+            "name_en": "Dumbbell Row",
+            "name_zh": "哑铃划船",
+            "icon": "/exercises/dumbbell_row.png",
+            "gif": "/exercises/dumbbell_row.gif",
+            "matches": ["哑铃划船", "单臂哑铃划船", "dumbbell row", "db row"],
+            "excludes": [],
+        },
+        {
+            "key": "tricep_pushdown",
+            "name_en": "Tricep Pushdown",
+            "name_zh": "直杆绳索下压",
+            "icon": "/exercises/tricep_pushdown.png",
+            "gif": "/exercises/tricep_pushdown.gif",
+            "matches": ["直杆绳索下压", "绳索下压", "pushdown", "tricep pushdown"],
+            "excludes": ["腿", "臂屈伸"],
+        },
+        {
+            "key": "dips",
+            "name_en": "Dips (Weighted)",
+            "name_zh": "双杠臂屈伸（负重）",
+            "icon": "/exercises/dips.png",
+            "gif": "/exercises/dips.gif",
+            "matches": ["双杠臂屈伸", "臂屈伸（负重）", "双杠", "dips", "chest dip"],
+            "excludes": ["器械", "凳上"],
+        },
+        {
+            "key": "lat_pulldown",
+            "name_en": "Lat Pulldown",
+            "name_zh": "宽距下拉",
+            "icon": "/exercises/lat_pulldown.png",
+            "gif": "/exercises/lat_pulldown.gif",
+            "matches": ["宽距下拉", "高位下拉", "lat pulldown"],
+            "excludes": ["悍马机", "直臂"],
+        },
+        {
+            "key": "dumbbell_shoulder_press",
+            "name_en": "Dumbbell Shoulder Press",
+            "name_zh": "哑铃推肩",
+            "icon": "/exercises/dumbbell_shoulder_press.png",
+            "gif": "/exercises/dumbbell_shoulder_press.gif",
+            "matches": ["哑铃推肩", "哑铃推举", "dumbbell shoulder press"],
+            "excludes": [],
+        },
+        {
+            "key": "seated_cable_row",
+            "name_en": "Seated Cable Row",
+            "name_zh": "坐姿划船",
+            "icon": "/exercises/seated_cable_row.png",
+            "gif": "/exercises/seated_cable_row.gif",
+            "matches": ["坐姿划船", "seated cable row"],
+            "excludes": ["器械坐姿反向飞鸟"],
+        },
+        {
+            "key": "lateral_raise",
+            "name_en": "Dumbbell Lateral Raise",
+            "name_zh": "侧平举",
+            "icon": "/exercises/lateral_raise.png",
+            "gif": "/exercises/lateral_raise.gif",
+            "matches": ["侧平举", "哑铃侧平举", "lateral raise"],
+            "excludes": ["悍马机"],
+        },
+        {
+            "key": "dumbbell_bench_press",
+            "name_en": "Dumbbell Bench Press",
+            "name_zh": "哑铃卧推",
+            "icon": "/exercises/dumbbell_bench_press.png",
+            "gif": "/exercises/dumbbell_bench_press.gif",
+            "matches": ["哑铃卧推", "平板哑铃卧推", "dumbbell bench press"],
+            "excludes": ["上斜", "下斜"],
+        },
+        {
+            "key": "hammer_curl",
+            "name_en": "Hammer Curl",
+            "name_zh": "锤式弯举",
+            "icon": "/exercises/hammer_curl.png",
+            "gif": "/exercises/hammer_curl.gif",
+            "matches": ["锤式弯举", "hammer curl"],
+            "excludes": [],
         },
     ]
 
@@ -725,8 +820,8 @@ def main():
                 continue
             matched_key = None
             for c in COMPOUND_EXERCISES_DEF:
-                if any(mat in mname for mat in c["matches"]):
-                    if not any(ex in mname for ex in c["excludes"]):
+                if any(mat.lower() in mname.lower() for mat in c["matches"]):
+                    if not any(ex.lower() in mname.lower() for ex in c["excludes"]):
                         matched_key = c["key"]
                         break
             if not matched_key:
@@ -778,6 +873,8 @@ def main():
     compound_prs = []
     for c in COMPOUND_EXERCISES_DEF:
         rec = compound_records[c["key"]]
+        if rec["total_sets"] == 0:
+            continue
         top_by_1rm = sorted(rec["history"], key=lambda x: x["est_1rm_kg"], reverse=True)[:5]
         top_by_date = sorted(rec["history"], key=lambda x: x["date"], reverse=True)[:5]
         compound_prs.append({
