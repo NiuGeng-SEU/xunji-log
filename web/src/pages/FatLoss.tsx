@@ -295,7 +295,7 @@ export default function FatLoss({ data }: { data: Analysis }) {
     const allYears = [...fromDates, ...fromMonthly].filter((y) => !isNaN(y) && y > 2000);
     const minYear = Math.min(...allYears);
     const maxYear = Math.max(...allYears);
-    return Array.from({ length: maxYear - minYear + 1 }, (_, i) => maxYear - i);
+    return Array.from({ length: maxYear - minYear + 1 }, (_, i) => minYear + i);
   }, [data.date_start, data.date_end, m.labels]);
 
   const todayMonthKey = useMemo(() => {
@@ -359,10 +359,10 @@ export default function FatLoss({ data }: { data: Analysis }) {
     <nav className="chart-years-nav" aria-label={t("Year filter", "年份筛选")}>
       <button
         type="button"
-        className={chartYear === null ? "active" : ""}
-        onClick={() => setChartYear(null)}
+        className={chartYear === "all" ? "active" : ""}
+        onClick={() => setChartYear("all")}
       >
-        {t("Past Year", "近一年")}
+        {t("All", "全部")}
       </button>
       {chartYears.map((choice) => (
         <button
@@ -376,10 +376,10 @@ export default function FatLoss({ data }: { data: Analysis }) {
       ))}
       <button
         type="button"
-        className={chartYear === "all" ? "active" : ""}
-        onClick={() => setChartYear("all")}
+        className={chartYear === null ? "active" : ""}
+        onClick={() => setChartYear(null)}
       >
-        {t("All", "全部")}
+        {t("Past Year", "近一年")}
       </button>
     </nav>
   );
@@ -605,16 +605,23 @@ export default function FatLoss({ data }: { data: Analysis }) {
         </div>
       </div>
 
-      {/* Monthly Cardio Distance & Calories Charts (Moved above Cardio Log) */}
+      {/* Monthly Cardio Trends Section Header with Year Filter */}
+      <div className="cardio-charts-section-head">
+        <h3 className="cardio-charts-section-title">
+          {t("Monthly Cardio Trends", "月度有氧趋势")}
+        </h3>
+        {renderChartYearSelector()}
+      </div>
+
       <div className="charts-grid">
         {/* Monthly Cardio Distance & Avg Heart Rate Chart */}
         <div className="chart-card clickable-hint">
-          <div className="chart-card-header">
+          <div className="chart-card-header single-line">
             <h3>{t("Monthly Cardio Distance & Heart Rate", "月度有氧里程与心率")}</h3>
-            {renderChartYearSelector()}
           </div>
           <Chart
             onEvents={{ click: openMonth }}
+            height={280}
             option={{
               grid: { left: 45, right: 48, top: 38, bottom: 28 },
               legend: {
@@ -644,22 +651,28 @@ export default function FatLoss({ data }: { data: Analysis }) {
         </div>
 
         <div className="chart-card clickable-hint">
-          <div className="chart-card-header">
+          <div className="chart-card-header single-line">
             <h3>{t("Monthly Cardio Calories (kcal)", "月度有氧消耗（kcal）")}</h3>
-            <span className="chart-period-badge">
-              {chartYear === null
-                ? t("Past Year", "近一年")
-                : chartYear === "all"
-                ? t("All", "全部")
-                : `${chartYear}`}
-            </span>
           </div>
           <Chart
             onEvents={{ click: openMonth }}
+            height={280}
             option={{
+              grid: { left: 45, right: 48, top: 38, bottom: 28 },
+              legend: {
+                data: [t("Calories (kcal)", "有氧消耗 (kcal)")],
+                textStyle: { color: "#64748b" },
+              },
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
               yAxis: { type: "value", name: "kcal", ...axisStyle },
-              series: [{ type: "bar", data: filteredCardioKcal, itemStyle: { color: MATLAB_COLORS[4] } }],
+              series: [
+                {
+                  name: t("Calories (kcal)", "有氧消耗 (kcal)"),
+                  type: "bar",
+                  data: filteredCardioKcal,
+                  itemStyle: { color: MATLAB_COLORS[4] },
+                },
+              ],
               tooltip: { trigger: "axis" },
             }}
           />

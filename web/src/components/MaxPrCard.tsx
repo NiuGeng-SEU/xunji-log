@@ -234,6 +234,181 @@ const FIXED_TOP_5_KEYS = [
   "deadlift",
 ];
 
+interface WorkoutPrSparklineProps {
+  history?: CompoundPrSet[];
+  years: number[];
+  unit: "kg" | "lb";
+  selectedYear: number | "past_year" | "all";
+}
+
+function WorkoutPrSparkline({
+  history,
+  years,
+  unit,
+  selectedYear,
+}: WorkoutPrSparklineProps) {
+  const dataPoints = useMemo(() => {
+    if (!history || history.length === 0 || !years || years.length === 0) return [];
+
+    return years.map((y) => {
+      const prefix = String(y);
+      const setsInYear = history.filter((s) => s.date.startsWith(prefix));
+      if (setsInYear.length === 0) {
+        return { year: y, val: 0, hasData: false };
+      }
+      const maxVal = Math.max(
+        ...setsInYear.map((s) => (unit === "lb" ? s.est_1rm_lb : s.est_1rm_kg))
+      );
+      return { year: y, val: maxVal, hasData: true };
+    });
+  }, [history, years, unit]);
+
+  const activePoints = useMemo(() => dataPoints.filter((p) => p.hasData), [dataPoints]);
+
+  const growthInfo = useMemo(() => {
+    if (activePoints.length < 2) return null;
+    const first = activePoints[0];
+    const last = activePoints[activePoints.length - 1];
+    const diff = last.val - first.val;
+    const roundedDiff = Math.round(diff * 10) / 10;
+    return {
+      diff: roundedDiff,
+      text: `${diff >= 0 ? "+" : ""}${roundedDiff} ${unit}`,
+      isPositive: diff >= 0,
+    };
+  }, [activePoints, unit]);
+
+  if (years.length < 2) return null;
+
+  const svgWidth = 190;
+  const svgHeight = 44;
+  const padX = 14;
+  const plotWidth = svgWidth - 2 * padX;
+  const topY = 6;
+  const bottomY = 28;
+  const plotHeight = bottomY - topY;
+
+  const validVals = activePoints.map((p) => p.val);
+  const minVal = validVals.length ? Math.min(...validVals) : 0;
+  const maxVal = validVals.length ? Math.max(...validVals) : 0;
+  const valRange = maxVal - minVal;
+  const padVal = valRange > 0 ? valRange * 0.15 : 1;
+
+  const coords = dataPoints.map((pt, idx) => {
+    const x = padX + (idx / (dataPoints.length - 1)) * plotWidth;
+    let y = (topY + bottomY) / 2;
+    if (pt.hasData && validVals.length > 0) {
+      if (valRange <= 0) {
+        y = (topY + bottomY) / 2;
+      } else {
+        const norm = (pt.val - (minVal - padVal)) / (valRange + 2 * padVal);
+        y = bottomY - norm * plotHeight;
+      }
+    }
+    return { ...pt, x, y };
+  });
+
+  const activeCoords = coords.filter((c) => c.hasData);
+
+  let linePath = "";
+  let areaPath = "";
+  if (activeCoords.length >= 2) {
+    linePath = `M ${activeCoords.map((c) => `${c.x.toFixed(1)},${c.y.toFixed(1)}`).join(" L ")}`;
+    const first = activeCoords[0];
+    const last = activeCoords[activeCoords.length - 1];
+    areaPath = `${linePath} L ${last.x.toFixed(1)},${bottomY} L ${first.x.toFixed(1)},${bottomY} Z`;
+  }
+
+  return (
+    <div className="max-pr-sparkline-wrap">
+      <div className="max-pr-sparkline-head">
+        <span className="max-pr-sparkline-label">PR Trend</span>
+        {growthInfo && (
+          <span className={`max-pr-sparkline-diff ${growthInfo.isPositive ? "pos" : "neg"}`}>
+            {growthInfo.isPositive ? "↗" : "↘"} {growthInfo.text}
+          </span>
+        )}
+      </div>
+      <svg
+        className="max-pr-sparkline-svg"
+        viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+      >
+        <defs>
+          <linearGradient id="workoutPrGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.02" />
+          </linearGradient>
+        </defs>
+
+        <line
+          x1={padX}
+          y1={bottomY}
+          x2={svgWidth - padX}
+          y2={bottomY}
+          stroke="#e2e8f0"
+          strokeWidth="1"
+          strokeDasharray="2 2"
+        />
+
+        {areaPath && <path d={areaPath} fill="url(#workoutPrGrad)" />}
+
+        {linePath && (
+          <path
+            d={linePath}
+            fill="none"
+            stroke="#8b5cf6"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        )}
+
+        {coords.map((pt) => {
+          const isSelected = selectedYear === pt.year;
+          const labelYear = `'${String(pt.year).slice(2)}`;
+          return (
+            <g key={pt.year}>
+              {pt.hasData ? (
+                <circle
+                  cx={pt.x}
+                  cy={pt.y}
+                  r={isSelected ? 4.5 : 3}
+                  fill={isSelected ? "#ffffff" : "#8b5cf6"}
+                  stroke="#8b5cf6"
+                  strokeWidth={isSelected ? 2.5 : 1}
+                  className="max-pr-sparkline-dot"
+                >
+                  <title>
+                    {pt.year}: {Math.round(pt.val * 10) / 10} {unit}
+                  </title>
+                </circle>
+              ) : (
+                <circle
+                  cx={pt.x}
+                  cy={bottomY}
+                  r={1.5}
+                  fill="#cbd5e1"
+                  className="max-pr-sparkline-dot empty"
+                />
+              )}
+              <text
+                x={pt.x}
+                y={svgHeight - 2}
+                textAnchor="middle"
+                fontSize="9"
+                fill={isSelected ? "#8b5cf6" : pt.hasData ? "#64748b" : "#94a3b8"}
+                fontWeight={isSelected ? "700" : "500"}
+              >
+                {labelYear}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
 export default function MaxPrCard({ prs }: MaxPrCardProps) {
   const { unit } = useWeightUnit();
   const { language, t } = useLanguage();
@@ -290,7 +465,7 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
         if (!isNaN(y) && y > 2000) yearsSet.add(y);
       }
     }
-    return Array.from(yearsSet).sort((a, b) => b - a);
+    return Array.from(yearsSet).sort((a, b) => a - b);
   }, [prs]);
 
   const now = useMemo(() => new Date(), []);
@@ -436,10 +611,10 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
             <nav className="chart-years-nav" aria-label={t("Year filter", "年份筛选")}>
               <button
                 type="button"
-                className={selectedYear === "past_year" ? "active" : ""}
-                onClick={() => setSelectedYear("past_year")}
+                className={selectedYear === "all" ? "active" : ""}
+                onClick={() => setSelectedYear("all")}
               >
-                {t("Past Year", "近一年")}
+                {t("All", "全部")}
               </button>
               {years.map((choice) => (
                 <button
@@ -453,10 +628,10 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
               ))}
               <button
                 type="button"
-                className={selectedYear === "all" ? "active" : ""}
-                onClick={() => setSelectedYear("all")}
+                className={selectedYear === "past_year" ? "active" : ""}
+                onClick={() => setSelectedYear("past_year")}
               >
-                {t("All", "全部")}
+                {t("Past Year", "近一年")}
               </button>
             </nav>
 
@@ -540,6 +715,15 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
                       </span>
                     </div>
                   </div>
+                </div>
+
+                <div className="max-pr-item-center">
+                  <WorkoutPrSparkline
+                    history={pr.history}
+                    years={years}
+                    unit={unit}
+                    selectedYear={selectedYear}
+                  />
                 </div>
 
                 <div className="max-pr-item-right">

@@ -507,6 +507,28 @@ a { color: inherit; text-decoration: none; }
   flex-wrap: wrap;
 }
 
+.chart-card-header.single-line {
+  margin-bottom: 8px;
+  min-height: 24px;
+}
+
+.cardio-charts-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cardio-charts-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
 .chart-card-header h3 {
   margin-bottom: 0;
 }
@@ -1513,6 +1535,71 @@ table.data tr.undone td {
   background: var(--border);
 }
 
+/* Center Sparkline in Max & PR item */
+.max-pr-item-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 200px;
+  margin: 0 24px;
+}
+
+.max-pr-sparkline-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 190px;
+}
+
+.max-pr-sparkline-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 2px;
+  padding: 0 4px;
+}
+
+.max-pr-sparkline-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.max-pr-sparkline-diff {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.max-pr-sparkline-diff.pos {
+  color: #10b981;
+}
+
+.max-pr-sparkline-diff.neg {
+  color: #ef4444;
+}
+
+.max-pr-sparkline-svg {
+  width: 190px;
+  height: 44px;
+  overflow: visible;
+  display: block;
+}
+
+.max-pr-sparkline-dot {
+  cursor: pointer;
+  transition: r 0.15s ease, stroke-width 0.15s ease;
+}
+
+.max-pr-sparkline-dot:hover {
+  r: 5px;
+  stroke-width: 3px;
+}
+
 /* Modal styles (Light Mode) */
 .max-pr-modal-backdrop {
   position: fixed;
@@ -2013,6 +2100,18 @@ table.data tr.undone td {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+  }
+  .max-pr-item-center {
+    width: 100%;
+    margin: 6px 0;
+    align-items: flex-start;
+  }
+  .max-pr-sparkline-wrap {
+    width: 100%;
+    max-width: 240px;
+  }
+  .max-pr-sparkline-svg {
+    width: 100%;
   }
   .max-pr-item-right {
     margin-left: 0;
@@ -2641,6 +2740,28 @@ table.data tr.undone td {
 
 .pb-time-val.empty {
   color: #cbd5e1;
+}
+
+.pb-sparkline-box {
+  margin: 6px 0 6px 0;
+  width: 100%;
+}
+
+.pb-sparkline-svg {
+  width: 100%;
+  height: 36px;
+  overflow: visible;
+  display: block;
+}
+
+.pb-sparkline-dot {
+  cursor: pointer;
+  transition: r 0.15s ease, stroke-width 0.15s ease;
+}
+
+.pb-sparkline-dot:hover {
+  r: 4.5px;
+  stroke-width: 2.5px;
 }
 
 .pb-bottom-meta {

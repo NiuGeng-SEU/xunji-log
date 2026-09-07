@@ -17,7 +17,7 @@ export default function Muscle({ data }: { data: Analysis }) {
   const m = data.monthly;
   const cm = data.category_monthly;
   const volumeUnit = volumeScaleLabel(unit, language);
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [selectedYear, setSelectedYear] = useState<number | "all" | null>(null);
 
   const years = useMemo(() => {
     const fromDates = [Number(data.date_start.slice(0, 4)), Number(data.date_end.slice(0, 4))];
@@ -25,7 +25,7 @@ export default function Muscle({ data }: { data: Analysis }) {
     const allYears = [...fromDates, ...fromMonthly].filter((y) => !isNaN(y) && y > 2000);
     const minYear = Math.min(...allYears);
     const maxYear = Math.max(...allYears);
-    return Array.from({ length: maxYear - minYear + 1 }, (_, i) => maxYear - i);
+    return Array.from({ length: maxYear - minYear + 1 }, (_, i) => minYear + i);
   }, [data.date_start, data.date_end, m.labels]);
 
   const todayMonthKey = useMemo(() => {
@@ -34,7 +34,10 @@ export default function Muscle({ data }: { data: Analysis }) {
   }, []);
 
   const monthKeys = useMemo(() => {
-    if (selectedYear) {
+    if (selectedYear === "all") {
+      return m.labels;
+    }
+    if (typeof selectedYear === "number") {
       return Array.from({ length: 12 }, (_, month) => `${selectedYear}-${String(month + 1).padStart(2, "0")}`);
     }
     const now = new Date();
@@ -42,7 +45,7 @@ export default function Muscle({ data }: { data: Analysis }) {
       const date = new Date(now.getFullYear(), now.getMonth() - 11 + index, 1);
       return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
     });
-  }, [selectedYear]);
+  }, [selectedYear, m.labels]);
 
   const shortLabels = useMemo(() => monthKeys.map((month) => month.slice(2)), [monthKeys]);
 
@@ -269,7 +272,7 @@ export default function Muscle({ data }: { data: Analysis }) {
       stack: "total",
       areaStyle: { opacity: 0.4 },
       data: monthKeys.map((month) => {
-        if (selectedYear && month > todayMonthKey) {
+        if (typeof selectedYear === "number" && month > todayMonthKey) {
           return null;
         }
         const index = monthIndex.get(month);
@@ -281,7 +284,7 @@ export default function Muscle({ data }: { data: Analysis }) {
 
   const filteredMonthlyHours = useMemo(() => {
     return monthKeys.map((month) => {
-      if (selectedYear && month > todayMonthKey) {
+      if (typeof selectedYear === "number" && month > todayMonthKey) {
         return null;
       }
       const index = monthIndex.get(month);
@@ -314,11 +317,11 @@ export default function Muscle({ data }: { data: Analysis }) {
     <nav className="chart-years-nav" aria-label={t("Year filter", "年份筛选")}>
       <button
         type="button"
-        className={selectedYear === null ? "active" : ""}
-        aria-current={selectedYear === null ? "true" : undefined}
-        onClick={() => setSelectedYear(null)}
+        className={selectedYear === "all" ? "active" : ""}
+        aria-current={selectedYear === "all" ? "true" : undefined}
+        onClick={() => setSelectedYear("all")}
       >
-        {t("Past Year", "近一年")}
+        {t("All", "全部")}
       </button>
       {years.map((choice) => (
         <button
@@ -331,6 +334,14 @@ export default function Muscle({ data }: { data: Analysis }) {
           {choice}
         </button>
       ))}
+      <button
+        type="button"
+        className={selectedYear === null ? "active" : ""}
+        aria-current={selectedYear === null ? "true" : undefined}
+        onClick={() => setSelectedYear(null)}
+      >
+        {t("Past Year", "近一年")}
+      </button>
     </nav>
   );
 
@@ -552,7 +563,7 @@ export default function Muscle({ data }: { data: Analysis }) {
           <div className="chart-card-header">
             <h3>{t("Training Share by Body Area", "部位训练占比")}</h3>
             <span className="chart-period-badge">
-              {selectedYear ? `${selectedYear}` : t("Past Year", "近一年")}
+              {selectedYear === "all" ? t("All-Time", "全部") : selectedYear ? `${selectedYear}` : t("Past Year", "近一年")}
             </span>
           </div>
           <Chart

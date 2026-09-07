@@ -38,6 +38,177 @@ const DISTANCES: { key: keyof typeof RUNNING_BENCHMARKS; min: number; max: numbe
   { key: 'Marathon', min: 41, max: 44 },
 ];
 
+interface RunningPrSparklineProps {
+  distKey: keyof typeof RUNNING_BENCHMARKS;
+  activities: Activity[];
+  years: number[];
+  selectedYear: number | 'past_year' | 'all';
+}
+
+function RunningPrSparkline({
+  distKey,
+  activities,
+  years,
+  selectedYear,
+}: RunningPrSparklineProps) {
+  const distConfig = DISTANCES.find((d) => d.key === distKey);
+
+  const dataPoints = useMemo(() => {
+    if (!distConfig || !activities || !years || years.length === 0) return [];
+    const { min, max } = distConfig;
+    const runs = activities.filter((a) => a.type === 'Run' && a.distance > 0);
+
+    return years.map((y) => {
+      const prefix = String(y);
+      const matching = runs.filter((a) => {
+        if (!a.start_date_local.startsWith(prefix)) return false;
+        const km = a.distance / 1000;
+        if (km < min || km > max) return false;
+        const time = parseMovingTime(a.moving_time);
+        const pace = time / km;
+        return pace >= 180 && pace <= 720;
+      });
+
+      if (matching.length === 0) {
+        return { year: y, sec: 0, pace: 0, hasData: false };
+      }
+
+      const best = matching.reduce((b, a) => {
+        return parseMovingTime(a.moving_time) < parseMovingTime(b.moving_time) ? a : b;
+      });
+      const sec = parseMovingTime(best.moving_time);
+      const pace = sec / (best.distance / 1000);
+      return { year: y, sec, pace, hasData: true };
+    });
+  }, [distConfig, activities, years]);
+
+  if (years.length < 2) return null;
+
+  const activePoints = dataPoints.filter((p) => p.hasData);
+
+  const svgWidth = 160;
+  const svgHeight = 36;
+  const padX = 14;
+  const plotWidth = svgWidth - 2 * padX;
+  const topY = 6;
+  const bottomY = 22;
+  const plotHeight = bottomY - topY;
+
+  const validSecs = activePoints.map((p) => p.sec);
+  const minSec = validSecs.length ? Math.min(...validSecs) : 0; // fastest
+  const maxSec = validSecs.length ? Math.max(...validSecs) : 0; // slowest
+  const secRange = maxSec - minSec;
+
+  const coords = dataPoints.map((pt, idx) => {
+    const x = padX + (idx / (dataPoints.length - 1)) * plotWidth;
+    let y = (topY + bottomY) / 2;
+    if (pt.hasData && validSecs.length > 0) {
+      if (secRange <= 0) {
+        y = (topY + bottomY) / 2;
+      } else {
+        // Faster time plotted higher
+        const norm = (pt.sec - minSec) / secRange;
+        y = topY + norm * plotHeight;
+      }
+    }
+    return { ...pt, x, y };
+  });
+
+  const activeCoords = coords.filter((c) => c.hasData);
+
+  let linePath = "";
+  let areaPath = "";
+  if (activeCoords.length >= 2) {
+    linePath = `M ${activeCoords.map((c) => `${c.x.toFixed(1)},${c.y.toFixed(1)}`).join(" L ")}`;
+    const first = activeCoords[0];
+    const last = activeCoords[activeCoords.length - 1];
+    areaPath = `${linePath} L ${last.x.toFixed(1)},${bottomY} L ${first.x.toFixed(1)},${bottomY} Z`;
+  }
+
+  const gradId = `runPrGrad-${distKey.replace(/\s+/g, '')}`;
+
+  return (
+    <div className="pb-sparkline-box">
+      <svg
+        className="pb-sparkline-svg"
+        viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+      >
+        <defs>
+          <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#9333ea" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#9333ea" stopOpacity="0.02" />
+          </linearGradient>
+        </defs>
+
+        <line
+          x1={padX}
+          y1={bottomY}
+          x2={svgWidth - padX}
+          y2={bottomY}
+          stroke="#e2e8f0"
+          strokeWidth="1"
+          strokeDasharray="2 2"
+        />
+
+        {areaPath && <path d={areaPath} fill={`url(#${gradId})`} />}
+
+        {linePath && (
+          <path
+            d={linePath}
+            fill="none"
+            stroke="#9333ea"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        )}
+
+        {coords.map((pt) => {
+          const isSelected = selectedYear === pt.year;
+          const labelYear = `'${String(pt.year).slice(2)}`;
+          return (
+            <g key={pt.year}>
+              {pt.hasData ? (
+                <circle
+                  cx={pt.x}
+                  cy={pt.y}
+                  r={isSelected ? 4 : 2.8}
+                  fill={isSelected ? "#ffffff" : "#9333ea"}
+                  stroke="#9333ea"
+                  strokeWidth={isSelected ? 2 : 1}
+                  className="pb-sparkline-dot"
+                >
+                  <title>
+                    {pt.year}: {formatTime(pt.sec)} ({formatPace(pt.pace)}/km)
+                  </title>
+                </circle>
+              ) : (
+                <circle
+                  cx={pt.x}
+                  cy={bottomY}
+                  r={1.5}
+                  fill="#cbd5e1"
+                  className="pb-sparkline-dot empty"
+                />
+              )}
+              <text
+                x={pt.x}
+                y={svgHeight - 1}
+                textAnchor="middle"
+                fontSize="8.5"
+                fill={isSelected ? "#9333ea" : pt.hasData ? "#64748b" : "#cbd5e1"}
+                fontWeight={isSelected ? "700" : "500"}
+              >
+                {labelYear}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
 export function PersonalBest({ activities, onSelectActivity }: PersonalBestProps) {
   const { t, language } = useLanguage();
   const isZh = language === 'zh';
@@ -46,12 +217,10 @@ export function PersonalBest({ activities, onSelectActivity }: PersonalBestProps
   const years = useMemo(() => {
     const yearsSet = new Set<number>();
     for (const a of activities) {
-      if (a.type === 'Run' && a.distance > 0) {
-        const y = Number(a.start_date_local.slice(0, 4));
-        if (!isNaN(y) && y > 2000) yearsSet.add(y);
-      }
+      const y = Number(a.start_date_local.slice(0, 4));
+      if (!isNaN(y) && y > 2000) yearsSet.add(y);
     }
-    return Array.from(yearsSet).sort((a, b) => b - a);
+    return Array.from(yearsSet).sort((a, b) => a - b);
   }, [activities]);
 
   // Filtered runs based on selected year (default Past Year / last 12 months)
@@ -122,10 +291,10 @@ export function PersonalBest({ activities, onSelectActivity }: PersonalBestProps
         <nav className="chart-years-nav" aria-label={t('Year filter', '年份筛选')}>
           <button
             type="button"
-            className={selectedYear === 'past_year' ? 'active' : ''}
-            onClick={() => setSelectedYear('past_year')}
+            className={selectedYear === 'all' ? 'active' : ''}
+            onClick={() => setSelectedYear('all')}
           >
-            {t('Past Year', '近一年')}
+            {t('All', '全部')}
           </button>
           {years.map((y) => (
             <button
@@ -139,10 +308,10 @@ export function PersonalBest({ activities, onSelectActivity }: PersonalBestProps
           ))}
           <button
             type="button"
-            className={selectedYear === 'all' ? 'active' : ''}
-            onClick={() => setSelectedYear('all')}
+            className={selectedYear === 'past_year' ? 'active' : ''}
+            onClick={() => setSelectedYear('past_year')}
           >
-            {t('All', '全部')}
+            {t('Past Year', '近一年')}
           </button>
         </nav>
       </div>
@@ -186,6 +355,12 @@ export function PersonalBest({ activities, onSelectActivity }: PersonalBestProps
               <span className={`pb-time-val ${activity ? 'active' : 'empty'}`}>
                 {activity ? formatTime(time) : '--'}
               </span>
+              <RunningPrSparkline
+                distKey={key}
+                activities={activities}
+                years={years}
+                selectedYear={selectedYear}
+              />
               <div className="pb-bottom-meta">
                 {activity ? (
                   <>
