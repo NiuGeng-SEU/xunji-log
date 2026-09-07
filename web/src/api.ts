@@ -53,6 +53,14 @@ export interface Analysis {
     labels: string[];
     series: Array<{ name: string; data: number[] }>;
   };
+  category_monthly_sessions?: {
+    labels: string[];
+    series: Array<{ name: string; data: number[] }>;
+  };
+  movement_monthly_days?: {
+    labels: string[];
+    series: Array<{ name: string; data: number[] }>;
+  };
   movement_trends: {
     labels: string[];
     series: Array<{ name: string; data: number[] }>;
@@ -194,47 +202,6 @@ export async function fetchAnalysis(): Promise<Analysis> {
   }
 
   throw new Error("Unable to load workout analysis data.");
-}
-
-export interface SyncStatus {
-  state: string;
-  trigger?: string;
-  message?: string;
-  updated_at?: string;
-  sync_enabled?: boolean;
-  sync_cron?: string;
-  refresh_days?: number;
-  fetch?: {
-    start?: string;
-    end?: string;
-    fetched?: number;
-    refreshed?: number;
-    empty?: number;
-    errors?: string[];
-  };
-}
-
-export async function fetchSyncStatus(): Promise<SyncStatus> {
-  try {
-    const res = await fetch("/api/sync/status");
-    if (res.ok) return await res.json();
-  } catch {
-    // ignore
-  }
-  return { state: "idle" };
-}
-
-export async function triggerSync(): Promise<SyncStatus> {
-  try {
-    const res = await fetch("/api/sync", { method: "POST" });
-    if (res.ok) return await res.json();
-  } catch {
-    // ignore
-  }
-  return {
-    state: "static",
-    message: "GitHub Pages 静态模式：数据由 GitHub Actions 每日自动同步",
-  };
 }
 
 export async function refreshAnalysis(): Promise<void> {

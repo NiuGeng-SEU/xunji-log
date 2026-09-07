@@ -4,8 +4,13 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 PORT="${DASHBOARD_PORT:-8080}"
+HOST="${DASHBOARD_HOST:-127.0.0.1}"
 PIDFILE="$ROOT/.dashboard.pid"
 cmd="${1:-help}"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
+if [[ -x "$ROOT/.venv/bin/python" ]]; then
+  PYTHON_BIN="$ROOT/.venv/bin/python"
+fi
 
 start_server() {
   if [[ -f "$PIDFILE" ]] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
@@ -16,13 +21,13 @@ start_server() {
     echo "port $PORT in use, run stop first"
     exit 1
   fi
-  [[ -f data/analysis.json ]] || python3 scripts/analyze.py
+  [[ -f data/analysis.json ]] || "$PYTHON_BIN" scripts/analyze.py
   [[ -d web/dist ]] || (cd web && npm install && npm run build)
-  nohup python3 -m uvicorn server.main:app --host 0.0.0.0 --port "$PORT" \
+  nohup "$PYTHON_BIN" -m uvicorn server.main:app --host "$HOST" --port "$PORT" \
     > "$ROOT/.dashboard.log" 2>&1 &
   echo $! > "$PIDFILE"
   sleep 1
-  curl -sf "http://127.0.0.1:$PORT/api/health" | python3 -m json.tool
+  curl -sf "http://127.0.0.1:$PORT/api/health" | "$PYTHON_BIN" -m json.tool
   echo "http://127.0.0.1:$PORT"
 }
 
@@ -44,10 +49,10 @@ case "$cmd" in
     "$0" start
     ;;
   status)
-    curl -sf "http://127.0.0.1:$PORT/api/health" | python3 -m json.tool 2>/dev/null || echo "not running"
+    curl -sf "http://127.0.0.1:$PORT/api/health" | "$PYTHON_BIN" -m json.tool 2>/dev/null || echo "not running"
     ;;
   refresh)
-    curl -sf -X POST "http://127.0.0.1:$PORT/api/refresh" | python3 -m json.tool
+    curl -sf -X POST "http://127.0.0.1:$PORT/api/refresh" | "$PYTHON_BIN" -m json.tool
     ;;
   logs)
     tail -f "$ROOT/.dashboard.log"

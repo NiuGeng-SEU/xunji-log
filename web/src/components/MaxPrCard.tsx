@@ -235,6 +235,7 @@ const FIXED_TOP_5_KEYS = [
 ];
 
 interface WorkoutPrSparklineProps {
+  idKey: string;
   history?: CompoundPrSet[];
   years: number[];
   unit: "kg" | "lb";
@@ -242,11 +243,14 @@ interface WorkoutPrSparklineProps {
 }
 
 function WorkoutPrSparkline({
+  idKey,
   history,
   years,
   unit,
   selectedYear,
 }: WorkoutPrSparklineProps) {
+  const { t } = useLanguage();
+  const [hoveredYear, setHoveredYear] = useState<number | null>(null);
   const dataPoints = useMemo(() => {
     if (!history || history.length === 0 || !years || years.length === 0) return [];
 
@@ -263,20 +267,21 @@ function WorkoutPrSparkline({
     });
   }, [history, years, unit]);
 
-  const activePoints = useMemo(() => dataPoints.filter((p) => p.hasData), [dataPoints]);
+  const activePoints = useMemo(() => dataPoints.filter((point) => point.hasData), [dataPoints]);
 
   const growthInfo = useMemo(() => {
-    if (activePoints.length < 2) return null;
-    const first = activePoints[0];
-    const last = activePoints[activePoints.length - 1];
-    const diff = last.val - first.val;
+    const comparisonYear = typeof selectedYear === "number" ? selectedYear : new Date().getFullYear();
+    const current = dataPoints.find((point) => point.year === comparisonYear);
+    const previous = dataPoints.find((point) => point.year === comparisonYear - 1);
+    if (!current?.hasData || !previous?.hasData) return null;
+    const diff = current.val - previous.val;
     const roundedDiff = Math.round(diff * 10) / 10;
     return {
-      diff: roundedDiff,
       text: `${diff >= 0 ? "+" : ""}${roundedDiff} ${unit}`,
       isPositive: diff >= 0,
+      previousYear: comparisonYear - 1,
     };
-  }, [activePoints, unit]);
+  }, [dataPoints, unit, selectedYear]);
 
   if (years.length < 2) return null;
 
@@ -309,6 +314,8 @@ function WorkoutPrSparkline({
   });
 
   const activeCoords = coords.filter((c) => c.hasData);
+  const hoveredPoint = coords.find((point) => point.year === hoveredYear) || null;
+  const gradId = `workoutPrGrad-${idKey.replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
   let linePath = "";
   let areaPath = "";
@@ -320,21 +327,41 @@ function WorkoutPrSparkline({
   }
 
   return (
-    <div className="max-pr-sparkline-wrap">
+    <div className="max-pr-sparkline-wrap" onMouseLeave={() => setHoveredYear(null)}>
       <div className="max-pr-sparkline-head">
         <span className="max-pr-sparkline-label">PR Trend</span>
         {growthInfo && (
-          <span className={`max-pr-sparkline-diff ${growthInfo.isPositive ? "pos" : "neg"}`}>
+          <span
+            className={`max-pr-sparkline-diff ${growthInfo.isPositive ? "pos" : "neg"}`}
+            title={`${growthInfo.previousYear} → ${growthInfo.previousYear + 1}`}
+          >
             {growthInfo.isPositive ? "↗" : "↘"} {growthInfo.text}
           </span>
         )}
       </div>
+      {hoveredPoint && (
+        <div
+          className="sparkline-instant-tooltip"
+          style={{
+            left: `${(hoveredPoint.x / svgWidth) * 100}%`,
+            top: `${18 + hoveredPoint.y}px`,
+          }}
+          role="tooltip"
+        >
+          <strong>{hoveredPoint.year}</strong>
+          <span>
+            {hoveredPoint.hasData
+              ? `${Math.round(hoveredPoint.val * 10) / 10} ${unit}`
+              : t("No record", "暂无记录")}
+          </span>
+        </div>
+      )}
       <svg
         className="max-pr-sparkline-svg"
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
       >
         <defs>
-          <linearGradient id="workoutPrGrad" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.25" />
             <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.02" />
           </linearGradient>
@@ -350,7 +377,7 @@ function WorkoutPrSparkline({
           strokeDasharray="2 2"
         />
 
-        {areaPath && <path d={areaPath} fill="url(#workoutPrGrad)" />}
+        {areaPath && <path d={areaPath} fill={`url(#${gradId})`} />}
 
         {linePath && (
           <path
@@ -377,11 +404,8 @@ function WorkoutPrSparkline({
                   stroke="#8b5cf6"
                   strokeWidth={isSelected ? 2.5 : 1}
                   className="max-pr-sparkline-dot"
-                >
-                  <title>
-                    {pt.year}: {Math.round(pt.val * 10) / 10} {unit}
-                  </title>
-                </circle>
+                  pointerEvents="none"
+                />
               ) : (
                 <circle
                   cx={pt.x}
@@ -389,8 +413,24 @@ function WorkoutPrSparkline({
                   r={1.5}
                   fill="#cbd5e1"
                   className="max-pr-sparkline-dot empty"
+                  pointerEvents="none"
                 />
               )}
+              <circle
+                cx={pt.x}
+                cy={pt.hasData ? pt.y : bottomY}
+                r="9"
+                className="sparkline-hit-target"
+                onMouseEnter={() => setHoveredYear(pt.year)}
+                onFocus={() => setHoveredYear(pt.year)}
+                onBlur={() => setHoveredYear(null)}
+                tabIndex={0}
+                aria-label={
+                  pt.hasData
+                    ? `${pt.year}: ${Math.round(pt.val * 10) / 10} ${unit}`
+                    : `${pt.year}: ${t("No record", "暂无记录")}`
+                }
+              />
               <text
                 x={pt.x}
                 y={svgHeight - 2}
@@ -719,6 +759,7 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
 
                 <div className="max-pr-item-center">
                   <WorkoutPrSparkline
+                    idKey={pr.key}
                     history={pr.history}
                     years={years}
                     unit={unit}

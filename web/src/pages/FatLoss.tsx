@@ -652,7 +652,7 @@ export default function FatLoss({ data }: { data: Analysis }) {
 
         <div className="chart-card clickable-hint">
           <div className="chart-card-header single-line">
-            <h3>{t("Monthly Cardio Calories (kcal)", "月度有氧消耗（kcal）")}</h3>
+            <h3>{t("Monthly Cardio Calories", "月度有氧消耗")}</h3>
           </div>
           <Chart
             onEvents={{ click: openMonth }}

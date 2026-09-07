@@ -47,16 +47,39 @@ export default function Overview({ data }: Props) {
     return index == null ? 0 : m.cardio_km[index];
   });
   const shortLabels = monthKeys.map((month) => month.slice(2));
-  const topMovements = data.top_movements
-    .filter(({ name }) => {
+  const isVisibleMovement = (name: string) => {
       const normalized = name.trim().toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g, "");
       return !normalized.includes("walking")
         && !normalized.includes("running")
         && !normalized.includes("traditionalstrength")
         && !normalized.includes("applehealth")
         && !normalized.includes("elliptical");
-    })
-    .slice(0, 8);
+  };
+  const selectedMonths = new Set(monthKeys);
+  const categoryShare = data.category_monthly_sessions
+    ? data.category_monthly_sessions.series
+        .map((series) => ({
+          name: series.name,
+          sessions: series.data.reduce((total, value, index) => (
+            selectedMonths.has(data.category_monthly_sessions!.labels[index]) ? total + value : total
+          ), 0),
+        }))
+        .filter((item) => item.sessions > 0)
+        .sort((a, b) => b.sessions - a.sessions)
+    : data.categories.labels.map((name, index) => ({ name, sessions: data.categories.sessions[index] }));
+  const topMovements = data.movement_monthly_days
+    ? data.movement_monthly_days.series
+        .filter(({ name }) => isVisibleMovement(name))
+        .map((series) => ({
+          name: series.name,
+          days: series.data.reduce((total, value, index) => (
+            selectedMonths.has(data.movement_monthly_days!.labels[index]) ? total + value : total
+          ), 0),
+        }))
+        .filter((item) => item.days > 0)
+        .sort((a, b) => b.days - a.days || a.name.localeCompare(b.name))
+        .slice(0, 8)
+    : data.top_movements.filter(({ name }) => isVisibleMovement(name)).slice(0, 8);
   const [drill, setDrill] = useState<DrillQuery | null>(null);
 
   const openMonth = useCallback(
@@ -121,9 +144,9 @@ export default function Overview({ data }: Props) {
               series: [{
                 type: "pie",
                 radius: ["42%", "68%"],
-                data: data.categories.labels.map((l, i) => ({
-                  name: label(l),
-                  value: data.categories.sessions[i],
+                data: categoryShare.map((item) => ({
+                  name: label(item.name),
+                  value: item.sessions,
                 })),
                 label: { color: "#666666", fontSize: 11 },
               }],
@@ -131,7 +154,7 @@ export default function Overview({ data }: Props) {
           />
         </div>
         <div className="chart-card clickable-hint">
-          <h3>{t("Top 8 Movements (Training Days)", "Top 8 高频动作（训练天数）")}</h3>
+          <h3>{t("Top 8 Movements", "Top 8 高频动作")}</h3>
           <Chart
             onEvents={{
               click: (p) => {

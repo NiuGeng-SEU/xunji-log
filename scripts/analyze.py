@@ -225,6 +225,8 @@ def main():
     total_done_sets = 0
     move_stats = defaultdict(lambda: {"days": set(), "sessions": 0, "sets": 0, "volume": 0.0, "category": None})
     cat_sessions = Counter()  # 部位 -> 出现次数（按动作出现次数）
+    cat_month_sessions = defaultdict(Counter)  # 部位 -> 月份 -> 动作出现次数
+    move_month_days = defaultdict(lambda: defaultdict(set))  # 动作 -> 月份 -> 训练日期
     cat_sets = Counter()
 
     # 有氧汇总（仅跑步算里程）
@@ -246,8 +248,13 @@ def main():
             if not summary_move:
                 st = move_stats[name]
                 st["sessions"] += 1
-                st["days"].add(t.get("datestr"))
+                datestr = t.get("datestr") or ""
+                st["days"].add(datestr)
                 st["category"] = cat
+                if len(datestr) >= 7:
+                    month = datestr[:7]
+                    cat_month_sessions[cat][month] += 1
+                    move_month_days[name][month].add(datestr)
 
             for s in m.get("sets") or []:
                 metrics = s.get("metrics") or {}
@@ -1024,6 +1031,26 @@ def main():
                     "data": [round(cat_month_vol[cat].get(m, 0) / 1000, 2) for m in months],
                 }
                 for cat in strength_cats
+            ],
+        },
+        "category_monthly_sessions": {
+            "labels": months,
+            "series": [
+                {
+                    "name": cat,
+                    "data": [cat_month_sessions[cat].get(m, 0) for m in months],
+                }
+                for cat in category_labels
+            ],
+        },
+        "movement_monthly_days": {
+            "labels": months,
+            "series": [
+                {
+                    "name": name,
+                    "data": [len(move_month_days[name].get(m, set())) for m in months],
+                }
+                for name, _ in top_moves
             ],
         },
         "movement_trends": {

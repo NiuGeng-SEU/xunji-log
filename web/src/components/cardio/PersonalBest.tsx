@@ -51,6 +51,8 @@ function RunningPrSparkline({
   years,
   selectedYear,
 }: RunningPrSparklineProps) {
+  const { t } = useLanguage();
+  const [hoveredYear, setHoveredYear] = useState<number | null>(null);
   const distConfig = DISTANCES.find((d) => d.key === distKey);
 
   const dataPoints = useMemo(() => {
@@ -86,6 +88,23 @@ function RunningPrSparkline({
 
   const activePoints = dataPoints.filter((p) => p.hasData);
 
+  const yearChange = useMemo(() => {
+    const comparisonYear = typeof selectedYear === 'number' ? selectedYear : new Date().getFullYear();
+    const current = dataPoints.find((point) => point.year === comparisonYear);
+    const previous = dataPoints.find((point) => point.year === comparisonYear - 1);
+    if (!current?.hasData || !previous?.hasData) return null;
+    const improvementSec = previous.sec - current.sec;
+    const absSec = Math.abs(Math.round(improvementSec));
+    const minutes = Math.floor(absSec / 60);
+    const seconds = absSec % 60;
+    const delta = minutes > 0 ? `${minutes}:${String(seconds).padStart(2, '0')}` : `${seconds}s`;
+    return {
+      text: `${delta} ${improvementSec >= 0 ? t('faster', '更快') : t('slower', '更慢')}`,
+      isPositive: improvementSec >= 0,
+      previousYear: comparisonYear - 1,
+    };
+  }, [dataPoints, t, selectedYear]);
+
   const svgWidth = 160;
   const svgHeight = 36;
   const padX = 14;
@@ -115,6 +134,7 @@ function RunningPrSparkline({
   });
 
   const activeCoords = coords.filter((c) => c.hasData);
+  const hoveredPoint = coords.find((point) => point.year === hoveredYear) || null;
 
   let linePath = "";
   let areaPath = "";
@@ -128,7 +148,35 @@ function RunningPrSparkline({
   const gradId = `runPrGrad-${distKey.replace(/\s+/g, '')}`;
 
   return (
-    <div className="pb-sparkline-box">
+    <div className="pb-sparkline-box" onMouseLeave={() => setHoveredYear(null)}>
+      <div className="pb-sparkline-head">
+        <span>{t('PB trend', 'PB 趋势')}</span>
+        {yearChange && (
+          <span
+            className={`pb-sparkline-change ${yearChange.isPositive ? 'pos' : 'neg'}`}
+            title={`${yearChange.previousYear} → ${yearChange.previousYear + 1}`}
+          >
+            {yearChange.isPositive ? '↗' : '↘'} {yearChange.text}
+          </span>
+        )}
+      </div>
+      {hoveredPoint && (
+        <div
+          className="sparkline-instant-tooltip pb-point-tooltip"
+          style={{
+            left: `${(hoveredPoint.x / svgWidth) * 100}%`,
+            top: `${18 + hoveredPoint.y}px`,
+          }}
+          role="tooltip"
+        >
+          <strong>{hoveredPoint.year}</strong>
+          <span>
+            {hoveredPoint.hasData
+              ? `${formatTime(hoveredPoint.sec)} · ${formatPace(hoveredPoint.pace)}/km`
+              : t('No record', '暂无记录')}
+          </span>
+        </div>
+      )}
       <svg
         className="pb-sparkline-svg"
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
@@ -177,11 +225,8 @@ function RunningPrSparkline({
                   stroke="#9333ea"
                   strokeWidth={isSelected ? 2 : 1}
                   className="pb-sparkline-dot"
-                >
-                  <title>
-                    {pt.year}: {formatTime(pt.sec)} ({formatPace(pt.pace)}/km)
-                  </title>
-                </circle>
+                  pointerEvents="none"
+                />
               ) : (
                 <circle
                   cx={pt.x}
@@ -189,8 +234,24 @@ function RunningPrSparkline({
                   r={1.5}
                   fill="#cbd5e1"
                   className="pb-sparkline-dot empty"
+                  pointerEvents="none"
                 />
               )}
+              <circle
+                cx={pt.x}
+                cy={pt.hasData ? pt.y : bottomY}
+                r="9"
+                className="sparkline-hit-target"
+                onMouseEnter={() => setHoveredYear(pt.year)}
+                onFocus={() => setHoveredYear(pt.year)}
+                onBlur={() => setHoveredYear(null)}
+                tabIndex={0}
+                aria-label={
+                  pt.hasData
+                    ? `${pt.year}: ${formatTime(pt.sec)}, ${formatPace(pt.pace)}/km`
+                    : `${pt.year}: ${t('No record', '暂无记录')}`
+                }
+              />
               <text
                 x={pt.x}
                 y={svgHeight - 1}

@@ -558,13 +558,17 @@ export default function Muscle({ data }: { data: Analysis }) {
       {/* Compound & Major Movements Max & PR Card */}
       <MaxPrCard prs={data.compound_prs || summary?.compound_prs} />
 
+      <div className="cardio-charts-section-head">
+        <h3 className="cardio-charts-section-title">
+          {t("Monthly Strength Trends", "月度力量训练趋势")}
+        </h3>
+        {renderYearSelector()}
+      </div>
+
       <div className="charts-grid">
         <div className="chart-card clickable-hint">
-          <div className="chart-card-header">
+          <div className="chart-card-header single-line">
             <h3>{t("Training Share by Body Area", "部位训练占比")}</h3>
-            <span className="chart-period-badge">
-              {selectedYear === "all" ? t("All-Time", "全部") : selectedYear ? `${selectedYear}` : t("Past Year", "近一年")}
-            </span>
           </div>
           <Chart
             onEvents={{
@@ -590,9 +594,8 @@ export default function Muscle({ data }: { data: Analysis }) {
           />
         </div>
         <div className="chart-card clickable-hint">
-          <div className="chart-card-header">
+          <div className="chart-card-header single-line">
             <h3>{t("Monthly Training Time (hours)", "月度训练时长（小时）")}</h3>
-            {renderYearSelector()}
           </div>
           <Chart
             onEvents={{ click: openMonth }}
