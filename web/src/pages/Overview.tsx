@@ -73,7 +73,7 @@ export default function Overview({ data }: Props) {
 
   return (
     <>
-      <h2 className="page-title overview-title">{t("Workout Overview", "训练总览")}</h2>
+      <h2 className="page-title overview-title">{t("Overview", "总览")}</h2>
 
       <TrainingHeatmap
         data={data}

@@ -61,6 +61,16 @@ const ENGLISH_LABELS: Record<string, string> = {
   "站姿杠铃推举": "Standing Barbell Overhead Press",
   "锤式弯举": "Hammer Curl",
   "面拉": "Face Pull",
+  "背·二头": "Back & Biceps",
+  "胸·三头·腹肌": "Chest, Triceps & Abs",
+  "腿·肩": "Legs & Shoulders",
+  "腹部 小臂": "Abs & Forearms",
+  "力量训练": "Strength Workout",
+  "远足": "Hiking",
+  "硬拉": "Deadlift",
+  "罗马尼亚硬拉": "Romanian Deadlift",
+  "杠铃推举": "Barbell Overhead Press",
+  "双杠臂屈伸": "Parallel-Bar Dip",
 };
 const RAW_LABELS = Object.fromEntries(Object.entries(ENGLISH_LABELS).map(([raw, english]) => [english, raw]));
 
@@ -68,6 +78,51 @@ function replaceKnownLabels(value: string): string {
   return Object.entries(ENGLISH_LABELS)
     .sort(([a], [b]) => b.length - a.length)
     .reduce((text, [raw, english]) => text.replaceAll(raw, english), value);
+}
+
+const BODY_PART_MAP: Record<string, string> = {
+  "胸": "Chest",
+  "背": "Back",
+  "腿": "Legs",
+  "肩": "Shoulders",
+  "手臂": "Arms",
+  "二头": "Biceps",
+  "三头": "Triceps",
+  "腹肌": "Abs",
+  "腹部": "Abs",
+  "小臂": "Forearms",
+  "核心": "Core",
+  "力量": "Strength",
+  "有氧": "Cardio",
+  "跑步": "Running",
+  "远足": "Hiking",
+  "步行": "Walking",
+  "骑行": "Cycling",
+};
+
+export function translateLabel(raw: string): string {
+  if (!raw) return "";
+  if (ENGLISH_LABELS[raw]) return ENGLISH_LABELS[raw];
+
+  // Try decomposing compound split labels like "背·二头" or "胸·三头·腹肌" or "腹部 小臂"
+  if (/[·/+\s]/.test(raw)) {
+    const parts = raw.split(/[·/+\s]+/).filter(Boolean);
+    const translatedParts = parts.map((part) => BODY_PART_MAP[part] || ENGLISH_LABELS[part] || part);
+    const combined = translatedParts.join(" & ");
+    if (!/\p{Script=Han}/u.test(combined)) {
+      return combined;
+    }
+  }
+
+  // Replace known sub-phrases
+  const replaced = replaceKnownLabels(raw);
+  if (!/\p{Script=Han}/u.test(replaced)) {
+    return replaced;
+  }
+
+  // Fallback: strip any remaining Chinese characters, or default to English fallback
+  const stripped = replaced.replace(/[\u4e00-\u9fa5]+/g, "").trim();
+  return stripped || "Workout";
 }
 
 function translateGeneratedText(raw: string): string {
@@ -113,7 +168,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const value: LanguageContextValue = {
     language: "en",
     t: (english) => english,
-    label: (raw) => ENGLISH_LABELS[raw] || (/\p{Script=Han}/u.test(raw) ? "Custom Movement" : raw),
+    label: (raw) => translateLabel(raw),
     rawLabel: (display) => RAW_LABELS[display] || display,
     text: (raw) => translateGeneratedText(raw),
   };

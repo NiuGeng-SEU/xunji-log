@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import {
   Analysis,
@@ -9,9 +9,6 @@ import {
 import Overview from "./pages/Overview";
 import FatLoss from "./pages/FatLoss";
 import Muscle from "./pages/Muscle";
-import Rhythm from "./pages/Rhythm";
-import Movements from "./pages/Movements";
-import Calendar from "./pages/Calendar";
 import { UnitProvider } from "./units";
 import { LanguageProvider } from "./language";
 
@@ -65,11 +62,11 @@ function AppContent() {
       <Routes>
         <Route element={<Layout syncing={syncing} onSync={onSync} />}>
         <Route index element={<Overview data={data} />} />
-        <Route path="fat-loss" element={<FatLoss data={data} />} />
         <Route path="muscle" element={<Muscle data={data} />} />
-        <Route path="rhythm" element={<Rhythm data={data} />} />
-        <Route path="movements" element={<Movements data={data} />} />
-        <Route path="calendar" element={<Calendar data={data} />} />
+        <Route path="strength" element={<Muscle data={data} />} />
+        <Route path="fat-loss" element={<FatLoss data={data} />} />
+        <Route path="cardio" element={<FatLoss data={data} />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
     </UnitProvider>

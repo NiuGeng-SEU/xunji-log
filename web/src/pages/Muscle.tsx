@@ -73,16 +73,145 @@ export default function Muscle({ data }: { data: Analysis }) {
   const monthlyHours = summary?.goals?.this_month?.duration_hours ?? 0;
   const monthlyDiff = summary?.goals?.this_month?.diff_last_month ?? 0;
 
-  const weeklyTarget = summary?.goals?.weekly_target ?? 3;
-  const weeklyWorkouts = summary?.goals?.this_week?.workouts ?? 0;
-  const weeklyHours = summary?.goals?.this_week?.duration_hours ?? 0;
-  const weeklyDiff = summary?.goals?.this_week?.diff_last_week ?? 0;
+  // Present day & present week (Sunday start)
+  const now = useMemo(() => new Date(), []);
+  const todayYear = now.getFullYear();
+  const todayMonth = now.getMonth();
+  const todayDate = now.getDate();
+  const todayDay = now.getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+  const todayStr = useMemo(
+    () => `${todayYear}-${String(todayMonth + 1).padStart(2, "0")}-${String(todayDate).padStart(2, "0")}`,
+    [todayYear, todayMonth, todayDate],
+  );
 
-  // Streaks
-  const currentDayStreak = summary?.streaks?.current_days ?? 0;
-  const maxDayStreak = summary?.streaks?.max_days ?? 0;
-  const currentWeekStreak = summary?.streaks?.current_weeks ?? 0;
-  const maxWeekStreak = summary?.streaks?.max_weeks ?? 0;
+  // Weekly Goal (Target: 3 workouts, Sunday start, present week)
+  const weeklyTarget = summary?.goals?.weekly_target ?? 3;
+  const { currentWeekWorkouts, currentWeekHours, currentWeekDiff } = useMemo(() => {
+    const workoutDates = summary?.workout_dates || [];
+    const workoutDetails = summary?.workout_details || {};
+    const sun = new Date(todayYear, todayMonth, todayDate - todayDay);
+    const sat = new Date(todayYear, todayMonth, todayDate - todayDay + 6);
+    const prevSun = new Date(todayYear, todayMonth, todayDate - todayDay - 7);
+    const prevSat = new Date(todayYear, todayMonth, todayDate - todayDay - 1);
+
+    const toStr = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    const sunStr = toStr(sun);
+    const satStr = toStr(sat);
+    const prevSunStr = toStr(prevSun);
+    const prevSatStr = toStr(prevSat);
+
+    const thisW = workoutDates.filter((d) => d >= sunStr && d <= satStr);
+    const lastW = workoutDates.filter((d) => d >= prevSunStr && d <= prevSatStr);
+    const hours = thisW.reduce((acc, d) => acc + (workoutDetails[d]?.duration_min || 0), 0) / 60;
+
+    return {
+      currentWeekWorkouts: thisW.length,
+      currentWeekHours: hours,
+      currentWeekDiff: thisW.length - lastW.length,
+    };
+  }, [summary?.workout_dates, summary?.workout_details, todayYear, todayMonth, todayDate, todayDay]);
+
+  const weeklyWorkouts = currentWeekWorkouts;
+  const weeklyHours = currentWeekHours;
+  const weeklyDiff = currentWeekDiff;
+
+  // Streaks calculation (accounts for present week & day)
+  const sortedWorkoutDates = useMemo(() => (summary?.workout_dates || []).slice().sort(), [summary?.workout_dates]);
+  const workoutDatesSet = useMemo(() => new Set(sortedWorkoutDates), [sortedWorkoutDates]);
+
+  const { currentDayStreak, maxDayStreak, currentWeekStreak, maxWeekStreak } = useMemo(() => {
+    const toStr = (d: Date) =>
+      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+    // 1. Current day streak from today (or yesterday as grace period)
+    let curDay = 0;
+    const todayD = new Date(todayYear, todayMonth, todayDate);
+    if (workoutDatesSet.has(toStr(todayD))) {
+      const checkD = new Date(todayD);
+      while (workoutDatesSet.has(toStr(checkD))) {
+        curDay++;
+        checkD.setDate(checkD.getDate() - 1);
+      }
+    } else {
+      const yesterday = new Date(todayYear, todayMonth, todayDate - 1);
+      if (workoutDatesSet.has(toStr(yesterday))) {
+        const checkD = new Date(yesterday);
+        while (workoutDatesSet.has(toStr(checkD))) {
+          curDay++;
+          checkD.setDate(checkD.getDate() - 1);
+        }
+      }
+    }
+
+    // Max day streak across history
+    let maxDay = 0;
+    let curDRun = 0;
+    let prevD: Date | null = null;
+    for (const ds of sortedWorkoutDates) {
+      const dt = new Date(`${ds}T12:00:00Z`);
+      if (prevD && dt.getTime() - prevD.getTime() === 86400000) {
+        curDRun++;
+      } else {
+        curDRun = 1;
+      }
+      maxDay = Math.max(maxDay, curDRun);
+      prevD = dt;
+    }
+
+    // 2. Week streak (week starts Sunday)
+    const workoutWeeks = new Set<string>();
+    for (const ds of sortedWorkoutDates) {
+      const parts = ds.split("-").map(Number);
+      const dt = new Date(parts[0], parts[1] - 1, parts[2]);
+      const sun = new Date(parts[0], parts[1] - 1, parts[2] - dt.getDay());
+      workoutWeeks.add(toStr(sun));
+    }
+
+    const thisSun = new Date(todayYear, todayMonth, todayDate - todayDay);
+    const thisSunStr = toStr(thisSun);
+    let curWeek = 0;
+
+    if (workoutWeeks.has(thisSunStr)) {
+      // Trained this week! Counts toward streak
+      const checkSun = new Date(thisSun);
+      while (workoutWeeks.has(toStr(checkSun))) {
+        curWeek++;
+        checkSun.setDate(checkSun.getDate() - 7);
+      }
+    } else {
+      // Current week is ongoing; check consecutive weeks ending last week
+      const lastSun = new Date(todayYear, todayMonth, todayDate - todayDay - 7);
+      if (workoutWeeks.has(toStr(lastSun))) {
+        const checkSun = new Date(lastSun);
+        while (workoutWeeks.has(toStr(checkSun))) {
+          curWeek++;
+          checkSun.setDate(checkSun.getDate() - 7);
+        }
+      }
+    }
+
+    const sortedWeeks = Array.from(workoutWeeks).sort();
+    let maxWeek = 0;
+    let curWRun = 0;
+    let prevW: Date | null = null;
+    for (const ws of sortedWeeks) {
+      const dt = new Date(`${ws}T12:00:00Z`);
+      if (prevW && Math.round((dt.getTime() - prevW.getTime()) / (7 * 86400000)) === 1) {
+        curWRun++;
+      } else {
+        curWRun = 1;
+      }
+      maxWeek = Math.max(maxWeek, curWRun);
+      prevW = dt;
+    }
+
+    return {
+      currentDayStreak: curDay,
+      maxDayStreak: Math.max(maxDay, summary?.streaks?.max_days ?? 0),
+      currentWeekStreak: curWeek,
+      maxWeekStreak: Math.max(maxWeek, summary?.streaks?.max_weeks ?? 0),
+    };
+  }, [workoutDatesSet, sortedWorkoutDates, todayYear, todayMonth, todayDate, todayDay, summary?.streaks]);
 
   // Lifetime
   const totalWorkouts = summary?.total_workouts ?? data.cardio?.n_strength_sessions ?? 0;
@@ -90,30 +219,19 @@ export default function Muscle({ data }: { data: Analysis }) {
   const totalYears = summary?.calendar_years ?? 1;
   const latestActivity = summary?.latest_activity;
 
-  // Weekday dots
+  // Weekday dots for present week
   const currentWeekDays = useMemo(() => {
-    const anchorStr = latestActivity?.date || "2026-09-04";
-    const anchorDate = new Date(`${anchorStr}T12:00:00Z`);
-    const dayOfWeek = anchorDate.getUTCDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
-    const sunday = new Date(anchorDate);
-    sunday.setUTCDate(anchorDate.getUTCDate() - dayOfWeek);
-
-    const now = new Date();
-    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
-    const workoutDatesSet = new Set(summary?.workout_dates || []);
-
     const weekdayLabels = language === "zh"
       ? ["日", "一", "二", "三", "四", "五", "六"]
       : ["S", "M", "T", "W", "T", "F", "S"];
 
     return Array.from({ length: 7 }, (_, i) => {
-      const d = new Date(sunday);
-      d.setUTCDate(sunday.getUTCDate() + i);
-      const dateStr = d.toISOString().slice(0, 10);
-      const dayNum = d.getUTCDate();
+      const d = new Date(todayYear, todayMonth, todayDate - todayDay + i);
+      const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      const dayNum = d.getDate();
       const isTrained = workoutDatesSet.has(dateStr);
       const isToday = dateStr === todayStr;
-      const isPast = dateStr < todayStr || dateStr <= anchorStr;
+      const isPast = dateStr < todayStr;
       return {
         date: dateStr,
         label: weekdayLabels[i],
@@ -123,7 +241,12 @@ export default function Muscle({ data }: { data: Analysis }) {
         isPast,
       };
     });
-  }, [latestActivity?.date, summary?.workout_dates, language]);
+  }, [workoutDatesSet, language, todayYear, todayMonth, todayDate, todayDay, todayStr]);
+
+  const thisWeekActiveDays = useMemo(
+    () => currentWeekDays.filter((d) => d.isTrained).length,
+    [currentWeekDays]
+  );
 
   const openMonth = useCallback(
     (params: unknown) => {

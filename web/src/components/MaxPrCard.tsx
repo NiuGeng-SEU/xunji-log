@@ -653,11 +653,8 @@ function ExerciseDetailModal({
             </div>
             <div>
               <h3 className="max-pr-modal-title">
-                {isZh ? exercise.name_zh : exercise.name_en}
+                {exercise.name_en}
               </h3>
-              <p className="max-pr-modal-sub">
-                {isZh ? exercise.name_en : exercise.name_zh}
-              </p>
             </div>
           </div>
           <button className="max-pr-modal-close" onClick={onClose} type="button">

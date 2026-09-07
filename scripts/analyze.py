@@ -577,9 +577,10 @@ def main():
     last_month_dates = [d for d in workout_dates if d.startswith(prev_month_str)]
     this_month_dur_hours = sum(workout_by_date[d]["duration_min"] for d in this_month_dates) / 60
 
-    # 周目标（每周 3 次，周日开始）
-    sun_offset = (anchor_dt.weekday() + 1) % 7
-    cur_sun = anchor_dt - datetime.timedelta(days=sun_offset)
+    # 周目标（每周 3 次，周日开始，计算当前周）
+    today_dt = datetime.date.today()
+    sun_offset = (today_dt.weekday() + 1) % 7
+    cur_sun = today_dt - datetime.timedelta(days=sun_offset)
     cur_sat = cur_sun + datetime.timedelta(days=6)
     prev_sun = cur_sun - datetime.timedelta(days=7)
     prev_sat = cur_sat - datetime.timedelta(days=7)
@@ -587,17 +588,20 @@ def main():
     last_week_dates = [d for d in workout_dates if prev_sun.isoformat() <= d <= prev_sat.isoformat()]
     this_week_dur_hours = sum(workout_by_date[d]["duration_min"] for d in this_week_dates) / 60
 
-    # 连续天数 Streak (仅计算力量训练)
+    # 连续天数 Streak (以今日为准，若今日未练但昨日已练保留昨日连续天数)
     cur_day_streak = 0
-    check_d = anchor_dt
-    while check_d.isoformat() in workout_by_date:
-        cur_day_streak += 1
-        check_d -= datetime.timedelta(days=1)
-    if cur_day_streak == 0:
-        check_d = anchor_dt - datetime.timedelta(days=1)
+    if today_dt.isoformat() in workout_by_date:
+        check_d = today_dt
         while check_d.isoformat() in workout_by_date:
             cur_day_streak += 1
             check_d -= datetime.timedelta(days=1)
+    else:
+        yesterday_dt = today_dt - datetime.timedelta(days=1)
+        if yesterday_dt.isoformat() in workout_by_date:
+            check_d = yesterday_dt
+            while check_d.isoformat() in workout_by_date:
+                cur_day_streak += 1
+                check_d -= datetime.timedelta(days=1)
 
     max_day_streak = 0
     cur_s = 0
@@ -611,7 +615,7 @@ def main():
         max_day_streak = max(max_day_streak, cur_s)
         prev_d = d
 
-    # 连续周数 Streak (按每周至少1次训练，周日开始)
+    # 连续周数 Streak (按每周至少1次训练，周日开始；本周已有训练则计入)
     workout_weeks = set()
     for ds in workout_dates:
         dt = datetime.date.fromisoformat(ds)
@@ -619,10 +623,17 @@ def main():
         workout_weeks.add(sun_d)
 
     cur_week_streak = 0
-    cur_sun_w = anchor_dt - datetime.timedelta(days=(anchor_dt.weekday() + 1) % 7)
-    while cur_sun_w in workout_weeks:
-        cur_week_streak += 1
-        cur_sun_w -= datetime.timedelta(days=7)
+    if cur_sun in workout_weeks:
+        check_sun = cur_sun
+        while check_sun in workout_weeks:
+            cur_week_streak += 1
+            check_sun -= datetime.timedelta(days=7)
+    else:
+        # 当前周正在进行中，检查上周连续周数
+        check_sun = cur_sun - datetime.timedelta(days=7)
+        while check_sun in workout_weeks:
+            cur_week_streak += 1
+            check_sun -= datetime.timedelta(days=7)
 
     sorted_w = sorted(list(workout_weeks))
     max_week_streak = 0
