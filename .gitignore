@@ -26,8 +26,8 @@ npm-debug.log*
 *.log
 
 # 小红书等账号运营物料（私有，不入库）
-content/
-images/
+/content/
+/images/
 scripts/generate_article_images.py
 scripts/generate_cards.py
 

@@ -6,7 +6,7 @@
 
 本仓库在 [imklayhu/xunji-log](https://github.com/imklayhu/xunji-log) 基础上进行了较大幅度修改，部分看板展示设计参考了 [yihong0618/running_page](https://github.com/yihong0618/running_page)。
 
-![训练看板总览](https://github.com/user-attachments/assets/dc9d7a37-1ca5-4173-ba6c-50c7b9dd1786)
+![训练看板总览](docs/images/overview.png)
 
 ## 主要功能
 
@@ -17,6 +17,10 @@
 - **数据下钻：**可打开日期、月份、训练部位和动作查看原始训练明细。
 - **每日自动更新：**GitHub Actions 可拉取训记数据、重新分析并部署 GitHub Pages。
 - **自托管：**支持 Python/Node.js 本机运行和 Docker Compose 部署。
+
+| 力量训练看板 | 有氧训练看板 |
+| :---: | :---: |
+| ![力量训练看板](docs/images/strength.png) | ![有氧训练看板](docs/images/cardio.png) |
 
 ## 数据流程
 

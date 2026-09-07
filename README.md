@@ -6,7 +6,7 @@ A personal, self-hosted workout dashboard built from [Xunji (训记)](https://xu
 
 This repository is a substantially revised version of [imklayhu/xunji-log](https://github.com/imklayhu/xunji-log). Parts of the dashboard presentation were inspired by [yihong0618/running_page](https://github.com/yihong0618/running_page).
 
-![Workout dashboard overview](https://github.com/user-attachments/assets/dc9d7a37-1ca5-4173-ba6c-50c7b9dd1786)
+![Workout dashboard overview](docs/images/overview.png)
 
 ## Highlights
 
@@ -17,6 +17,10 @@ This repository is a substantially revised version of [imklayhu/xunji-log](https
 - **Drill-down details:** open a day, month, body area, or movement to inspect the underlying records.
 - **Automated publishing:** GitHub Actions can fetch new Xunji data, rebuild the analysis, and deploy GitHub Pages every day.
 - **Local-first operation:** run directly with Python and Node.js or deploy with Docker Compose.
+
+| Strength Dashboard | Cardio Dashboard |
+| :---: | :---: |
+| ![Strength Dashboard](docs/images/strength.png) | ![Cardio Dashboard](docs/images/cardio.png) |
 
 ## How it works
 

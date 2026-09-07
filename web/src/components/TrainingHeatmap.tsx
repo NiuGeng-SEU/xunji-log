@@ -65,7 +65,7 @@ export default function TrainingHeatmap({
   const years = useMemo(() => {
     const first = Number(data.date_start.slice(0, 4));
     const last = Number(data.date_end.slice(0, 4));
-    return Array.from({ length: last - first + 1 }, (_, index) => last - index);
+    return Array.from({ length: last - first + 1 }, (_, index) => first + index);
   }, [data.date_end, data.date_start]);
   const [showStrength, setShowStrength] = useState(true);
   const [showCardio, setShowCardio] = useState(true);
@@ -235,17 +235,6 @@ export default function TrainingHeatmap({
           </div>
         </div>
         <nav className="heatmap-years" aria-label="Heatmap year">
-          <button
-            type="button"
-            className={selectedYear === null ? "active" : ""}
-            aria-current={selectedYear === null ? "true" : undefined}
-            onClick={() => {
-              onSelectYear(null);
-              setTooltip(null);
-            }}
-          >
-            {t("Past Year", "近一年")}
-          </button>
           {years.map((choice) => (
             <button
               key={choice}
@@ -260,6 +249,17 @@ export default function TrainingHeatmap({
               {choice}
             </button>
           ))}
+          <button
+            type="button"
+            className={selectedYear === null ? "active" : ""}
+            aria-current={selectedYear === null ? "true" : undefined}
+            onClick={() => {
+              onSelectYear(null);
+              setTooltip(null);
+            }}
+          >
+            {t("Past Year", "近一年")}
+          </button>
         </nav>
       </div>
       {tooltip && (
