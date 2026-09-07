@@ -134,6 +134,15 @@ web/src/pages/       Overview, Strength, and Cardio pages
 web/public/data/     Static analysis and drill-down data for Pages
 ```
 
+## Roadmap & Future Features
+
+See [NOTES.md](NOTES.md) for detailed feature specifications and mathematical formulations:
+
+- **Fitness, Fatigue & Form (TSB Model):** Banister impulse-response model calculating rolling CTL (Fitness), ATL (Fatigue), and TSB (Form / Readiness) curves.
+- **Powerlifting "Big Three" (SBD) Analytics:** Big Three PR tracking, bodyweight-relative coefficients (Strength-to-Weight, Wilks, DOTS), and e1RM progression.
+- **Intelligent Next-Session Prescriptions:** Periodization-aware engine recommending target exercises, weights, sets, reps, and RPE based on recovery state and training cycles.
+- **Mobile-First Experience & PWA:** Responsive mobile viewports, touch-optimized charts, and offline Progressive Web App support.
+
 ## Quality checks
 
 ```bash
