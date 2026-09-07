@@ -29,6 +29,15 @@ DEFAULT_START = datetime.date(2025, 2, 1)
 def require_api_key() -> str:
     key = (os.environ.get("XUNJI_API_KEY") or "").strip()
     if not key:
+        env_path = os.path.join(ROOT, ".env")
+        if os.path.isfile(env_path):
+            with open(env_path, encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line.startswith("XUNJI_API_KEY="):
+                        key = line.split("=", 1)[1].strip().strip('"').strip("'")
+                        break
+    if not key:
         raise SystemExit(
             "缺少 XUNJI_API_KEY。\n"
             "请在 .env 中填写你的训记 Open API Key，或执行：\n"
@@ -99,12 +108,16 @@ def resolve_range(args: argparse.Namespace) -> tuple[datetime.date, datetime.dat
     return DEFAULT_START, today, bool(args.force)
 
 
+import threading
+from concurrent.futures import ThreadPoolExecutor
+
 def fetch_range(
     start: datetime.date,
     end: datetime.date,
     *,
     force: bool = False,
     sleep_s: float = 0.8,
+    concurrency: int = 1,
 ) -> dict:
     os.makedirs(CACHE_DIR, exist_ok=True)
     if start > end:
@@ -121,17 +134,27 @@ def fetch_range(
             "message": "无需抓取（日期范围为空）",
         }
 
-    fetched = empty = skipped = refreshed = rate_limited = 0
-    errors: list[str] = []
+    dates = []
     d = start
     while d <= end:
-        datestr = d.isoformat()
+        dates.append(d.isoformat())
+        d += datetime.timedelta(days=1)
+
+    total_dates = len(dates)
+    fetched = empty = skipped = refreshed = rate_limited = 0
+    errors: list[str] = []
+    lock = threading.Lock()
+    done_count = 0
+
+    def process_date(datestr: str):
+        nonlocal fetched, empty, skipped, refreshed, rate_limited, done_count
         path = os.path.join(CACHE_DIR, datestr + ".json")
         existed = os.path.exists(path) and os.path.getsize(path) > 0
         if existed and not force:
-            skipped += 1
-            d += datetime.timedelta(days=1)
-            continue
+            with lock:
+                skipped += 1
+                done_count += 1
+            return
 
         ok = False
         for _ in range(6):
@@ -139,7 +162,8 @@ def fetch_range(
                 j = fetch_day(datestr)
                 res = j.get("res")
                 if isinstance(res, str) and "too frequent" in res:
-                    rate_limited += 1
+                    with lock:
+                        rate_limited += 1
                     retry = 10
                     m = re.search(r"retry after (\d+)s", res)
                     if m:
@@ -150,27 +174,41 @@ def fetch_range(
                 with open(path, "w", encoding="utf-8") as f:
                     json.dump(j, f, ensure_ascii=False)
                 trains = res.get("trains", []) if isinstance(res, dict) else []
-                if existed:
-                    refreshed += 1
-                    print(
-                        f"{datestr}: refreshed ({len(trains)} trains)",
-                        flush=True,
-                    )
-                elif trains:
-                    fetched += 1
-                    print(f"{datestr}: {len(trains)} trains", flush=True)
-                else:
-                    empty += 1
-                    print(f"{datestr}: empty", flush=True)
+                with lock:
+                    done_count += 1
+                    if existed:
+                        refreshed += 1
+                        print(
+                            f"[{done_count}/{total_dates}] {datestr}: refreshed ({len(trains)} trains)",
+                            flush=True,
+                        )
+                    elif trains:
+                        fetched += 1
+                        print(f"[{done_count}/{total_dates}] {datestr}: {len(trains)} trains", flush=True)
+                    else:
+                        empty += 1
+                        if done_count % 50 == 0 or done_count == total_dates:
+                            print(f"[{done_count}/{total_dates}] {datestr}: empty", flush=True)
                 ok = True
                 break
             except Exception as e:
                 print(f"{datestr}: error {e}", flush=True)
                 time.sleep(3)
+
         if not ok:
-            errors.append(datestr)
+            with lock:
+                errors.append(datestr)
+                done_count += 1
         time.sleep(sleep_s)
-        d += datetime.timedelta(days=1)
+
+    if concurrency <= 1:
+        for ds in dates:
+            process_date(ds)
+    else:
+        with ThreadPoolExecutor(max_workers=concurrency) as pool:
+            futures = [pool.submit(process_date, ds) for ds in dates]
+            for f in futures:
+                f.result()
 
     result = {
         "ok": len(errors) == 0,
@@ -211,9 +249,21 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="范围内强制覆盖已有缓存",
     )
+    parser.add_argument(
+        "--sleep",
+        type=float,
+        default=0.8,
+        help="请求间隔秒数（默认 0.8）",
+    )
+    parser.add_argument(
+        "--concurrency",
+        type=int,
+        default=1,
+        help="并发抓取线程数（默认 1）",
+    )
     args = parser.parse_args(argv)
     start, end, force = resolve_range(args)
-    result = fetch_range(start, end, force=force)
+    result = fetch_range(start, end, force=force, sleep_s=args.sleep, concurrency=args.concurrency)
     return 0 if result.get("ok") else 1
 
 

@@ -483,7 +483,7 @@ export default function FatLoss({ data }: { data: Analysis }) {
                 </svg>
                 <span>{t("Distance", "总里程")}</span>
               </p>
-              <p className="summary-metric-val">{Math.round(totalKm)} km</p>
+              <p className="summary-metric-val">{Math.round(totalKm)}km</p>
             </div>
           </div>
 
