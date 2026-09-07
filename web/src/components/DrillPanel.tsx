@@ -508,7 +508,7 @@ export default function DrillPanel({
         if (!cancelled) {
           const raw = e instanceof Error ? e.message : "Failed to load";
           const isHtml = raw.includes("<html") || raw.includes("<!DOCTYPE") || raw.includes("404");
-          setError(isHtml ? "暂无该项训练详情" : raw);
+          setError(isHtml ? t("No workout details available", "暂无该项训练详情") : raw);
         }
       })
       .finally(() => { if (!cancelled) setLoading(false); });
@@ -531,12 +531,57 @@ export default function DrillPanel({
 
   const view = data?.view || data?.type;
 
+  const getHeaderTitle = () => {
+    if (!data) return `${current.type}: ${label(current.key)}`;
+    const currentView = data.view || data.type || current.type;
+    if (currentView === "day") {
+      return `${data.key} Workout Details`;
+    }
+    if (currentView === "month") {
+      return `${data.key} Monthly Details`;
+    }
+    if (currentView === "week") {
+      return `${data.key} Weekly Details`;
+    }
+    if (currentView === "movement") {
+      return `Movement Progress: ${label(data.key)}`;
+    }
+    if (currentView === "category") {
+      return `${label(data.key)} Category Analysis`;
+    }
+    if (currentView === "dow") {
+      return `${label(data.key)} Day of Week Analysis`;
+    }
+    if (currentView === "hour" || currentView === "hour_bucket") {
+      return `${label(data.key)} Training Pattern`;
+    }
+    if (data.title) {
+      let tStr = data.title;
+      tStr = tStr.replace("训练日详情", "Workout Details");
+      tStr = tStr.replace("月度详情", "Monthly Details");
+      tStr = tStr.replace("周度详情", "Weekly Details");
+      tStr = tStr.replace("周训练详情", "Weekly Details");
+      tStr = tStr.replace("动作进步：", "Movement Progress: ");
+      tStr = tStr.replace("动作进步:", "Movement Progress: ");
+      tStr = tStr.replace("动作：", "Movement: ");
+      tStr = tStr.replace("动作:", "Movement: ");
+      tStr = tStr.replace("部位：", "Category: ");
+      tStr = tStr.replace("部位:", "Category: ");
+      tStr = tStr.replace("部位分析", "Category Analysis");
+      tStr = tStr.replace("星期分布：", "Day of Week: ");
+      tStr = tStr.replace("时段：", "Time: ");
+      tStr = tStr.replace("训练特征", "Training Pattern");
+      return label(tStr);
+    }
+    return `${current.type}: ${label(current.key)}`;
+  };
+
   return (
     <div className="day-drawer-backdrop" onClick={onClose}>
       <aside className="day-drawer" onClick={(e) => e.stopPropagation()}>
         <header className="day-drawer-header">
           <div>
-            <h2>{data ? (data.view === "category" ? label(data.key) : data.title) : `${current.type}: ${current.key}`}</h2>
+            <h2>{getHeaderTitle()}</h2>
             <p>{stack.length > 1 ? t(`Level ${stack.length} · Esc to go back`, `下钻层级 ${stack.length} · Esc 返回上一级`) : t("Esc to close", "Esc 关闭")}</p>
           </div>
           <div style={{ display: "flex", gap: 8 }}>

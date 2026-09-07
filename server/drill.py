@@ -521,7 +521,7 @@ def _build_movement_drill(trains: list[dict], name: str, all_trains: list[dict])
         "type": "movement",
         "view": "movement",
         "key": name,
-        "title": f"动作进步：{name}",
+        "title": f"Movement Progress: {name}",
         "movement": {
             "name": name,
             "category": category,
@@ -659,16 +659,16 @@ def _movement_progression(trains: list[dict], name: str) -> list[dict]:
 
 def _title(kind: str, key: str) -> str:
     mapping = {
-        "month": f"{key} 月度详情",
-        "week": f"{key} 周训练详情",
-        "category": f"部位：{key}",
-        "movement": f"动作：{key}",
-        "dow": f"星期分布：{key}",
-        "hour": f"时段：{key if key.endswith('时') else key + '时'}",
-        "hour_bucket": f"时段：{key}",
-        "day": f"{key} 训练日详情",
+        "month": f"{key} Monthly Details",
+        "week": f"{key} Weekly Details",
+        "category": f"Category: {key}",
+        "movement": f"Movement: {key}",
+        "dow": f"Day of Week: {key}",
+        "hour": f"Time: {key if key.endswith('h') or key.endswith(':00') else key + ':00'}",
+        "hour_bucket": f"Time: {key}",
+        "day": f"{key} Workout Details",
     }
-    return mapping.get(kind, f"{kind}:{key}")
+    return mapping.get(kind, f"{kind}: {key}")
 
 
 def build_drill(

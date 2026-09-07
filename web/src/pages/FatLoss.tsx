@@ -464,19 +464,10 @@ export default function FatLoss({ data }: { data: Analysis }) {
           </div>
         </div>
 
-        {/* 5. Summary Card (Distance, Year, Time, Latest Activity) */}
+        {/* 5. Summary Card (Year, Distance, Latest Activity) */}
         <div className="strength-card profile-summary-card">
-          <div className="summary-metrics-row three-cols">
+          <div className="summary-metrics-row">
             <div className="summary-metric-col">
-              <p className="summary-metric-label">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                <span>{t("Distance", "总里程")}</span>
-              </p>
-              <p className="summary-metric-val">{Math.round(totalKm)} km</p>
-            </div>
-            <div className="summary-metric-col border-l">
               <p className="summary-metric-label">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -488,11 +479,11 @@ export default function FatLoss({ data }: { data: Analysis }) {
             <div className="summary-metric-col border-l">
               <p className="summary-metric-label">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
-                <span>{t("Time", "时间")}</span>
+                <span>{t("Distance", "总里程")}</span>
               </p>
-              <p className="summary-metric-val">{totalHours.toFixed(1)}h</p>
+              <p className="summary-metric-val">{Math.round(totalKm)} km</p>
             </div>
           </div>
 

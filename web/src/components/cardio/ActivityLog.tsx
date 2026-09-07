@@ -204,7 +204,7 @@ export function ActivityLog({
                           backgroundColor: `${tier.color}15`,
                           borderColor: `${tier.color}40`,
                         }}
-                        title={`等效5K: ${Math.floor((tier.equivalent5kSec || 0) / 60)}:${String((tier.equivalent5kSec || 0) % 60).padStart(2, '0')}`}
+                        title={`${t('Eq. 5K', '等效 5K')}: ${Math.floor((tier.equivalent5kSec || 0) / 60)}:${String((tier.equivalent5kSec || 0) % 60).padStart(2, '0')}`}
                       >
                         {isZh ? tier.tierNameZh : tier.tierNameEn} · {tier.percentile}%
                       </span>
