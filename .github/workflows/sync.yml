@@ -1,0 +1,80 @@
+name: Daily Sync Xunji Data & Deploy
+
+on:
+  schedule:
+    # 每天北京时间早上 06:30 自动执行 (UTC 22:30)
+    - cron: '30 22 * * *'
+  # 支持在 GitHub Actions 页面随时手动点击 "Run workflow" 立即同步
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  sync-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch Xunji Data & Run Analysis
+        env:
+          XUNJI_API_KEY: ${{ secrets.XUNJI_API_KEY }}
+        run: |
+          # 1. 增量拉取最近 3 天训记数据
+          python scripts/fetch_training.py --incremental --refresh-days 3
+          # 2. 重新聚合生成 analysis.json
+          python scripts/analyze.py
+
+      - name: Commit and push updated data
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ web/public/data/
+          if git diff --staged --quiet; then
+            echo "No data changes to commit"
+          else
+            git commit -m "chore: auto-sync xunji data [skip ci]"
+            git push
+          fi
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Build Web Application
+        run: |
+          cd web
+          npm ci
+          npm run build
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

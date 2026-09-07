@@ -154,9 +154,45 @@ export interface StrengthSummary {
 }
 
 export async function fetchAnalysis(): Promise<Analysis> {
-  const res = await fetch("/api/analysis");
-  if (!res.ok) throw new Error(await res.text());
-  return res.json();
+  // 1. In local dev mode with proxy, try /api/analysis first
+  if (import.meta.env.DEV) {
+    try {
+      const res = await fetch("/api/analysis");
+      if (res.ok) return await res.json();
+    } catch {
+      // fallback to static
+    }
+  }
+
+  // 2. Try static data path (works for GitHub Pages, Vercel, and static dist)
+  const base = import.meta.env.BASE_URL || "./";
+  const normalizedBase = base.endsWith("/") ? base : `${base}/`;
+  const staticUrl = `${normalizedBase}data/analysis.json`;
+
+  try {
+    const res = await fetch(staticUrl);
+    if (res.ok) return await res.json();
+  } catch {
+    // fallback
+  }
+
+  // 3. Try standard /api/analysis if running on custom server
+  try {
+    const res = await fetch("/api/analysis");
+    if (res.ok) return await res.json();
+  } catch {
+    // fallback
+  }
+
+  // 4. Fallback to direct relative path
+  try {
+    const fallbackRes = await fetch("./data/analysis.json");
+    if (fallbackRes.ok) return await fallbackRes.json();
+  } catch {
+    // fallback
+  }
+
+  throw new Error("Unable to load workout analysis data.");
 }
 
 export interface SyncStatus {
@@ -178,15 +214,26 @@ export interface SyncStatus {
 }
 
 export async function fetchSyncStatus(): Promise<SyncStatus> {
-  const res = await fetch("/api/sync/status");
-  if (!res.ok) throw new Error(await res.text());
-  return res.json();
+  try {
+    const res = await fetch("/api/sync/status");
+    if (res.ok) return await res.json();
+  } catch {
+    // ignore
+  }
+  return { state: "idle" };
 }
 
 export async function triggerSync(): Promise<SyncStatus> {
-  const res = await fetch("/api/sync", { method: "POST" });
-  if (!res.ok) throw new Error(await res.text());
-  return res.json();
+  try {
+    const res = await fetch("/api/sync", { method: "POST" });
+    if (res.ok) return await res.json();
+  } catch {
+    // ignore
+  }
+  return {
+    state: "static",
+    message: "GitHub Pages 静态模式：数据由 GitHub Actions 每日自动同步",
+  };
 }
 
 export async function refreshAnalysis(): Promise<void> {

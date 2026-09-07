@@ -1045,6 +1045,15 @@ def main():
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=1)
     print(f"written {OUT}")
+
+    web_public_dir = os.path.join(_ROOT, "web", "public", "data")
+    if os.path.exists(os.path.join(_ROOT, "web")):
+        os.makedirs(web_public_dir, exist_ok=True)
+        web_out = os.path.join(web_public_dir, "analysis.json")
+        with open(web_out, "w", encoding="utf-8") as f:
+            json.dump(result, f, ensure_ascii=False, indent=1)
+        print(f"written {web_out}")
+
     print(json.dumps(result, ensure_ascii=False)[:600])
 
 

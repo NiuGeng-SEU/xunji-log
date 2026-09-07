@@ -3,11 +3,10 @@
 .env.local
 .env.*.local
 
-# 运行时数据（用户自己的训记缓存，勿提交）
-data/cache/**
-!data/cache/.gitkeep
-data/analysis.json
-data/sync_status.json
+# 运行时数据（使用 GitHub Actions 自动同步与部署时需跟踪缓存与分析数据）
+# data/cache/**
+# data/analysis.json
+# data/sync_status.json
 
 # Python
 __pycache__/
