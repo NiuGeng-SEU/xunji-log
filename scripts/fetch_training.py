@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""按天抓取训记训练数据到 data/cache/<datestr>.json。
+"""按天抓取训记训练数据到 data/cache/YYYY/MM/<datestr>.json。
 
 模式:
   默认 / --full         从 START_DATE 到今天，已有缓存则跳过
@@ -18,12 +18,16 @@ import re
 import sys
 import time
 import urllib.request
+from pathlib import Path
 
 API = "https://trains.xunjiapp.cn/api_trains_for_llm_v2"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.environ.get("DATA_DIR", os.path.join(ROOT, "data"))
 CACHE_DIR = os.path.join(DATA_DIR, "cache")
 DEFAULT_START = datetime.date(2025, 2, 1)
+
+sys.path.insert(0, ROOT)
+from server.cache_store import cache_path, cached_dates, existing_cache_path  # noqa: E402
 
 
 def require_api_key() -> str:
@@ -68,17 +72,7 @@ def fetch_day(datestr: str, full: bool = False) -> dict:
 
 
 def list_cached_dates() -> list[datetime.date]:
-    if not os.path.isdir(CACHE_DIR):
-        return []
-    out = []
-    for name in os.listdir(CACHE_DIR):
-        if not name.endswith(".json"):
-            continue
-        try:
-            out.append(datetime.date.fromisoformat(name[:-5]))
-        except ValueError:
-            continue
-    return sorted(out)
+    return cached_dates(Path(CACHE_DIR))
 
 
 def resolve_range(args: argparse.Namespace) -> tuple[datetime.date, datetime.date, bool]:
@@ -148,8 +142,10 @@ def fetch_range(
 
     def process_date(datestr: str):
         nonlocal fetched, empty, skipped, refreshed, rate_limited, done_count
-        path = os.path.join(CACHE_DIR, datestr + ".json")
-        existed = os.path.exists(path) and os.path.getsize(path) > 0
+        cache_root = Path(CACHE_DIR)
+        path = cache_path(cache_root, datestr)
+        existing_path = existing_cache_path(cache_root, datestr)
+        existed = existing_path is not None and existing_path.stat().st_size > 0
         if existed and not force:
             with lock:
                 skipped += 1
@@ -171,6 +167,7 @@ def fetch_range(
                     print(f"{datestr}: rate limited, wait {retry}s", flush=True)
                     time.sleep(retry)
                     continue
+                path.parent.mkdir(parents=True, exist_ok=True)
                 with open(path, "w", encoding="utf-8") as f:
                     json.dump(j, f, ensure_ascii=False)
                 trains = res.get("trains", []) if isinstance(res, dict) else []

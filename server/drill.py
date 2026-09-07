@@ -8,6 +8,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from server.cache_store import iter_cache_files
+
 from server.day_detail import (
     _f,
     _fmt_clock,
@@ -67,7 +69,7 @@ def is_activity_summary(name_or_move: Any) -> bool:
 def _cache_signature(cache_dir: Path) -> str:
     if not cache_dir.exists():
         return "empty"
-    files = sorted(cache_dir.glob("*.json"))
+    files = iter_cache_files(cache_dir)
     n = len(files)
     latest = max((f.stat().st_mtime for f in files), default=0)
     return f"{n}:{latest:.0f}"
@@ -83,7 +85,7 @@ def load_trains(cache_dir: Path) -> list[dict]:
 
     trains: list[dict] = []
     if cache_dir.exists():
-        for path in sorted(cache_dir.glob("*.json")):
+        for path in iter_cache_files(cache_dir):
             try:
                 raw = json.loads(path.read_text(encoding="utf-8"))
             except Exception:

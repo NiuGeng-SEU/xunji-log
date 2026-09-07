@@ -116,12 +116,14 @@ cd web && npm install && npm run dev
 
 ```
 data/
-  cache/YYYY-MM-DD.json   # 训记原始按日缓存（勿提交）
-  analysis.json           # 聚合结果（勿提交）
-  sync_status.json        # 同步状态（勿提交）
+  cache/YYYY/MM/YYYY-MM-DD.json  # 训记原始按日缓存
+  analysis.json                  # 聚合结果
+  sync_status.json               # 同步状态
 ```
 
-训练数据属于个人健康信息，请仅在自有设备上保存。`.gitignore` 已排除上述文件。
+当前 GitHub Actions 工作流会提交上述数据，用于增量同步和 GitHub Pages 部署。
+训练数据属于个人健康信息；公开仓库会使原始训练记录和聚合结果对所有人可见。
+如需保持隐私，请使用私有仓库或改为仅在自有设备上保存与部署。
 
 ## 部署到云主机（可选）
 
@@ -136,7 +138,7 @@ data/
 ## 安全提示
 
 - 仓库**不包含**任何默认 API Key；未配置 `XUNJI_API_KEY` 时同步会直接失败并提示
-- 切勿把 `.env`、真实 Key、`data/cache` 推送到公开仓库
+- 切勿把 `.env` 或真实 Key 推送到仓库；公开 `data/cache` 前请确认愿意公开训练数据
 - 若 Key 曾泄露，请在训记 App 中轮换
 
 ## 许可证

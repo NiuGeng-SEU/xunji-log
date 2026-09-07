@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
-"""聚合 data/cache/*.json 的原始训练数据，产出 data/analysis.json 供 Canvas 展示。"""
+"""聚合 data/cache/YYYY/MM/*.json 的原始训练数据，产出 data/analysis.json。"""
 import datetime
 import json
 import os
 import sys
 from collections import Counter, defaultdict
+from pathlib import Path
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _DATA = os.environ.get("DATA_DIR", os.path.join(_ROOT, "data"))
 CACHE_DIR = os.path.join(_DATA, "cache")
 OUT = os.path.join(_DATA, "analysis.json")
+
+sys.path.insert(0, _ROOT)
+from server.cache_store import iter_cache_files  # noqa: E402
 
 # 动作 -> 身体部位 分类（按关键词，顺序即优先级）
 CATEGORY_RULES = [
@@ -173,12 +177,10 @@ def main():
     all_movements = []  # 每次训练每动作一个 dict
     day_trains = defaultdict(list)  # datestr -> [trains]
 
-    for fname in sorted(os.listdir(CACHE_DIR)):
-        if not fname.endswith(".json"):
-            continue
-        path = os.path.join(CACHE_DIR, fname)
+    for path in iter_cache_files(Path(CACHE_DIR)):
         try:
-            j = json.load(open(path, encoding="utf-8"))
+            with path.open(encoding="utf-8") as cache_file:
+                j = json.load(cache_file)
         except Exception:
             continue
         res = j.get("res")
@@ -1065,8 +1067,6 @@ def main():
 def export_static_drills(result: dict) -> None:
     """Pre-export static drill JSON files for serverless GitHub Pages hosting."""
     try:
-        from pathlib import Path
-        sys.path.insert(0, _ROOT)
         from server.drill import build_drill
     except Exception as e:
         print(f"Note: build_drill skipped ({e})")
@@ -1087,7 +1087,7 @@ def export_static_drills(result: dict) -> None:
     day_dir = os.path.join(out_drill_dir, "day")
     os.makedirs(day_dir, exist_ok=True)
     day_count = 0
-    for f in cache_path.glob("*.json"):
+    for f in iter_cache_files(cache_path):
         datestr = f.stem
         try:
             r = build_drill(cache_path, "day", datestr, baseline=baseline)

@@ -17,6 +17,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+from server.cache_store import iter_cache_files
+
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = Path(os.environ.get("DATA_DIR", ROOT / "data"))
 CACHE_DIR = DATA_DIR / "cache"
@@ -158,7 +160,7 @@ def health():
     return {
         "status": "ok",
         "analysis_exists": ANALYSIS_PATH.exists(),
-        "cache_days": len(list(CACHE_DIR.glob("*.json"))) if CACHE_DIR.exists() else 0,
+        "cache_days": len(iter_cache_files(CACHE_DIR)),
         "sync_enabled": SYNC_ENABLED,
         "sync_cron": SYNC_CRON,
         "sync_state": status.get("state"),
