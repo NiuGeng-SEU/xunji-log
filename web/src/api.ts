@@ -468,13 +468,83 @@ export interface CategoryDrill {
 }
 
 export async function fetchDrill(type: DrillType, key: string): Promise<DrillResult> {
-  const qs = new URLSearchParams({ type, key });
-  const res = await fetch(`/api/drill?${qs}`);
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || "Failed to load workout details");
+  const qs = new URLSearchParams({ type, key }).toString();
+
+  // 1. In local dev mode with proxy, try /api/drill first
+  if (import.meta.env.DEV) {
+    try {
+      const res = await fetch(`/api/drill?${qs}`);
+      if (res.ok) {
+        const text = await res.text();
+        if (text.startsWith("{")) {
+          return JSON.parse(text);
+        }
+      }
+    } catch {
+      // fallback to static
+    }
   }
-  return res.json();
+
+  // 2. Try static pre-generated drill JSON (works on GitHub Pages / Vercel)
+  const base = import.meta.env.BASE_URL || "./";
+  const cleanBase = base.endsWith("/") ? base : `${base}/`;
+  const safeKey = key.replace(/\//g, "_");
+  const staticUrl = `${cleanBase}data/drill/${type}/${encodeURIComponent(safeKey)}.json`;
+
+  try {
+    const res = await fetch(staticUrl);
+    if (res.ok) {
+      const text = await res.text();
+      if (text.startsWith("{")) {
+        return JSON.parse(text);
+      }
+    }
+  } catch {
+    // fallback
+  }
+
+  // 3. Try custom backend if not yet tried
+  try {
+    const res = await fetch(`/api/drill?${qs}`);
+    if (res.ok) {
+      const text = await res.text();
+      if (text.startsWith("{")) {
+        return JSON.parse(text);
+      }
+    }
+  } catch {
+    // fallback
+  }
+
+  // 4. If type is 'day', and no record exists (e.g. rest day or empty day), return friendly empty day
+  if (type === "day") {
+    return {
+      type: "day",
+      view: "day",
+      key,
+      title: `${key} 训练日详情`,
+      day: {
+        datestr: key,
+        count: 0,
+        summary: {
+          sessions: 0,
+          volume_kg: 0,
+          duration_min: 0,
+          cardio_km: 0,
+          cardio_kcal: 0,
+          n_movements: 0,
+          n_sets: 0,
+          categories: [],
+          top_movements: [],
+        },
+        insights: ["该日为休息日，无训练记录。"],
+        compare: {},
+        sessions: [],
+      },
+    };
+  }
+
+  throw new Error(`暂无 ${type}: ${key} 的详细下钻数据`);
 }
 
 /** 从 echarts click 事件取类目名（兼容 axis / pie）。 */

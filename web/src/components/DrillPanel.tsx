@@ -504,7 +504,13 @@ export default function DrillPanel({
     setData(null);
     fetchDrill(current.type, current.key)
       .then((d) => { if (!cancelled) setData(d); })
-      .catch((e) => { if (!cancelled) setError(e instanceof Error ? e.message : "Failed to load"); })
+      .catch((e) => {
+        if (!cancelled) {
+          const raw = e instanceof Error ? e.message : "Failed to load";
+          const isHtml = raw.includes("<html") || raw.includes("<!DOCTYPE") || raw.includes("404");
+          setError(isHtml ? "暂无该项训练详情" : raw);
+        }
+      })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [current.type, current.key]);

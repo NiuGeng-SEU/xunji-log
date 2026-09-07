@@ -3,6 +3,7 @@
 import datetime
 import json
 import os
+import sys
 from collections import Counter, defaultdict
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -1054,7 +1055,91 @@ def main():
             json.dump(result, f, ensure_ascii=False, indent=1)
         print(f"written {web_out}")
 
+        # Pre-export static drill JSON files for serverless GitHub Pages hosting
+        export_static_drills(result)
+
     print(json.dumps(result, ensure_ascii=False)[:600])
+
+
+def export_static_drills(result: dict) -> None:
+    """Pre-export static drill JSON files for serverless GitHub Pages hosting."""
+    try:
+        from pathlib import Path
+        sys.path.insert(0, _ROOT)
+        from server.drill import build_drill
+    except Exception as e:
+        print(f"Note: build_drill skipped ({e})")
+        return
+
+    out_drill_dir = os.path.join(_ROOT, "web", "public", "data", "drill")
+    cache_path = Path(CACHE_DIR)
+    if not cache_path.exists():
+        return
+
+    n_days = max(1, result.get("n_days") or 1)
+    baseline = {
+        "avg_volume_kg": (result.get("total_volume_kg") or 0) / n_days,
+        "avg_duration_min": (result.get("total_duration_min") or 0) / n_days,
+    }
+
+    # 1. Day drills
+    day_dir = os.path.join(out_drill_dir, "day")
+    os.makedirs(day_dir, exist_ok=True)
+    day_count = 0
+    for f in cache_path.glob("*.json"):
+        datestr = f.stem
+        try:
+            r = build_drill(cache_path, "day", datestr, baseline=baseline)
+            with open(os.path.join(day_dir, f"{datestr}.json"), "w", encoding="utf-8") as df:
+                json.dump(r, df, ensure_ascii=False)
+            day_count += 1
+        except Exception:
+            pass
+
+    # 2. Month drills
+    month_dir = os.path.join(out_drill_dir, "month")
+    os.makedirs(month_dir, exist_ok=True)
+    month_count = 0
+    for m in (result.get("monthly") or {}).get("labels") or []:
+        try:
+            r = build_drill(cache_path, "month", m, baseline=baseline)
+            with open(os.path.join(month_dir, f"{m}.json"), "w", encoding="utf-8") as mf:
+                json.dump(r, mf, ensure_ascii=False)
+            month_count += 1
+        except Exception:
+            pass
+
+    # 3. Category drills
+    cat_dir = os.path.join(out_drill_dir, "category")
+    os.makedirs(cat_dir, exist_ok=True)
+    cat_count = 0
+    for cat in ["胸", "背", "腿", "肩", "核心", "手臂", "有氧"]:
+        try:
+            r = build_drill(cache_path, "category", cat, baseline=baseline)
+            with open(os.path.join(cat_dir, f"{cat}.json"), "w", encoding="utf-8") as cf:
+                json.dump(r, cf, ensure_ascii=False)
+            cat_count += 1
+        except Exception:
+            pass
+
+    # 4. Movement drills
+    mov_dir = os.path.join(out_drill_dir, "movement")
+    os.makedirs(mov_dir, exist_ok=True)
+    mov_count = 0
+    for m in result.get("movement_prs") or []:
+        name = m.get("name")
+        if not name:
+            continue
+        try:
+            r = build_drill(cache_path, "movement", name, baseline=baseline)
+            safe_name = name.replace("/", "_")
+            with open(os.path.join(mov_dir, f"{safe_name}.json"), "w", encoding="utf-8") as mof:
+                json.dump(r, mof, ensure_ascii=False)
+            mov_count += 1
+        except Exception:
+            pass
+
+    print(f"Exported static drills: {day_count} days, {month_count} months, {cat_count} cats, {mov_count} movements")
 
 
 if __name__ == "__main__":

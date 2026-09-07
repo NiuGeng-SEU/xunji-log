@@ -48,6 +48,15 @@ interface StandardsData {
 
 const standardsData = strengthStandardsRaw as unknown as StandardsData;
 
+export function resolveAssetUrl(url: string | undefined): string {
+  if (!url) return "";
+  if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("data:")) return url;
+  const base = import.meta.env.BASE_URL || "./";
+  const cleanBase = base.endsWith("/") ? base : `${base}/`;
+  const cleanUrl = url.startsWith("/") ? url.slice(1) : url;
+  return `${cleanBase}${cleanUrl}`;
+}
+
 export interface BenchmarkThresholds {
   beginner: number;
   novice: number;
@@ -349,7 +358,7 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
               >
                 <div className="max-pr-item-left">
                   <div className="max-pr-icon-circle">
-                    <img src={pr.icon} alt={pr.name_en} className="max-pr-icon-img" />
+                    <img src={resolveAssetUrl(pr.icon)} alt={pr.name_en} className="max-pr-icon-img" />
                   </div>
 
                   <div className="max-pr-info">
@@ -649,7 +658,7 @@ function ExerciseDetailModal({
         <div className="max-pr-modal-header">
           <div className="max-pr-modal-title-group">
             <div className="max-pr-icon-circle modal-icon">
-              <img src={exercise.icon} alt={exercise.name_en} className="max-pr-icon-img" />
+              <img src={resolveAssetUrl(exercise.icon)} alt={exercise.name_en} className="max-pr-icon-img" />
             </div>
             <div>
               <h3 className="max-pr-modal-title">
@@ -668,7 +677,7 @@ function ExerciseDetailModal({
           <div className="max-pr-modal-hero">
             <div className="max-pr-modal-gif-container">
               <img
-                src={exercise.gif}
+                src={resolveAssetUrl(exercise.gif)}
                 alt={`${exercise.name_en} Demonstration`}
                 className="max-pr-modal-gif"
               />
