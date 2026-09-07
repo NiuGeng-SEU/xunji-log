@@ -8,8 +8,8 @@ export default function Layout() {
 
   const nav = [
     { to: "/", label: t("Overview", "总览"), end: true },
-    { to: "/muscle", label: t("Strength", "力量训练"), end: false },
-    { to: "/fat-loss", label: t("Cardio", "有氧训练"), end: false },
+    { to: "/strength", label: t("Strength", "力量训练"), end: false },
+    { to: "/cardio", label: t("Cardio", "有氧训练"), end: false },
   ];
 
   return (

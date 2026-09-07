@@ -65,7 +65,7 @@ export function formatVolume(valueKg: number, unit: WeightUnit) {
 
 export function formatScaledVolume(valueMetricTons: number, unit: WeightUnit, language: "en" | "zh" = "en") {
   const value = metricTonsToDisplay(valueMetricTons, unit);
-  return `${value.toLocaleString(language === "en" ? "en-US" : "zh-CN", { maximumFractionDigits: 2 })} ${volumeScaleLabel(unit, language)}`;
+  return `${value.toLocaleString(language === "en" ? "en-US" : "zh-CN", { maximumFractionDigits: 1 })} ${volumeScaleLabel(unit, language)}`;
 }
 
 export function convertInsightUnits(text: string, unit: WeightUnit) {

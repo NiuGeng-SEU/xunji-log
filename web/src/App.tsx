@@ -6,8 +6,8 @@ import {
   fetchAnalysis,
 } from "./api";
 import Overview from "./pages/Overview";
-import FatLoss from "./pages/FatLoss";
-import Muscle from "./pages/Muscle";
+import Cardio from "./pages/Cardio";
+import Strength from "./pages/Strength";
 import { UnitProvider } from "./units";
 import { LanguageProvider } from "./language";
 
@@ -47,10 +47,10 @@ function AppContent() {
       <Routes>
         <Route element={<Layout />}>
         <Route index element={<Overview data={data} />} />
-        <Route path="muscle" element={<Muscle data={data} />} />
-        <Route path="strength" element={<Muscle data={data} />} />
-        <Route path="fat-loss" element={<FatLoss data={data} />} />
-        <Route path="cardio" element={<FatLoss data={data} />} />
+        <Route path="strength" element={<Strength data={data} />} />
+        <Route path="cardio" element={<Cardio data={data} />} />
+        <Route path="muscle" element={<Navigate to="/strength" replace />} />
+        <Route path="fat-loss" element={<Navigate to="/cardio" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

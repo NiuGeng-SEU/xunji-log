@@ -12,13 +12,25 @@ export const MATLAB_COLORS = [
 ] as const;
 
 type Props = {
-  option: object;
+  option: Record<string, unknown>;
   height?: number;
   className?: string;
   onEvents?: Record<string, (params: unknown) => void>;
 };
 
+export function formatChartValue(value: unknown): string {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value.toLocaleString("en-US", { maximumFractionDigits: 1 });
+  }
+  return value == null ? "—" : String(value);
+}
+
 export default function Chart({ option, height = 280, className, onEvents }: Props) {
+  const rawTooltip = option.tooltip;
+  const tooltip = rawTooltip && typeof rawTooltip === "object" && !Array.isArray(rawTooltip)
+    ? { valueFormatter: formatChartValue, ...rawTooltip }
+    : rawTooltip;
+
   return (
     <ReactECharts
       className={className}
@@ -28,6 +40,7 @@ export default function Chart({ option, height = 280, className, onEvents }: Pro
         textStyle: { color: "#666666", fontSize: 11 },
         grid: { left: 48, right: 16, top: 32, bottom: 36 },
         ...option,
+        ...(tooltip ? { tooltip } : {}),
       }}
       style={{ height }}
       opts={{ renderer: "canvas" }}
@@ -36,7 +49,7 @@ export default function Chart({ option, height = 280, className, onEvents }: Pro
   );
 }
 
-export function lineSeries(name: string, data: number[], area = false) {
+export function lineSeries(name: string, data: Array<number | null>, area = false) {
   return {
     name,
     type: "line",

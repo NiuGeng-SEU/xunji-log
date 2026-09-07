@@ -915,6 +915,7 @@ function ExerciseDetailModal({
         extraCssText: "box-shadow: 0 4px 14px rgba(0,0,0,0.1); border-radius: 8px;",
       },
       xAxis: {
+        ...axisStyle,
         type: "value",
         min: 0,
         max: 100,
@@ -928,9 +929,9 @@ function ExerciseDetailModal({
           color: "#64748b",
           fontSize: 10,
         },
-        ...axisStyle,
       },
       yAxis: {
+        ...axisStyle,
         type: "value",
         name: unit,
         nameTextStyle: { color: "#64748b", fontSize: 11, fontWeight: 500 },
@@ -938,7 +939,6 @@ function ExerciseDetailModal({
           color: "#64748b",
           fontSize: 10,
         },
-        ...axisStyle,
       },
       series: [
         {

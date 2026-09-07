@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect } from "react";
 
 type LanguageContextValue = {
-  language: "en";
+  language: "en" | "zh";
   t: (english: string, chinese: string) => string;
   label: (value: string) => string;
   rawLabel: (value: string) => string;

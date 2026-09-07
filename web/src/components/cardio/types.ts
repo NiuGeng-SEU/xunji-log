@@ -1,5 +1,5 @@
 export interface Activity {
-  run_id: number;
+  run_id: string | number;
   name: string;
   distance: number; // in meters
   moving_time: string; // "H:MM:SS" or "MM:SS"

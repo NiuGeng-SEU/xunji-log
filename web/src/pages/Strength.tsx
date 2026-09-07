@@ -11,7 +11,7 @@ import {
 } from "../units";
 import { useLanguage } from "../language";
 
-export default function Muscle({ data }: { data: Analysis }) {
+export default function Strength({ data }: { data: Analysis }) {
   const { unit } = useWeightUnit();
   const { language, t, label, rawLabel } = useLanguage();
   const m = data.monthly;

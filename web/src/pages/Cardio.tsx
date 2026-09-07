@@ -8,7 +8,7 @@ import { getAvailableYears } from "../components/cardio/utils";
 import { ActivityLog } from "../components/cardio/ActivityLog";
 import { PersonalBest } from "../components/cardio/PersonalBest";
 
-export default function FatLoss({ data }: { data: Analysis }) {
+export default function Cardio({ data }: { data: Analysis }) {
   const { t, label } = useLanguage();
   const m = data.monthly;
   const [drill, setDrill] = useState<DrillQuery | null>(null);
@@ -39,10 +39,11 @@ export default function FatLoss({ data }: { data: Analysis }) {
         type,
         start_date: `${s.date} 12:00:00`,
         start_date_local: `${s.date} 12:00:00`,
-        average_heartrate: s.avg_hr && s.avg_hr > 0 ? s.avg_hr : undefined,
-        average_speed: average_speed > 0 ? average_speed : undefined,
-        location_country: "",
-        summary_polyline: "",
+        average_heartrate: s.avg_hr && s.avg_hr > 0 ? s.avg_hr : null,
+        average_speed: average_speed > 0 ? average_speed : 0,
+        elevation_gain: null,
+        location_country: null,
+        summary_polyline: null,
       };
     });
   }, [data.cardio_sessions]);
