@@ -1296,6 +1296,8 @@ table.data tr.undone td {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .max-pr-bw-selector {

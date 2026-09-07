@@ -108,6 +108,7 @@ export interface CompoundPr {
   total_sets: number;
   top_sets?: CompoundPrSet[];
   recent_sets?: CompoundPrSet[];
+  history?: CompoundPrSet[];
 }
 
 export interface StrengthSummary {

@@ -279,9 +279,117 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeModalExercise]);
 
-  const orderedPrs = useMemo(() => {
+  const [selectedYear, setSelectedYear] = useState<number | "past_year" | "all">("past_year");
+
+  const years = useMemo(() => {
     if (!prs) return [];
-    const withTiers = prs.map((pr) => {
+    const yearsSet = new Set<number>();
+    for (const p of prs) {
+      for (const s of p.history || []) {
+        const y = Number(s.date.slice(0, 4));
+        if (!isNaN(y) && y > 2000) yearsSet.add(y);
+      }
+    }
+    return Array.from(yearsSet).sort((a, b) => b - a);
+  }, [prs]);
+
+  const now = useMemo(() => new Date(), []);
+  const oneYearAgoStr = useMemo(() => {
+    const d = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  }, [now]);
+
+  const filteredPrs = useMemo(() => {
+    if (!prs) return [];
+    return prs.map((pr) => {
+      const allSets = pr.history || [];
+      let sets = allSets;
+      if (selectedYear === "past_year") {
+        sets = allSets.filter((s) => s.date >= oneYearAgoStr);
+      } else if (typeof selectedYear === "number") {
+        const prefix = String(selectedYear);
+        sets = allSets.filter((s) => s.date.startsWith(prefix));
+      }
+
+      if (sets.length === 0) {
+        return {
+          ...pr,
+          max_weight_kg: 0,
+          max_weight_lb: 0,
+          max_reps: 0,
+          max_date: "",
+          max_orig_weight: 0,
+          best_1rm_kg: 0,
+          best_1rm_lb: 0,
+          best_1rm_weight: 0,
+          best_1rm_reps: 0,
+          best_1rm_date: "",
+          total_sets: 0,
+          top_sets: [],
+          recent_sets: [],
+        };
+      }
+
+      let maxWeightKg = 0;
+      let maxWeightLb = 0;
+      let maxReps = 0;
+      let maxDate = "";
+      let maxOrigWeight = 0;
+      let maxOrigUnit = pr.max_orig_unit || "kg";
+
+      let best1rmKg = 0;
+      let best1rmLb = 0;
+      let best1rmWeight = 0;
+      let best1rmReps = 0;
+      let best1rmDate = "";
+      let best1rmUnit = pr.best_1rm_unit || "kg";
+
+      for (const s of sets) {
+        if (s.weight_kg > maxWeightKg) {
+          maxWeightKg = s.weight_kg;
+          maxWeightLb = s.weight_lb;
+          maxReps = s.reps;
+          maxDate = s.date;
+          maxOrigWeight = s.weight;
+          maxOrigUnit = s.unit;
+        }
+        if (s.est_1rm_kg > best1rmKg) {
+          best1rmKg = s.est_1rm_kg;
+          best1rmLb = s.est_1rm_lb;
+          best1rmWeight = s.weight;
+          best1rmReps = s.reps;
+          best1rmDate = s.date;
+          best1rmUnit = s.unit;
+        }
+      }
+
+      const topSets = sets.slice().sort((a, b) => b.est_1rm_kg - a.est_1rm_kg).slice(0, 5);
+      const recentSets = sets.slice().sort((a, b) => (b.date > a.date ? 1 : -1)).slice(0, 5);
+
+      return {
+        ...pr,
+        max_weight_kg: maxWeightKg,
+        max_weight_lb: maxWeightLb,
+        max_reps: maxReps,
+        max_date: maxDate,
+        max_orig_weight: maxOrigWeight,
+        max_orig_unit: maxOrigUnit,
+        best_1rm_kg: best1rmKg,
+        best_1rm_lb: best1rmLb,
+        best_1rm_weight: best1rmWeight,
+        best_1rm_reps: best1rmReps,
+        best_1rm_date: best1rmDate,
+        best_1rm_unit: best1rmUnit,
+        total_sets: sets.length,
+        top_sets: topSets,
+        recent_sets: recentSets,
+      };
+    });
+  }, [prs, selectedYear, oneYearAgoStr]);
+
+  const orderedPrs = useMemo(() => {
+    if (!filteredPrs) return [];
+    const withTiers = filteredPrs.map((pr) => {
       const benchmarks = getBenchmarksForBw(pr.key, bodyweightKg);
       const tier = calculateStrengthTier(pr.best_1rm_kg, benchmarks);
       return { ...pr, benchmarks, tier };
@@ -297,7 +405,7 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
       .sort((a, b) => b.tier.percentile - a.tier.percentile);
 
     return [...fixedTop5, ...remaining];
-  }, [prs, bodyweightKg]);
+  }, [filteredPrs, bodyweightKg]);
 
   if (!prs || prs.length === 0) {
     return null;
@@ -306,6 +414,7 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
   const visiblePrs = isExpanded ? orderedPrs : orderedPrs.slice(0, 5);
 
   const formatWeightVal = (valKg: number, valLb: number) => {
+    if (!valKg || valKg <= 0) return "--";
     const val = unit === "lb" ? valLb : valKg;
     const rounded = Math.round(val * 10) / 10;
     return rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(1);
@@ -324,6 +433,33 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
           </div>
 
           <div className="max-pr-header-actions">
+            <nav className="chart-years-nav" aria-label={t("Year filter", "年份筛选")}>
+              <button
+                type="button"
+                className={selectedYear === "past_year" ? "active" : ""}
+                onClick={() => setSelectedYear("past_year")}
+              >
+                {t("Past Year", "近一年")}
+              </button>
+              {years.map((choice) => (
+                <button
+                  key={choice}
+                  type="button"
+                  className={selectedYear === choice ? "active" : ""}
+                  onClick={() => setSelectedYear(choice)}
+                >
+                  {choice}
+                </button>
+              ))}
+              <button
+                type="button"
+                className={selectedYear === "all" ? "active" : ""}
+                onClick={() => setSelectedYear("all")}
+              >
+                {t("All", "全部")}
+              </button>
+            </nav>
+
             <div className="max-pr-bw-selector">
               <span className="max-pr-bw-label">{t("Bodyweight", "体重")}:</span>
               <div className="max-pr-bw-pills">
@@ -366,16 +502,22 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
                       <span className="max-pr-name">
                         {isZh ? pr.name_zh : pr.name_en}
                       </span>
-                      <span
-                        className="max-pr-tier-badge"
-                        style={{
-                          color: tier.tierColor,
-                          backgroundColor: `${tier.tierColor}18`,
-                          borderColor: `${tier.tierColor}35`,
-                        }}
-                      >
-                        {isZh ? tier.tierNameZh : tier.tierNameEn} {tier.percentile}%
-                      </span>
+                      {pr.total_sets > 0 && pr.best_1rm_kg > 0 ? (
+                        <span
+                          className="max-pr-tier-badge"
+                          style={{
+                            color: tier.tierColor,
+                            backgroundColor: `${tier.tierColor}18`,
+                            borderColor: `${tier.tierColor}35`,
+                          }}
+                        >
+                          {isZh ? tier.tierNameZh : tier.tierNameEn} {tier.percentile}%
+                        </span>
+                      ) : (
+                        <span className="max-pr-tier-badge text-muted">
+                          {t("No record", "暂无记录")}
+                        </span>
+                      )}
                     </div>
 
                     <div className="max-pr-gauge-container">
@@ -383,16 +525,18 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
                         <div
                           className="max-pr-gauge-fill"
                           style={{
-                            width: `${Math.min(100, Math.max(4, tier.percentile))}%`,
-                            backgroundColor: tier.tierColor,
+                            width: pr.best_1rm_kg > 0 ? `${Math.min(100, Math.max(4, tier.percentile))}%` : "0%",
+                            backgroundColor: pr.best_1rm_kg > 0 ? tier.tierColor : "transparent",
                           }}
                         />
                       </div>
                       <span className="max-pr-gauge-hint">
-                        {t(
-                          `Top ${Math.max(1, Math.round(100 - tier.percentile))}% lifters`,
-                          `超越 ${tier.percentile}% 训练者`
-                        )}
+                        {pr.best_1rm_kg > 0
+                          ? t(
+                              `Top ${Math.max(1, Math.round(100 - tier.percentile))}% lifters`,
+                              `超越 ${tier.percentile}% 训练者`
+                            )
+                          : t("No record in period", "选定周期内无记录")}
                       </span>
                     </div>
                   </div>
@@ -402,7 +546,7 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
                   <div className="max-pr-stat-col">
                     <div className="max-pr-stat-val">
                       {formatWeightVal(pr.max_weight_kg, pr.max_weight_lb)}
-                      <span className="max-pr-stat-unit"> {unit}</span>
+                      {pr.max_weight_kg > 0 && <span className="max-pr-stat-unit"> {unit}</span>}
                     </div>
                     <span className="max-pr-stat-lbl">{t("Max", "极限")}</span>
                   </div>
@@ -412,7 +556,7 @@ export default function MaxPrCard({ prs }: MaxPrCardProps) {
                   <div className="max-pr-stat-col">
                     <div className="max-pr-stat-val highlight">
                       {formatWeightVal(pr.best_1rm_kg, pr.best_1rm_lb)}
-                      <span className="max-pr-stat-unit"> {unit}</span>
+                      {pr.best_1rm_kg > 0 && <span className="max-pr-stat-unit"> {unit}</span>}
                     </div>
                     <span className="max-pr-stat-lbl">{t("Est. 1RM", "预估 1RM")}</span>
                   </div>

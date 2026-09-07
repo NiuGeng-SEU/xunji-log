@@ -910,6 +910,7 @@ def main():
             "total_sets": rec["total_sets"],
             "top_sets": top_by_1rm,
             "recent_sets": top_by_date,
+            "history": rec["history"],
         })
 
     strength_summary = {

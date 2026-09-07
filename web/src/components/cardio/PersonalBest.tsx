@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { Activity } from './types';
 import { parseMovingTime } from './utils';
 import {
@@ -41,17 +41,38 @@ const DISTANCES: { key: keyof typeof RUNNING_BENCHMARKS; min: number; max: numbe
 export function PersonalBest({ activities, onSelectActivity }: PersonalBestProps) {
   const { t, language } = useLanguage();
   const isZh = language === 'zh';
+  const [selectedYear, setSelectedYear] = useState<number | 'past_year' | 'all'>('past_year');
 
-  // All runs from cardio data
-  const runs = useMemo(
-    () => activities.filter((a) => a.type === 'Run' && a.distance > 0),
-    [activities]
-  );
+  const years = useMemo(() => {
+    const yearsSet = new Set<number>();
+    for (const a of activities) {
+      if (a.type === 'Run' && a.distance > 0) {
+        const y = Number(a.start_date_local.slice(0, 4));
+        if (!isNaN(y) && y > 2000) yearsSet.add(y);
+      }
+    }
+    return Array.from(yearsSet).sort((a, b) => b - a);
+  }, [activities]);
 
-  // All-time Personal Bests
+  // Filtered runs based on selected year (default Past Year / last 12 months)
+  const filteredRuns = useMemo(() => {
+    const allRuns = activities.filter((a) => a.type === 'Run' && a.distance > 0);
+    if (selectedYear === 'all') return allRuns;
+    if (typeof selectedYear === 'number') {
+      const prefix = String(selectedYear);
+      return allRuns.filter((a) => a.start_date_local.startsWith(prefix));
+    }
+    // 'past_year': last 12 months
+    const now = new Date();
+    const oneYearAgo = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+    const oneYearAgoStr = `${oneYearAgo.getFullYear()}-${String(oneYearAgo.getMonth() + 1).padStart(2, '0')}-${String(oneYearAgo.getDate()).padStart(2, '0')}`;
+    return allRuns.filter((a) => a.start_date_local.slice(0, 10) >= oneYearAgoStr);
+  }, [activities, selectedYear]);
+
+  // Personal Bests for selected period
   const bests = useMemo(() => {
     return DISTANCES.map(({ key, min, max }) => {
-      const matching = runs.filter((a) => {
+      const matching = filteredRuns.filter((a) => {
         const km = a.distance / 1000;
         if (km < min || km > max) return false;
         const time = parseMovingTime(a.moving_time);
@@ -68,7 +89,13 @@ export function PersonalBest({ activities, onSelectActivity }: PersonalBestProps
       const tier = calculateSpecificDistanceTier(key, time);
       return { key, activity: best, time, tier };
     });
-  }, [runs]);
+  }, [filteredRuns]);
+
+  const periodLabel = useMemo(() => {
+    if (selectedYear === 'past_year') return t('Past Year Records', '近一年最佳');
+    if (selectedYear === 'all') return t('All-Time Records', '历史个人最佳');
+    return `${selectedYear} ${t('Records', '年度最佳')}`;
+  }, [selectedYear, t]);
 
   // Last Month Predicted PBs
   const prediction = useMemo(() => predictPBsFromLastMonth(activities), [activities]);
@@ -92,14 +119,40 @@ export function PersonalBest({ activities, onSelectActivity }: PersonalBestProps
           </svg>
           <span>{t('Personal Best & Race Prediction', '个人最佳与成绩预测')}</span>
         </h3>
+        <nav className="chart-years-nav" aria-label={t('Year filter', '年份筛选')}>
+          <button
+            type="button"
+            className={selectedYear === 'past_year' ? 'active' : ''}
+            onClick={() => setSelectedYear('past_year')}
+          >
+            {t('Past Year', '近一年')}
+          </button>
+          {years.map((y) => (
+            <button
+              key={y}
+              type="button"
+              className={selectedYear === y ? 'active' : ''}
+              onClick={() => setSelectedYear(y)}
+            >
+              {y}
+            </button>
+          ))}
+          <button
+            type="button"
+            className={selectedYear === 'all' ? 'active' : ''}
+            onClick={() => setSelectedYear('all')}
+          >
+            {t('All', '全部')}
+          </button>
+        </nav>
       </div>
 
-      {/* 1. All-Time Personal Bests */}
+      {/* 1. Personal Bests for selected period */}
       <div className="pb-section">
         <div className="pb-section-header">
           <h4 className="pb-section-subtitle">
             <span className="pb-section-dot pb-dot-alltime" />
-            <span>{t('All-Time Records', '历史个人最佳')}</span>
+            <span>{periodLabel}</span>
           </h4>
         </div>
 

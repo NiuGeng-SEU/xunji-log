@@ -11,8 +11,8 @@ import { PersonalBest } from "../components/cardio/PersonalBest";
 export default function FatLoss({ data }: { data: Analysis }) {
   const { t, label } = useLanguage();
   const m = data.monthly;
-  const shortLabels = m.labels.map((l) => l.slice(2));
   const [drill, setDrill] = useState<DrillQuery | null>(null);
+  const [chartYear, setChartYear] = useState<number | "all" | null>(null);
 
   // Running Suite States (calculated directly from data/cache/ via data.cardio_sessions)
   const runningActivities: Activity[] = useMemo(() => {
@@ -289,6 +289,101 @@ export default function FatLoss({ data }: { data: Analysis }) {
     });
   }, [data.cardio_sessions, m.labels]);
 
+  const chartYears = useMemo(() => {
+    const fromDates = [Number(data.date_start.slice(0, 4)), Number(data.date_end.slice(0, 4))];
+    const fromMonthly = m.labels.map((l) => Number(l.slice(0, 4)));
+    const allYears = [...fromDates, ...fromMonthly].filter((y) => !isNaN(y) && y > 2000);
+    const minYear = Math.min(...allYears);
+    const maxYear = Math.max(...allYears);
+    return Array.from({ length: maxYear - minYear + 1 }, (_, i) => maxYear - i);
+  }, [data.date_start, data.date_end, m.labels]);
+
+  const todayMonthKey = useMemo(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  }, []);
+
+  const monthKeys = useMemo(() => {
+    if (chartYear === "all") {
+      return m.labels;
+    }
+    if (typeof chartYear === "number") {
+      return Array.from({ length: 12 }, (_, month) => `${chartYear}-${String(month + 1).padStart(2, "0")}`);
+    }
+    // null -> Past Year (last 12 months)
+    const now = new Date();
+    return Array.from({ length: 12 }, (_, index) => {
+      const date = new Date(now.getFullYear(), now.getMonth() - 11 + index, 1);
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    });
+  }, [chartYear, m.labels]);
+
+  const shortLabels = useMemo(() => monthKeys.map((month) => month.slice(2)), [monthKeys]);
+
+  const monthIndex = useMemo(
+    () => new Map(m.labels.map((month, index) => [month, index])),
+    [m.labels]
+  );
+
+  const filteredCardioKm = useMemo(() => {
+    return monthKeys.map((month) => {
+      if (typeof chartYear === "number" && month > todayMonthKey) {
+        return null;
+      }
+      const index = monthIndex.get(month);
+      return index == null ? 0 : m.cardio_km[index] ?? 0;
+    });
+  }, [monthKeys, chartYear, todayMonthKey, monthIndex, m.cardio_km]);
+
+  const filteredCardioKcal = useMemo(() => {
+    return monthKeys.map((month) => {
+      if (typeof chartYear === "number" && month > todayMonthKey) {
+        return null;
+      }
+      const index = monthIndex.get(month);
+      return index == null ? 0 : m.cardio_kcal[index] ?? 0;
+    });
+  }, [monthKeys, chartYear, todayMonthKey, monthIndex, m.cardio_kcal]);
+
+  const filteredAvgHr = useMemo(() => {
+    return monthKeys.map((month) => {
+      if (typeof chartYear === "number" && month > todayMonthKey) {
+        return null;
+      }
+      const index = monthIndex.get(month);
+      return index == null ? null : monthlyAvgHr[index] ?? null;
+    });
+  }, [monthKeys, chartYear, todayMonthKey, monthIndex, monthlyAvgHr]);
+
+  const renderChartYearSelector = () => (
+    <nav className="chart-years-nav" aria-label={t("Year filter", "年份筛选")}>
+      <button
+        type="button"
+        className={chartYear === null ? "active" : ""}
+        onClick={() => setChartYear(null)}
+      >
+        {t("Past Year", "近一年")}
+      </button>
+      {chartYears.map((choice) => (
+        <button
+          key={choice}
+          type="button"
+          className={chartYear === choice ? "active" : ""}
+          onClick={() => setChartYear(choice)}
+        >
+          {choice}
+        </button>
+      ))}
+      <button
+        type="button"
+        className={chartYear === "all" ? "active" : ""}
+        onClick={() => setChartYear("all")}
+      >
+        {t("All", "全部")}
+      </button>
+    </nav>
+  );
+
   const renderDiff = (diff: number, periodLabel: string) => {
     if (diff === 0) return <p className="goal-diff neutral">— vs {periodLabel}</p>;
     const isPositive = diff > 0;
@@ -309,11 +404,11 @@ export default function FatLoss({ data }: { data: Analysis }) {
       const name = chartClickName(params);
       const idx = chartClickIndex(params);
       const key =
-        (name && expandMonthKey(name, m.labels)) ||
-        (idx != null ? m.labels[idx] : null);
+        (name && expandMonthKey(name, monthKeys)) ||
+        (idx != null ? monthKeys[idx] : null);
       if (key) setDrill({ type: "month", key });
     },
-    [m.labels],
+    [monthKeys],
   );
 
   return (
@@ -514,7 +609,10 @@ export default function FatLoss({ data }: { data: Analysis }) {
       <div className="charts-grid">
         {/* Monthly Cardio Distance & Avg Heart Rate Chart */}
         <div className="chart-card clickable-hint">
-          <h3>{t("Monthly Cardio Distance & Heart Rate", "月度有氧里程与心率")}</h3>
+          <div className="chart-card-header">
+            <h3>{t("Monthly Cardio Distance & Heart Rate", "月度有氧里程与心率")}</h3>
+            {renderChartYearSelector()}
+          </div>
           <Chart
             onEvents={{ click: openMonth }}
             option={{
@@ -529,11 +627,11 @@ export default function FatLoss({ data }: { data: Analysis }) {
                 { type: "value", name: "bpm", min: 80, max: 180, ...axisStyle },
               ],
               series: [
-                { ...lineSeries(t("Distance (km)", "里程 (km)"), m.cardio_km, true), yAxisIndex: 0 },
+                { ...lineSeries(t("Distance (km)", "里程 (km)"), filteredCardioKm, true), yAxisIndex: 0 },
                 {
                   name: t("Avg Heart Rate (bpm)", "平均心率 (bpm)"),
                   type: "line",
-                  data: monthlyAvgHr,
+                  data: filteredAvgHr,
                   yAxisIndex: 1,
                   smooth: true,
                   itemStyle: { color: "#ef4444" },
@@ -546,13 +644,22 @@ export default function FatLoss({ data }: { data: Analysis }) {
         </div>
 
         <div className="chart-card clickable-hint">
-          <h3>{t("Monthly Cardio Calories (kcal)", "月度有氧消耗（kcal）")}</h3>
+          <div className="chart-card-header">
+            <h3>{t("Monthly Cardio Calories (kcal)", "月度有氧消耗（kcal）")}</h3>
+            <span className="chart-period-badge">
+              {chartYear === null
+                ? t("Past Year", "近一年")
+                : chartYear === "all"
+                ? t("All", "全部")
+                : `${chartYear}`}
+            </span>
+          </div>
           <Chart
             onEvents={{ click: openMonth }}
             option={{
               xAxis: { type: "category", data: shortLabels, ...axisStyle },
               yAxis: { type: "value", name: "kcal", ...axisStyle },
-              series: [{ type: "bar", data: m.cardio_kcal, itemStyle: { color: MATLAB_COLORS[4] } }],
+              series: [{ type: "bar", data: filteredCardioKcal, itemStyle: { color: MATLAB_COLORS[4] } }],
               tooltip: { trigger: "axis" },
             }}
           />
