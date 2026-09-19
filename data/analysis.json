@@ -2,14 +2,14 @@
  "date_start": "2021-11-15",
  "date_end": "2026-09-17",
  "n_days": 889,
- "n_sessions": 1636,
+ "n_sessions": 1638,
  "n_movements": 88,
  "total_volume_kg": 2633495.7,
  "total_sets": 7720,
  "total_done_sets": 7703,
- "total_duration_min": 65866.8,
+ "total_duration_min": 65950.7,
  "avg_session_duration_min": 40.3,
- "avg_sessions_per_week": 6.48,
+ "avg_sessions_per_week": 6.49,
  "max_streak_days": 38,
  "avg_gap_days": 2.0,
  "monthly": {
@@ -133,7 +133,7 @@
    20,
    39,
    42,
-   23
+   25
   ],
   "days": [
    8,
@@ -316,7 +316,7 @@
    13.0,
    29.2,
    29.4,
-   13.1
+   14.5
   ],
   "cardio_km": [
    0,
@@ -377,7 +377,7 @@
    15.8,
    87.4,
    81.5,
-   36.5
+   44.9
   ],
   "cardio_kcal": [
    0,
@@ -438,7 +438,7 @@
    5450,
    12969,
    13469,
-   5811
+   6476
   ]
  },
  "weekly": {
@@ -950,14 +950,14 @@
    5,
    3,
    11,
-   9
+   11
   ]
  },
  "cardio": {
-  "n_sessions": 1190,
+  "n_sessions": 1192,
   "n_strength_sessions": 446,
-  "total_km": 2088.1,
-  "total_kcal": 374910,
+  "total_km": 2096.5,
+  "total_kcal": 375575,
   "avg_hr": 121.0,
   "max_hr": 145.0
  },
@@ -975,7 +975,7 @@
    274,
    280,
    245,
-   265,
+   267,
    223,
    179,
    170
@@ -1031,8 +1031,8 @@
    125,
    114,
    113,
-   104,
-   99
+   105,
+   100
   ]
  },
  "categories": {
@@ -8390,11 +8390,11 @@
   },
   {
    "date": "2026-09-17",
-   "sessions": 1,
+   "sessions": 3,
    "volume_kg": 0.0,
-   "duration_min": 18.0,
-   "cardio_km": 0.0,
-   "cardio_kcal": 102
+   "duration_min": 102.0,
+   "cardio_km": 8.4,
+   "cardio_kcal": 767
   }
  ],
  "category_monthly": {
@@ -15912,11 +15912,27 @@
  "cardio_sessions": [
   {
    "date": "2026-09-17",
+   "title": "跑步",
+   "distance_km": 8.4,
+   "kcal": 589,
+   "duration_min": 65.0,
+   "avg_hr": 148.0
+  },
+  {
+   "date": "2026-09-17",
    "title": "步行",
    "distance_km": 1.5,
    "kcal": 102,
    "duration_min": 18.0,
    "avg_hr": 119.0
+  },
+  {
+   "date": "2026-09-17",
+   "title": "步行",
+   "distance_km": 1.2,
+   "kcal": 76,
+   "duration_min": 19.0,
+   "avg_hr": 104.0
   },
   {
    "date": "2026-09-16",
