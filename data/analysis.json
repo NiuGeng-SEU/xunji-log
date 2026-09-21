@@ -2,13 +2,13 @@
  "date_start": "2021-11-15",
  "date_end": "2026-09-19",
  "n_days": 890,
- "n_sessions": 1640,
+ "n_sessions": 1641,
  "n_movements": 88,
  "total_volume_kg": 2638110.1,
  "total_sets": 7734,
  "total_done_sets": 7717,
- "total_duration_min": 66012.2,
- "avg_session_duration_min": 40.3,
+ "total_duration_min": 66024.8,
+ "avg_session_duration_min": 40.2,
  "avg_sessions_per_week": 6.49,
  "max_streak_days": 38,
  "avg_gap_days": 2.0,
@@ -133,7 +133,7 @@
    20,
    39,
    42,
-   27
+   28
   ],
   "days": [
    8,
@@ -316,7 +316,7 @@
    13.0,
    29.2,
    29.4,
-   15.5
+   15.8
   ],
   "cardio_km": [
    0,
@@ -438,7 +438,7 @@
    5450,
    12969,
    13469,
-   6575
+   6944
   ]
  },
  "weekly": {
@@ -950,14 +950,14 @@
    5,
    3,
    11,
-   13
+   14
   ]
  },
  "cardio": {
-  "n_sessions": 1193,
+  "n_sessions": 1194,
   "n_strength_sessions": 447,
   "total_km": 2096.5,
-  "total_kcal": 375674,
+  "total_kcal": 376043,
   "avg_hr": 121.0,
   "max_hr": 145.0
  },
@@ -977,7 +977,7 @@
    245,
    267,
    223,
-   181,
+   182,
    170
   ]
  },
@@ -1009,7 +1009,7 @@
    "23时"
   ],
   "sessions": [
-   97,
+   98,
    86,
    102,
    74,
@@ -8398,11 +8398,11 @@
   },
   {
    "date": "2026-09-19",
-   "sessions": 2,
+   "sessions": 3,
    "volume_kg": 4614.0,
-   "duration_min": 62.0,
+   "duration_min": 74.0,
    "cardio_km": 0.0,
-   "cardio_kcal": 99
+   "cardio_kcal": 183
   }
  ],
  "category_monthly": {
@@ -15925,6 +15925,14 @@
    "kcal": 99,
    "duration_min": 14.0,
    "avg_hr": 125.0
+  },
+  {
+   "date": "2026-09-19",
+   "title": "步行",
+   "distance_km": 1.1,
+   "kcal": 84,
+   "duration_min": 13.0,
+   "avg_hr": 123.0
   },
   {
    "date": "2026-09-17",
@@ -78707,7 +78715,7 @@
    }
   ],
   "streaks": {
-   "current_days": 1,
+   "current_days": 0,
    "max_days": 7,
    "current_weeks": 11,
    "max_weeks": 32
