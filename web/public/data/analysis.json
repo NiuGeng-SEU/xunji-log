@@ -2,14 +2,14 @@
  "date_start": "2021-11-15",
  "date_end": "2026-09-21",
  "n_days": 892,
- "n_sessions": 1644,
+ "n_sessions": 1659,
  "n_movements": 88,
  "total_volume_kg": 2646888.0,
  "total_sets": 7758,
  "total_done_sets": 7741,
- "total_duration_min": 66232.1,
- "avg_session_duration_min": 40.3,
- "avg_sessions_per_week": 6.49,
+ "total_duration_min": 66703.5,
+ "avg_session_duration_min": 40.2,
+ "avg_sessions_per_week": 6.55,
  "max_streak_days": 38,
  "avg_gap_days": 2.0,
  "monthly": {
@@ -103,37 +103,37 @@
    6,
    0,
    0,
-   11,
+   12,
    58,
-   63,
-   42,
-   46,
+   66,
+   44,
+   48,
    53,
    57,
-   58,
+   60,
    60,
    56,
    70,
-   63,
-   71,
-   40,
-   29,
-   37,
-   45,
-   55,
+   62,
+   70,
+   35,
+   32,
+   38,
+   47,
+   56,
    52,
    66,
-   51,
+   52,
    45,
-   30,
-   22,
+   31,
+   23,
    20,
    29,
    33,
    20,
    39,
    42,
-   31
+   33
   ],
   "days": [
    8,
@@ -286,37 +286,37 @@
    3.9,
    0.0,
    0.0,
-   4.8,
+   4.9,
    31.9,
-   39.9,
-   34.1,
-   30.6,
+   42.5,
+   35.8,
+   31.8,
    33.4,
    31.1,
-   26.1,
+   26.3,
    30.4,
    28.9,
    35.6,
-   34.2,
-   38.4,
-   21.0,
-   19.0,
-   22.0,
-   29.7,
-   38.1,
+   33.6,
+   38.0,
+   18.8,
+   19.7,
+   22.4,
+   31.1,
+   39.1,
    36.9,
    44.4,
-   33.3,
+   33.5,
    30.3,
-   20.8,
-   15.9,
+   21.0,
+   16.1,
    17.6,
    21.2,
    20.6,
    13.0,
    29.2,
    29.4,
-   19.2
+   20.3
   ],
   "cardio_km": [
    0,
@@ -821,7 +821,7 @@
    0,
    0,
    2,
-   4,
+   5,
    5,
    14,
    10,
@@ -829,16 +829,16 @@
    14,
    18,
    11,
-   13,
+   14,
+   16,
+   12,
    15,
-   11,
-   13,
    9,
    8,
    11,
-   8,
+   9,
    10,
-   15,
+   16,
    12,
    2,
    0,
@@ -850,9 +850,9 @@
    16,
    13,
    15,
-   11,
+   12,
    7,
-   15,
+   16,
    19,
    17,
    16,
@@ -870,29 +870,29 @@
    20,
    17,
    10,
-   19,
-   17,
+   18,
+   16,
    15,
    20,
    12,
+   9,
+   8,
+   10,
+   9,
+   3,
    12,
    9,
-   10,
-   10,
    2,
-   11,
-   9,
-   2,
-   6,
+   7,
    10,
-   9,
+   10,
    12,
    5,
-   7,
-   11,
-   7,
-   14,
-   9,
+   8,
+   10,
+   8,
+   15,
+   10,
    17,
    9,
    14,
@@ -906,7 +906,7 @@
    18,
    14,
    12,
-   14,
+   15,
    12,
    12,
    13,
@@ -917,9 +917,9 @@
    1,
    1,
    14,
-   9,
+   10,
    6,
-   9,
+   10,
    8,
    0,
    5,
@@ -950,13 +950,13 @@
    13,
    5,
    3,
-   11,
-   15,
+   12,
+   16,
    2
   ]
  },
  "cardio": {
-  "n_sessions": 1196,
+  "n_sessions": 1211,
   "n_strength_sessions": 448,
   "total_km": 2108.0,
   "total_kcal": 377599,
@@ -974,13 +974,13 @@
    "周日"
   ],
   "sessions": [
-   276,
-   280,
-   245,
+   273,
+   283,
+   247,
    267,
-   223,
-   182,
-   171
+   225,
+   186,
+   178
   ]
  },
  "hour_of_day": {
@@ -1011,11 +1011,11 @@
    "23时"
   ],
   "sessions": [
-   99,
+   100,
    87,
-   102,
-   74,
-   76,
+   103,
+   77,
+   78,
    81,
    56,
    32,
@@ -1029,12 +1029,12 @@
    28,
    39,
    86,
-   111,
-   125,
+   112,
+   129,
    114,
-   113,
+   114,
    106,
-   102
+   104
   ]
  },
  "categories": {
@@ -3176,11 +3176,11 @@
   },
   {
    "date": "2024-03-20",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 21.0,
-   "cardio_km": 2.4,
-   "cardio_kcal": 173
+   "duration_min": 25.0,
+   "cardio_km": 2.7,
+   "cardio_kcal": 193
   },
   {
    "date": "2024-03-21",
@@ -3592,11 +3592,11 @@
   },
   {
    "date": "2024-05-18",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 70.0,
-   "cardio_km": 10.4,
-   "cardio_kcal": 947
+   "duration_min": 135.0,
+   "cardio_km": 20.5,
+   "cardio_kcal": 1838
   },
   {
    "date": "2024-05-20",
@@ -3624,11 +3624,11 @@
   },
   {
    "date": "2024-05-23",
-   "sessions": 2,
+   "sessions": 3,
    "volume_kg": 0.0,
-   "duration_min": 65.0,
-   "cardio_km": 5.3,
-   "cardio_kcal": 590
+   "duration_min": 99.0,
+   "cardio_km": 10.3,
+   "cardio_kcal": 1026
   },
   {
    "date": "2024-05-24",
@@ -3680,11 +3680,11 @@
   },
   {
    "date": "2024-05-30",
-   "sessions": 3,
+   "sessions": 4,
    "volume_kg": 0.0,
-   "duration_min": 147.0,
-   "cardio_km": 10.0,
-   "cardio_kcal": 1178
+   "duration_min": 207.0,
+   "cardio_km": 19.4,
+   "cardio_kcal": 2036
   },
   {
    "date": "2024-06-01",
@@ -3728,19 +3728,19 @@
   },
   {
    "date": "2024-06-07",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 63.0,
-   "cardio_km": 10.0,
-   "cardio_kcal": 887
+   "duration_min": 133.0,
+   "cardio_km": 20.0,
+   "cardio_kcal": 1798
   },
   {
    "date": "2024-06-08",
-   "sessions": 2,
+   "sessions": 3,
    "volume_kg": 0.0,
-   "duration_min": 67.0,
-   "cardio_km": 6.0,
-   "cardio_kcal": 656
+   "duration_min": 98.0,
+   "cardio_km": 11.0,
+   "cardio_kcal": 1082
   },
   {
    "date": "2024-06-10",
@@ -3896,11 +3896,11 @@
   },
   {
    "date": "2024-07-07",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 40.0,
-   "cardio_km": 5.4,
-   "cardio_kcal": 498
+   "duration_min": 77.0,
+   "cardio_km": 10.4,
+   "cardio_kcal": 925
   },
   {
    "date": "2024-07-08",
@@ -3944,11 +3944,11 @@
   },
   {
    "date": "2024-07-15",
-   "sessions": 2,
+   "sessions": 3,
    "volume_kg": 0.0,
-   "duration_min": 59.0,
-   "cardio_km": 5.2,
-   "cardio_kcal": 562
+   "duration_min": 93.0,
+   "cardio_km": 10.3,
+   "cardio_kcal": 998
   },
   {
    "date": "2024-07-17",
@@ -4472,11 +4472,11 @@
   },
   {
    "date": "2024-10-10",
-   "sessions": 3,
+   "sessions": 4,
    "volume_kg": 0.0,
-   "duration_min": 62.0,
-   "cardio_km": 5.6,
-   "cardio_kcal": 632
+   "duration_min": 75.0,
+   "cardio_km": 6.2,
+   "cardio_kcal": 685
   },
   {
    "date": "2024-10-13",
@@ -4560,11 +4560,11 @@
   },
   {
    "date": "2024-10-25",
-   "sessions": 2,
+   "sessions": 3,
    "volume_kg": 0.0,
-   "duration_min": 41.0,
+   "duration_min": 42.0,
    "cardio_km": 3.3,
-   "cardio_kcal": 383
+   "cardio_kcal": 386
   },
   {
    "date": "2024-10-26",
@@ -5304,11 +5304,11 @@
   },
   {
    "date": "2025-02-10",
-   "sessions": 4,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 98.0,
+   "duration_min": 49.0,
    "cardio_km": 0.0,
-   "cardio_kcal": 534
+   "cardio_kcal": 267
   },
   {
    "date": "2025-02-11",
@@ -5344,11 +5344,11 @@
   },
   {
    "date": "2025-02-15",
-   "sessions": 1,
+   "sessions": 3,
    "volume_kg": 0.0,
-   "duration_min": 61.0,
-   "cardio_km": 10.2,
-   "cardio_kcal": 793
+   "duration_min": 91.0,
+   "cardio_km": 12.7,
+   "cardio_kcal": 961
   },
   {
    "date": "2025-02-16",
@@ -5408,11 +5408,11 @@
   },
   {
    "date": "2025-02-24",
-   "sessions": 4,
+   "sessions": 3,
    "volume_kg": 0.0,
-   "duration_min": 113.0,
+   "duration_min": 98.0,
    "cardio_km": 0.0,
-   "cardio_kcal": 610
+   "cardio_kcal": 525
   },
   {
    "date": "2025-02-25",
@@ -5496,11 +5496,11 @@
   },
   {
    "date": "2025-03-07",
-   "sessions": 4,
+   "sessions": 3,
    "volume_kg": 0.0,
-   "duration_min": 108.0,
+   "duration_min": 83.0,
    "cardio_km": 0.0,
-   "cardio_kcal": 576
+   "cardio_kcal": 457
   },
   {
    "date": "2025-03-09",
@@ -5680,19 +5680,19 @@
   },
   {
    "date": "2025-04-03",
-   "sessions": 4,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 137.0,
+   "duration_min": 69.0,
    "cardio_km": 0.0,
-   "cardio_kcal": 542
+   "cardio_kcal": 271
   },
   {
    "date": "2025-04-05",
-   "sessions": 3,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 96.0,
+   "duration_min": 79.0,
    "cardio_km": 9.1,
-   "cardio_kcal": 918
+   "cardio_kcal": 822
   },
   {
    "date": "2025-04-07",
@@ -5720,11 +5720,11 @@
   },
   {
    "date": "2025-04-10",
-   "sessions": 2,
+   "sessions": 1,
    "volume_kg": 0.0,
-   "duration_min": 56.0,
+   "duration_min": 28.0,
    "cardio_km": 0.0,
-   "cardio_kcal": 352
+   "cardio_kcal": 176
   },
   {
    "date": "2025-04-13",
@@ -5808,11 +5808,11 @@
   },
   {
    "date": "2025-04-26",
-   "sessions": 3,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 100.0,
+   "duration_min": 82.0,
    "cardio_km": 9.8,
-   "cardio_kcal": 982
+   "cardio_kcal": 898
   },
   {
    "date": "2025-04-30",
@@ -5824,11 +5824,11 @@
   },
   {
    "date": "2025-05-04",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 60.0,
-   "cardio_km": 9.0,
-   "cardio_kcal": 631
+   "duration_min": 82.0,
+   "cardio_km": 12.2,
+   "cardio_kcal": 887
   },
   {
    "date": "2025-05-05",
@@ -5856,11 +5856,11 @@
   },
   {
    "date": "2025-05-09",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 60.0,
-   "cardio_km": 9.0,
-   "cardio_kcal": 607
+   "duration_min": 72.0,
+   "cardio_km": 10.7,
+   "cardio_kcal": 735
   },
   {
    "date": "2025-05-10",
@@ -5936,11 +5936,11 @@
   },
   {
    "date": "2025-05-28",
-   "sessions": 2,
+   "sessions": 3,
    "volume_kg": 0.0,
-   "duration_min": 76.0,
-   "cardio_km": 5.3,
-   "cardio_kcal": 699
+   "duration_min": 85.0,
+   "cardio_km": 6.5,
+   "cardio_kcal": 789
   },
   {
    "date": "2025-05-30",
@@ -6008,11 +6008,11 @@
   },
   {
    "date": "2025-06-10",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 61.0,
-   "cardio_km": 9.3,
-   "cardio_kcal": 700
+   "duration_min": 73.0,
+   "cardio_km": 10.9,
+   "cardio_kcal": 815
   },
   {
    "date": "2025-06-12",
@@ -6096,11 +6096,11 @@
   },
   {
    "date": "2025-06-23",
-   "sessions": 3,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 102.0,
+   "duration_min": 82.0,
    "cardio_km": 9.4,
-   "cardio_kcal": 857
+   "cardio_kcal": 745
   },
   {
    "date": "2025-06-25",
@@ -6112,11 +6112,11 @@
   },
   {
    "date": "2025-06-29",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 61.0,
-   "cardio_km": 9.1,
-   "cardio_kcal": 637
+   "duration_min": 94.0,
+   "cardio_km": 14.1,
+   "cardio_kcal": 996
   },
   {
    "date": "2025-06-30",
@@ -6160,11 +6160,11 @@
   },
   {
    "date": "2025-07-06",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 61.0,
-   "cardio_km": 9.1,
-   "cardio_kcal": 628
+   "duration_min": 83.0,
+   "cardio_km": 12.3,
+   "cardio_kcal": 866
   },
   {
    "date": "2025-07-07",
@@ -6176,11 +6176,11 @@
   },
   {
    "date": "2025-07-08",
-   "sessions": 3,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 75.0,
+   "duration_min": 55.0,
    "cardio_km": 5.2,
-   "cardio_kcal": 526
+   "cardio_kcal": 445
   },
   {
    "date": "2025-07-09",
@@ -6248,11 +6248,11 @@
   },
   {
    "date": "2025-07-20",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 61.0,
-   "cardio_km": 9.1,
-   "cardio_kcal": 638
+   "duration_min": 83.0,
+   "cardio_km": 12.3,
+   "cardio_kcal": 869
   },
   {
    "date": "2025-07-21",
@@ -6296,11 +6296,11 @@
   },
   {
    "date": "2025-07-26",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 62.0,
-   "cardio_km": 9.1,
-   "cardio_kcal": 692
+   "duration_min": 123.0,
+   "cardio_km": 18.1,
+   "cardio_kcal": 1321
   },
   {
    "date": "2025-07-28",
@@ -6344,11 +6344,11 @@
   },
   {
    "date": "2025-08-02",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 62.0,
-   "cardio_km": 9.1,
-   "cardio_kcal": 743
+   "duration_min": 123.0,
+   "cardio_km": 18.2,
+   "cardio_kcal": 1461
   },
   {
    "date": "2025-08-04",
@@ -6944,11 +6944,11 @@
   },
   {
    "date": "2025-11-04",
-   "sessions": 2,
+   "sessions": 3,
    "volume_kg": 0.0,
-   "duration_min": 83.0,
-   "cardio_km": 7.0,
-   "cardio_kcal": 697
+   "duration_min": 92.0,
+   "cardio_km": 7.9,
+   "cardio_kcal": 749
   },
   {
    "date": "2025-11-05",
@@ -7320,11 +7320,11 @@
   },
   {
    "date": "2026-01-20",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 61.0,
-   "cardio_km": 8.1,
-   "cardio_kcal": 689
+   "duration_min": 73.0,
+   "cardio_km": 9.1,
+   "cardio_kcal": 750
   },
   {
    "date": "2026-01-21",
@@ -7392,11 +7392,11 @@
   },
   {
    "date": "2026-02-03",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 63.0,
-   "cardio_km": 8.2,
-   "cardio_kcal": 651
+   "duration_min": 76.0,
+   "cardio_km": 9.2,
+   "cardio_kcal": 713
   },
   {
    "date": "2026-02-04",
@@ -8360,11 +8360,11 @@
   },
   {
    "date": "2026-09-13",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 60.0,
-   "cardio_km": 7.5,
-   "cardio_kcal": 533
+   "duration_min": 79.0,
+   "cardio_km": 9.5,
+   "cardio_kcal": 693
   },
   {
    "date": "2026-09-14",
@@ -8408,11 +8408,11 @@
   },
   {
    "date": "2026-09-20",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 50.0,
-   "cardio_km": 5.8,
-   "cardio_kcal": 430
+   "duration_min": 95.0,
+   "cardio_km": 11.4,
+   "cardio_kcal": 817
   },
   {
    "date": "2026-09-21",
@@ -15947,6 +15947,14 @@
   {
    "date": "2026-09-20",
    "title": "跑步",
+   "distance_km": 5.7,
+   "kcal": 387,
+   "duration_min": 45.0,
+   "avg_hr": 139.0
+  },
+  {
+   "date": "2026-09-20",
+   "title": "跑步",
    "distance_km": 5.8,
    "kcal": 430,
    "duration_min": 50.0,
@@ -16047,6 +16055,14 @@
    "kcal": 533,
    "duration_min": 60.0,
    "avg_hr": 139.0
+  },
+  {
+   "date": "2026-09-13",
+   "title": "跑步",
+   "distance_km": 2.0,
+   "kcal": 160,
+   "duration_min": 19.0,
+   "avg_hr": 129.0
   },
   {
    "date": "2026-09-10",
@@ -17363,6 +17379,14 @@
   {
    "date": "2026-02-03",
    "title": "跑步",
+   "distance_km": 1.0,
+   "kcal": 62,
+   "duration_min": 12.0,
+   "avg_hr": 122.0
+  },
+  {
+   "date": "2026-02-03",
+   "title": "跑步",
    "distance_km": 8.2,
    "kcal": 651,
    "duration_min": 63.0,
@@ -17447,6 +17471,14 @@
    "kcal": 77,
    "duration_min": 13.0,
    "avg_hr": 150.0
+  },
+  {
+   "date": "2026-01-20",
+   "title": "跑步",
+   "distance_km": 1.0,
+   "kcal": 61,
+   "duration_min": 12.0,
+   "avg_hr": 127.0
   },
   {
    "date": "2026-01-20",
@@ -18119,6 +18151,14 @@
    "kcal": 109,
    "duration_min": 22.0,
    "avg_hr": 120.0
+  },
+  {
+   "date": "2025-11-04",
+   "title": "跑步",
+   "distance_km": 0.9,
+   "kcal": 52,
+   "duration_min": 9.0,
+   "avg_hr": 111.0
   },
   {
    "date": "2025-11-04",
@@ -19260,6 +19300,14 @@
    "date": "2025-08-02",
    "title": "跑步",
    "distance_km": 9.1,
+   "kcal": 718,
+   "duration_min": 61.0,
+   "avg_hr": 153.0
+  },
+  {
+   "date": "2025-08-02",
+   "title": "跑步",
+   "distance_km": 9.1,
    "kcal": 743,
    "duration_min": 62.0,
    "avg_hr": 155.0
@@ -19303,6 +19351,14 @@
    "kcal": 101,
    "duration_min": 21.0,
    "avg_hr": 111.0
+  },
+  {
+   "date": "2025-07-26",
+   "title": "跑步",
+   "distance_km": 9.0,
+   "kcal": 629,
+   "duration_min": 61.0,
+   "avg_hr": 149.0
   },
   {
    "date": "2025-07-26",
@@ -19409,6 +19465,14 @@
    "avg_hr": 149.0
   },
   {
+   "date": "2025-07-20",
+   "title": "跑步",
+   "distance_km": 3.2,
+   "kcal": 231,
+   "duration_min": 22.0,
+   "avg_hr": 144.0
+  },
+  {
    "date": "2025-07-18",
    "title": "跑步",
    "distance_km": 9.6,
@@ -19497,14 +19561,6 @@
    "avg_hr": 112.0
   },
   {
-   "date": "2025-07-08",
-   "title": "步行",
-   "distance_km": 1.5,
-   "kcal": 81,
-   "duration_min": 20.0,
-   "avg_hr": 112.0
-  },
-  {
    "date": "2025-07-07",
    "title": "步行",
    "distance_km": 1.9,
@@ -19519,6 +19575,14 @@
    "kcal": 628,
    "duration_min": 61.0,
    "avg_hr": 150.0
+  },
+  {
+   "date": "2025-07-06",
+   "title": "跑步",
+   "distance_km": 3.2,
+   "kcal": 238,
+   "duration_min": 22.0,
+   "avg_hr": 145.0
   },
   {
    "date": "2025-07-05",
@@ -19569,6 +19633,14 @@
    "avg_hr": 153.0
   },
   {
+   "date": "2025-06-29",
+   "title": "跑步",
+   "distance_km": 5.0,
+   "kcal": 359,
+   "duration_min": 33.0,
+   "avg_hr": 150.0
+  },
+  {
    "date": "2025-06-25",
    "title": "跑步",
    "distance_km": 9.4,
@@ -19583,14 +19655,6 @@
    "kcal": 633,
    "duration_min": 62.0,
    "avg_hr": 153.0
-  },
-  {
-   "date": "2025-06-23",
-   "title": "步行",
-   "distance_km": 1.8,
-   "kcal": 112,
-   "duration_min": 20.0,
-   "avg_hr": 126.0
   },
   {
    "date": "2025-06-23",
@@ -19707,6 +19771,14 @@
   {
    "date": "2025-06-10",
    "title": "跑步",
+   "distance_km": 1.7,
+   "kcal": 115,
+   "duration_min": 11.0,
+   "avg_hr": 161.0
+  },
+  {
+   "date": "2025-06-10",
+   "title": "跑步",
    "distance_km": 9.3,
    "kcal": 700,
    "duration_min": 61.0,
@@ -19807,6 +19879,14 @@
    "kcal": 122,
    "duration_min": 27.0,
    "avg_hr": 103.0
+  },
+  {
+   "date": "2025-05-28",
+   "title": "跑步",
+   "distance_km": 1.2,
+   "kcal": 90,
+   "duration_min": 9.0,
+   "avg_hr": 157.0
   },
   {
    "date": "2025-05-28",
@@ -19945,6 +20025,14 @@
    "avg_hr": 155.0
   },
   {
+   "date": "2025-05-09",
+   "title": "跑步",
+   "distance_km": 1.7,
+   "kcal": 128,
+   "duration_min": 12.0,
+   "avg_hr": 147.0
+  },
+  {
    "date": "2025-05-08",
    "title": "步行",
    "distance_km": 1.8,
@@ -19977,6 +20065,14 @@
    "avg_hr": 155.0
   },
   {
+   "date": "2025-05-04",
+   "title": "跑步",
+   "distance_km": 3.2,
+   "kcal": 256,
+   "duration_min": 22.0,
+   "avg_hr": 160.0
+  },
+  {
    "date": "2025-04-30",
    "title": "跑步",
    "distance_km": 5.2,
@@ -19991,14 +20087,6 @@
    "kcal": 814,
    "duration_min": 64.0,
    "avg_hr": 164.0
-  },
-  {
-   "date": "2025-04-26",
-   "title": "步行",
-   "distance_km": 1.1,
-   "kcal": 84,
-   "duration_min": 18.0,
-   "avg_hr": 118.0
   },
   {
    "date": "2025-04-26",
@@ -20145,14 +20233,6 @@
    "avg_hr": 126.0
   },
   {
-   "date": "2025-04-10",
-   "title": "步行",
-   "distance_km": 2.3,
-   "kcal": 176,
-   "duration_min": 28.0,
-   "avg_hr": 126.0
-  },
-  {
    "date": "2025-04-09",
    "title": "步行",
    "distance_km": 1.7,
@@ -20209,36 +20289,12 @@
    "avg_hr": 110.0
   },
   {
-   "date": "2025-04-05",
-   "title": "步行",
-   "distance_km": 1.7,
-   "kcal": 96,
-   "duration_min": 17.0,
-   "avg_hr": 110.0
-  },
-  {
    "date": "2025-04-03",
    "title": "步行",
    "distance_km": 2.0,
    "kcal": 139,
    "duration_min": 31.0,
    "avg_hr": 102.0
-  },
-  {
-   "date": "2025-04-03",
-   "title": "步行",
-   "distance_km": 2.0,
-   "kcal": 139,
-   "duration_min": 31.0,
-   "avg_hr": 102.0
-  },
-  {
-   "date": "2025-04-03",
-   "title": "步行",
-   "distance_km": 1.8,
-   "kcal": 132,
-   "duration_min": 38.0,
-   "avg_hr": 93.0
   },
   {
    "date": "2025-04-03",
@@ -20643,14 +20699,6 @@
   {
    "date": "2025-03-07",
    "title": "步行",
-   "distance_km": 1.9,
-   "kcal": 119,
-   "duration_min": 24.0,
-   "avg_hr": 101.0
-  },
-  {
-   "date": "2025-03-07",
-   "title": "步行",
    "distance_km": 1.0,
    "kcal": 69,
    "duration_min": 13.0,
@@ -20841,14 +20889,6 @@
    "avg_hr": 113.0
   },
   {
-   "date": "2025-02-24",
-   "title": "步行",
-   "distance_km": 1.2,
-   "kcal": 85,
-   "duration_min": 15.0,
-   "avg_hr": 113.0
-  },
-  {
    "date": "2025-02-23",
    "title": "步行",
    "distance_km": 2.0,
@@ -20923,10 +20963,26 @@
   {
    "date": "2025-02-15",
    "title": "跑步",
+   "distance_km": 1.3,
+   "kcal": 87,
+   "duration_min": 14.0,
+   "avg_hr": 119.0
+  },
+  {
+   "date": "2025-02-15",
+   "title": "跑步",
    "distance_km": 10.2,
    "kcal": 793,
    "duration_min": 61.0,
    "avg_hr": 163.0
+  },
+  {
+   "date": "2025-02-15",
+   "title": "跑步",
+   "distance_km": 1.2,
+   "kcal": 81,
+   "duration_min": 16.0,
+   "avg_hr": 128.0
   },
   {
    "date": "2025-02-14",
@@ -20991,22 +21047,6 @@
    "kcal": 146,
    "duration_min": 27.0,
    "avg_hr": 103.0
-  },
-  {
-   "date": "2025-02-10",
-   "title": "步行",
-   "distance_km": 2.2,
-   "kcal": 146,
-   "duration_min": 27.0,
-   "avg_hr": 103.0
-  },
-  {
-   "date": "2025-02-10",
-   "title": "步行",
-   "distance_km": 1.6,
-   "kcal": 121,
-   "duration_min": 23.0,
-   "avg_hr": 112.0
   },
   {
    "date": "2025-02-10",
@@ -22587,6 +22627,14 @@
   {
    "date": "2024-10-25",
    "title": "跑步",
+   "distance_km": 0.1,
+   "kcal": 3,
+   "duration_min": 1.0,
+   "avg_hr": 92.0
+  },
+  {
+   "date": "2024-10-25",
+   "title": "跑步",
    "distance_km": 3.3,
    "kcal": 247,
    "duration_min": 22.0,
@@ -22711,6 +22759,14 @@
    "kcal": 451,
    "duration_min": 34.0,
    "avg_hr": 165.0
+  },
+  {
+   "date": "2024-10-10",
+   "title": "跑步",
+   "distance_km": 0.6,
+   "kcal": 53,
+   "duration_min": 13.0,
+   "avg_hr": 114.0
   },
   {
    "date": "2024-10-10",
@@ -23786,6 +23842,14 @@
   },
   {
    "date": "2024-07-15",
+   "title": "跑步",
+   "distance_km": 5.0,
+   "kcal": 436,
+   "duration_min": 34.0,
+   "avg_hr": 169.0
+  },
+  {
+   "date": "2024-07-15",
    "title": "步行",
    "distance_km": 1.2,
    "kcal": 79,
@@ -23863,6 +23927,14 @@
    "kcal": 498,
    "duration_min": 40.0,
    "avg_hr": 180.0
+  },
+  {
+   "date": "2024-07-07",
+   "title": "跑步",
+   "distance_km": 5.0,
+   "kcal": 427,
+   "duration_min": 37.0,
+   "avg_hr": 175.0
   },
   {
    "date": "2024-07-06",
@@ -24146,11 +24218,27 @@
   },
   {
    "date": "2024-06-08",
+   "title": "跑步",
+   "distance_km": 5.0,
+   "kcal": 426,
+   "duration_min": 30.0,
+   "avg_hr": 172.0
+  },
+  {
+   "date": "2024-06-08",
    "title": "步行",
    "distance_km": 1.7,
    "kcal": 115,
    "duration_min": 27.0,
    "avg_hr": 126.0
+  },
+  {
+   "date": "2024-06-07",
+   "title": "跑步",
+   "distance_km": 10.0,
+   "kcal": 911,
+   "duration_min": 70.0,
+   "avg_hr": 173.0
   },
   {
    "date": "2024-06-07",
@@ -24247,6 +24335,14 @@
    "kcal": 833,
    "duration_min": 61.0,
    "avg_hr": 171.0
+  },
+  {
+   "date": "2024-05-30",
+   "title": "跑步",
+   "distance_km": 9.4,
+   "kcal": 858,
+   "duration_min": 60.0,
+   "avg_hr": 167.0
   },
   {
    "date": "2024-05-30",
@@ -24394,6 +24490,14 @@
   },
   {
    "date": "2024-05-23",
+   "title": "跑步",
+   "distance_km": 5.0,
+   "kcal": 436,
+   "duration_min": 34.0,
+   "avg_hr": 162.0
+  },
+  {
+   "date": "2024-05-23",
    "title": "步行",
    "distance_km": 1.5,
    "kcal": 102,
@@ -24447,6 +24551,14 @@
    "kcal": 947,
    "duration_min": 70.0,
    "avg_hr": 169.0
+  },
+  {
+   "date": "2024-05-18",
+   "title": "跑步",
+   "distance_km": 10.0,
+   "kcal": 891,
+   "duration_min": 65.0,
+   "avg_hr": 171.0
   },
   {
    "date": "2024-05-17",
@@ -25255,6 +25367,14 @@
    "kcal": 165,
    "duration_min": 30.0,
    "avg_hr": 125.0
+  },
+  {
+   "date": "2024-03-20",
+   "title": "跑步",
+   "distance_km": 0.3,
+   "kcal": 20,
+   "duration_min": 3.0,
+   "avg_hr": 115.0
   },
   {
    "date": "2024-03-20",

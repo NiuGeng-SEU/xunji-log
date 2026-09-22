@@ -101,34 +101,46 @@ def classify_train(t: dict) -> tuple[str, float]:
 
 def get_day_sessions(trains: list[dict]) -> list[tuple[str, dict]]:
     workout_train = None
-    running_train = None
-    running_dist = 0.0
-    walking_trains = []
-    other_trains = []
+    running_trains: list[dict] = []
+    seen_running_starts: set = set()
+    walking_trains: list[dict] = []
+    seen_walking_starts: set = set()
+    other_trains: list[dict] = []
+    seen_other_starts: set = set()
 
     for t in trains:
         kind, dist = classify_train(t)
+        start = t.get("start") or t.get("started_at")
+        localid = t.get("localid")
+        key = (start, round(dist, 2)) if start else localid
+
         if kind == "workout":
             moves = t.get("movements") or []
             has_gym = any(not is_activity_summary(m.get("name") or "") and str(m.get("name") or "").strip() != "" for m in moves)
             if workout_train is None or has_gym:
                 workout_train = t
         elif kind == "running":
-            if running_train is None or dist > running_dist:
-                running_train = t
-                running_dist = dist
+            if key not in seen_running_starts:
+                seen_running_starts.add(key)
+                running_trains.append(t)
         elif kind == "walking":
-            if dist > 1.0:
+            if dist > 1.0 and key not in seen_walking_starts:
+                seen_walking_starts.add(key)
                 walking_trains.append(t)
         elif kind == "other":
-            if dist > 1.0:
+            if dist > 1.0 and key not in seen_other_starts:
+                seen_other_starts.add(key)
                 other_trains.append(t)
+
+    running_trains.sort(key=lambda x: x.get("start") or x.get("started_at") or 0)
+    walking_trains.sort(key=lambda x: x.get("start") or x.get("started_at") or 0)
+    other_trains.sort(key=lambda x: x.get("start") or x.get("started_at") or 0)
 
     valid_sessions: list[tuple[str, dict]] = []
     if workout_train:
         valid_sessions.append(("workout", workout_train))
-    if running_train:
-        valid_sessions.append(("running", running_train))
+    for t in running_trains:
+        valid_sessions.append(("running", t))
     for t in walking_trains:
         valid_sessions.append(("walking", t))
     for t in other_trains:
