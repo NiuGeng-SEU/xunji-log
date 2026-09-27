@@ -79309,9 +79309,9 @@
    "monthly_target": 13,
    "yearly_target": 156,
    "this_week": {
-    "workouts": 2,
-    "duration_hours": 2.9,
-    "diff_last_week": -1
+    "workouts": 0,
+    "duration_hours": 0.0,
+    "diff_last_week": -2
    },
    "this_month": {
     "workouts": 7,
