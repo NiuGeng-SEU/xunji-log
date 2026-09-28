@@ -77,7 +77,7 @@ npm run build
 cd ..
 
 export XUNJI_API_KEY=xjllm_你的密钥
-.venv/bin/python scripts/fetch_training.py --incremental --refresh-days 3
+.venv/bin/python scripts/fetch_training.py --incremental --refresh-days 7
 .venv/bin/python scripts/analyze.py
 ./scripts/local-ops.sh start
 ```
@@ -103,13 +103,13 @@ export XUNJI_API_KEY=xjllm_你的密钥
 
 工作流会：
 
-- 增量刷新最近三天的训记数据；
+- 增量刷新最近七天的训记数据；
 - 将每日缓存写入 `data/cache/YYYY/MM/`；
 - 重新生成汇总和下钻数据；
 - 提交发生变化的数据；
 - 构建并部署看板。
 
-当前 GitHub Actions 定时任务在每天 22:30 UTC（北京时间 06:30）运行。如需修改，请编辑 `.github/workflows/sync.yml` 中的 cron 表达式。
+当前 GitHub Actions 定时任务在每天 21:30 UTC（纽约时间 17:30 / 5:30 PM）运行。如需修改，请编辑 `.github/workflows/sync.yml` 中的 cron 表达式。
 
 ## 配置
 
@@ -119,8 +119,8 @@ export XUNJI_API_KEY=xjllm_你的密钥
 | `DASHBOARD_HOST` | `127.0.0.1` | 本机服务监听地址 |
 | `DASHBOARD_PORT` | `8080` | 看板端口 |
 | `SYNC_ENABLED` | `true` | 是否启用 Docker/本机定时同步 |
-| `SYNC_CRON` | `30 6 * * *` | 本机定时同步时间 |
-| `SYNC_REFRESH_DAYS` | `3` | 每次强制重抓的最近天数 |
+| `SYNC_CRON` | `30 17 * * *` | 本机定时同步时间 |
+| `SYNC_REFRESH_DAYS` | `7` | 每次强制重抓的最近天数 |
 | `TZ` | `America/New_York` | 运行时区 |
 
 ## 项目结构

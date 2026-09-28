@@ -19,8 +19,8 @@ services:
       DATA_DIR: /app/data
       STATIC_DIR: /app/web/dist
       SYNC_ENABLED: ${SYNC_ENABLED:-true}
-      SYNC_CRON: ${SYNC_CRON:-30 6 * * *}
-      SYNC_REFRESH_DAYS: ${SYNC_REFRESH_DAYS:-3}
+      SYNC_CRON: ${SYNC_CRON:-30 17 * * *}
+      SYNC_REFRESH_DAYS: ${SYNC_REFRESH_DAYS:-7}
       XUNJI_API_KEY: ${XUNJI_API_KEY:-}
     volumes:
       # 仅挂载数据目录；cache / analysis.json 在宿主机维护

@@ -5,7 +5,7 @@
   默认 / --full         从 START_DATE 到今天，已有缓存则跳过
   --incremental         增量：补齐缺失日，并强制刷新最近 REFRESH_DAYS 天
   --start/--end         指定日期范围（含端点）
-  --refresh-days N      增量模式下强制重抓最近 N 天（默认 3）
+  --refresh-days N      增量模式下强制重抓最近 N 天（默认 7）
 """
 from __future__ import annotations
 
@@ -236,8 +236,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--refresh-days",
         type=int,
-        default=int(os.environ.get("SYNC_REFRESH_DAYS", "3")),
-        help="增量模式下强制重抓最近 N 天（默认 3）",
+        default=int(os.environ.get("SYNC_REFRESH_DAYS", "7")),
+        help="增量模式下强制重抓最近 N 天（默认 7）",
     )
     parser.add_argument("--start", help="起始日期 YYYY-MM-DD")
     parser.add_argument("--end", help="结束日期 YYYY-MM-DD")

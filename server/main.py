@@ -28,8 +28,8 @@ STATIC_DIR = Path(os.environ.get("STATIC_DIR", ROOT / "web" / "dist"))
 SCRIPTS_DIR = ROOT / "scripts"
 
 SYNC_ENABLED = os.environ.get("SYNC_ENABLED", "true").lower() in ("1", "true", "yes")
-SYNC_CRON = os.environ.get("SYNC_CRON", "30 6 * * *")  # 每天 06:30
-SYNC_REFRESH_DAYS = int(os.environ.get("SYNC_REFRESH_DAYS", "3"))
+SYNC_CRON = os.environ.get("SYNC_CRON", "30 17 * * *")  # 每天 17:30 (纽约时间 5:30 PM)
+SYNC_REFRESH_DAYS = int(os.environ.get("SYNC_REFRESH_DAYS", "7"))
 TZ_NAME = os.environ.get("TZ", "America/New_York")
 
 app = FastAPI(title="Xunji Training Dashboard", version="1.1.0")

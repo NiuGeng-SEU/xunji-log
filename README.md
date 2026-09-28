@@ -77,7 +77,7 @@ npm run build
 cd ..
 
 export XUNJI_API_KEY=xjllm_your_key
-.venv/bin/python scripts/fetch_training.py --incremental --refresh-days 3
+.venv/bin/python scripts/fetch_training.py --incremental --refresh-days 7
 .venv/bin/python scripts/analyze.py
 ./scripts/local-ops.sh start
 ```
@@ -103,13 +103,13 @@ For frontend development, run `npm run dev` inside `web/`; Vite serves the devel
 
 The workflow:
 
-- refreshes the most recent three days from Xunji;
+- refreshes the most recent seven days from Xunji;
 - stores daily cache files under `data/cache/YYYY/MM/`;
 - regenerates aggregated and drill-down data;
 - commits changed data; and
 - builds and deploys the dashboard.
 
-The included schedule runs at 22:30 UTC (06:30 Beijing time). Change the cron expression in `.github/workflows/sync.yml` if a different time is required.
+The included schedule runs at 21:30 UTC (17:30 / 5:30 PM New York time). Change the cron expression in `.github/workflows/sync.yml` if a different time is required.
 
 ## Configuration
 
@@ -119,8 +119,8 @@ The included schedule runs at 22:30 UTC (06:30 Beijing time). Change the cron ex
 | `DASHBOARD_HOST` | `127.0.0.1` | Local server bind address |
 | `DASHBOARD_PORT` | `8080` | Dashboard port |
 | `SYNC_ENABLED` | `true` | Enable Docker/server scheduled sync |
-| `SYNC_CRON` | `30 6 * * *` | Local scheduled-sync time |
-| `SYNC_REFRESH_DAYS` | `3` | Number of recent days to refetch |
+| `SYNC_CRON` | `30 17 * * *` | Local scheduled-sync time |
+| `SYNC_REFRESH_DAYS` | `7` | Number of recent days to refetch |
 | `TZ` | `America/New_York` | Runtime timezone |
 
 ## Project layout

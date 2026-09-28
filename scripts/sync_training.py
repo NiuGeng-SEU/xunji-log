@@ -45,7 +45,7 @@ def run_analyze() -> dict:
     }
 
 
-def sync(*, refresh_days: int = 3, trigger: str = "manual") -> dict:
+def sync(*, refresh_days: int = 7, trigger: str = "manual") -> dict:
     write_status({"state": "running", "trigger": trigger, "phase": "fetch"})
     # Import locally so module path works inside Docker
     sys.path.insert(0, SCRIPTS)
@@ -99,7 +99,7 @@ def main() -> int:
     parser.add_argument(
         "--refresh-days",
         type=int,
-        default=int(os.environ.get("SYNC_REFRESH_DAYS", "3")),
+        default=int(os.environ.get("SYNC_REFRESH_DAYS", "7")),
     )
     parser.add_argument("--trigger", default="cli")
     args = parser.parse_args()
