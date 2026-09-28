@@ -438,7 +438,7 @@
    5450,
    12969,
    13469,
-   9461
+   9830
   ]
  },
  "weekly": {
@@ -959,7 +959,7 @@
   "n_sessions": 1216,
   "n_strength_sessions": 449,
   "total_km": 2115.6,
-  "total_kcal": 378560,
+  "total_kcal": 378929,
   "avg_hr": 122.0,
   "max_hr": 145.0
  },
