@@ -80099,7 +80099,7 @@
    }
   ],
   "streaks": {
-   "current_days": 1,
+   "current_days": 0,
    "max_days": 7,
    "current_weeks": 13,
    "max_weeks": 32
@@ -80109,9 +80109,9 @@
    "monthly_target": 13,
    "yearly_target": 156,
    "this_week": {
-    "workouts": 3,
-    "duration_hours": 4.0,
-    "diff_last_week": 1
+    "workouts": 0,
+    "duration_hours": 0.0,
+    "diff_last_week": -3
    },
    "this_month": {
     "workouts": 1,
