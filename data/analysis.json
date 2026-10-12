@@ -1,13 +1,13 @@
 {
  "date_start": "2021-11-15",
- "date_end": "2026-10-10",
- "n_days": 907,
- "n_sessions": 1699,
+ "date_end": "2026-10-11",
+ "n_days": 908,
+ "n_sessions": 1700,
  "n_movements": 88,
  "total_volume_kg": 2694550.2,
  "total_sets": 7894,
  "total_done_sets": 7877,
- "total_duration_min": 68304.6,
+ "total_duration_min": 68369.7,
  "avg_session_duration_min": 40.2,
  "avg_sessions_per_week": 6.64,
  "max_streak_days": 38,
@@ -135,7 +135,7 @@
    39,
    42,
    53,
-   20
+   21
   ],
   "days": [
    8,
@@ -197,7 +197,7 @@
    20,
    22,
    20,
-   8
+   9
   ],
   "volume_tons": [
    61.76,
@@ -321,7 +321,7 @@
    29.2,
    29.4,
    32.5,
-   14.5
+   15.6
   ],
   "cardio_km": [
    0,
@@ -383,7 +383,7 @@
    87.4,
    81.5,
    93.3,
-   32.1
+   40.2
   ],
   "cardio_kcal": [
    0,
@@ -445,7 +445,7 @@
    12969,
    13469,
    13469,
-   5276
+   5887
   ]
  },
  "weekly": {
@@ -963,14 +963,14 @@
    16,
    14,
    14,
-   14
+   15
   ]
  },
  "cardio": {
-  "n_sessions": 1242,
+  "n_sessions": 1243,
   "n_strength_sessions": 457,
-  "total_km": 2177.0,
-  "total_kcal": 387844,
+  "total_km": 2185.1,
+  "total_kcal": 388455,
   "avg_hr": 121.0,
   "max_hr": 145.0
  },
@@ -991,7 +991,7 @@
    277,
    225,
    190,
-   182
+   183
   ]
  },
  "hour_of_day": {
@@ -1026,7 +1026,7 @@
    91,
    104,
    78,
-   82,
+   83,
    83,
    56,
    32,
@@ -8552,6 +8552,14 @@
    "duration_min": 84.0,
    "cardio_km": 0.0,
    "cardio_kcal": 63
+  },
+  {
+   "date": "2026-10-11",
+   "sessions": 1,
+   "volume_kg": 0.0,
+   "duration_min": 65.0,
+   "cardio_km": 8.1,
+   "cardio_kcal": 611
   }
  ],
  "category_monthly": {
@@ -16181,6 +16189,14 @@
   }
  ],
  "cardio_sessions": [
+  {
+   "date": "2026-10-11",
+   "title": "跑步",
+   "distance_km": 8.1,
+   "kcal": 611,
+   "duration_min": 65.0,
+   "avg_hr": 142.0
+  },
   {
    "date": "2026-10-10",
    "title": "步行",
@@ -80732,7 +80748,7 @@
    }
   ],
   "streaks": {
-   "current_days": 1,
+   "current_days": 0,
    "max_days": 7,
    "current_weeks": 14,
    "max_weeks": 32
