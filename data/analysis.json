@@ -1,15 +1,15 @@
 {
  "date_start": "2021-11-15",
- "date_end": "2026-10-11",
- "n_days": 908,
- "n_sessions": 1700,
+ "date_end": "2026-10-12",
+ "n_days": 909,
+ "n_sessions": 1703,
  "n_movements": 88,
- "total_volume_kg": 2694550.2,
- "total_sets": 7894,
- "total_done_sets": 7877,
- "total_duration_min": 68369.7,
- "avg_session_duration_min": 40.2,
- "avg_sessions_per_week": 6.64,
+ "total_volume_kg": 2705301.2,
+ "total_sets": 7918,
+ "total_done_sets": 7901,
+ "total_duration_min": 68549.6,
+ "avg_session_duration_min": 40.3,
+ "avg_sessions_per_week": 6.65,
  "max_streak_days": 38,
  "avg_gap_days": 2.0,
  "monthly": {
@@ -135,7 +135,7 @@
    39,
    42,
    53,
-   21
+   24
   ],
   "days": [
    8,
@@ -197,7 +197,7 @@
    20,
    22,
    20,
-   9
+   10
   ],
   "volume_tons": [
    61.76,
@@ -259,7 +259,7 @@
    45.2,
    65.01,
    57.68,
-   25.57
+   36.32
   ],
   "duration_hours": [
    9.1,
@@ -321,7 +321,7 @@
    29.2,
    29.4,
    32.5,
-   15.6
+   18.6
   ],
   "cardio_km": [
    0,
@@ -383,7 +383,7 @@
    87.4,
    81.5,
    93.3,
-   40.2
+   48.2
   ],
   "cardio_kcal": [
    0,
@@ -445,7 +445,7 @@
    12969,
    13469,
    13469,
-   5887
+   6960
   ]
  },
  "weekly": {
@@ -705,7 +705,8 @@
    "2026-W38",
    "2026-W39",
    "2026-W40",
-   "2026-W41"
+   "2026-W41",
+   "2026-W42"
   ],
   "sessions": [
    5,
@@ -963,14 +964,15 @@
    16,
    14,
    14,
-   15
+   16,
+   2
   ]
  },
  "cardio": {
-  "n_sessions": 1243,
-  "n_strength_sessions": 457,
-  "total_km": 2185.1,
-  "total_kcal": 388455,
+  "n_sessions": 1245,
+  "n_strength_sessions": 458,
+  "total_km": 2193.1,
+  "total_kcal": 389528,
   "avg_hr": 121.0,
   "max_hr": 145.0
  },
@@ -985,13 +987,13 @@
    "周日"
   ],
   "sessions": [
-   278,
+   280,
    292,
    255,
    277,
    225,
    190,
-   183
+   184
   ]
  },
  "hour_of_day": {
@@ -1025,7 +1027,7 @@
    107,
    91,
    104,
-   78,
+   79,
    83,
    83,
    56,
@@ -1044,7 +1046,7 @@
    129,
    116,
    116,
-   114,
+   116,
    113
   ]
  },
@@ -1061,10 +1063,10 @@
   ],
   "sessions": [
    455,
-   446,
-   438,
-   301,
-   186,
+   447,
+   439,
+   303,
+   187,
    45,
    35,
    10
@@ -1081,10 +1083,10 @@
   },
   {
    "name": "深蹲",
-   "days": 109,
-   "sessions": 109,
-   "sets": 855,
-   "volume_kg": 385581.0,
+   "days": 110,
+   "sessions": 110,
+   "sets": 865,
+   "volume_kg": 389787.0,
    "category": "腿"
   },
   {
@@ -1105,10 +1107,10 @@
   },
   {
    "name": "站姿杠铃推举",
-   "days": 84,
-   "sessions": 84,
-   "sets": 350,
-   "volume_kg": 105075.0,
+   "days": 85,
+   "sessions": 85,
+   "sets": 354,
+   "volume_kg": 106599.0,
    "category": "肩"
   },
   {
@@ -1129,10 +1131,10 @@
   },
   {
    "name": "单手哑铃手腕弯举（正手）",
-   "days": 65,
-   "sessions": 65,
-   "sets": 210,
-   "volume_kg": 37551.0,
+   "days": 66,
+   "sessions": 66,
+   "sets": 213,
+   "volume_kg": 38204.0,
    "category": "手臂"
   },
   {
@@ -8555,11 +8557,19 @@
   },
   {
    "date": "2026-10-11",
-   "sessions": 1,
+   "sessions": 2,
    "volume_kg": 0.0,
-   "duration_min": 65.0,
-   "cardio_km": 8.1,
-   "cardio_kcal": 611
+   "duration_min": 127.0,
+   "cardio_km": 16.1,
+   "cardio_kcal": 1174
+  },
+  {
+   "date": "2026-10-12",
+   "sessions": 2,
+   "volume_kg": 10751.0,
+   "duration_min": 118.0,
+   "cardio_km": 0.0,
+   "cardio_kcal": 96
   }
  ],
  "category_monthly": {
@@ -8688,7 +8698,7 @@
      9.66,
      17.24,
      10.51,
-     9.16
+     12.3
     ]
    },
    {
@@ -8818,7 +8828,7 @@
      5.0,
      7.44,
      8.65,
-     2.25
+     2.9
     ]
    },
    {
@@ -8883,7 +8893,7 @@
      6.27,
      12.02,
      11.57,
-     4.21
+     8.41
     ]
    },
    {
@@ -9013,7 +9023,7 @@
      9.58,
      14.95,
      9.65,
-     5.36
+     8.11
     ]
    }
   ]
@@ -9144,7 +9154,7 @@
      9,
      13,
      7,
-     7
+     8
     ]
    },
    {
@@ -9274,7 +9284,7 @@
      10,
      12,
      11,
-     4
+     5
     ]
    },
    {
@@ -9339,7 +9349,7 @@
      2,
      4,
      3,
-     1
+     2
     ]
    },
    {
@@ -9469,7 +9479,7 @@
      8,
      13,
      8,
-     4
+     6
     ]
    },
    {
@@ -9795,7 +9805,7 @@
      2,
      4,
      3,
-     1
+     2
     ]
    },
    {
@@ -9990,7 +10000,7 @@
      3,
      6,
      3,
-     1
+     2
     ]
    },
    {
@@ -10185,7 +10195,7 @@
      4,
      5,
      4,
-     1
+     2
     ]
    },
    {
@@ -11229,6 +11239,71 @@
     ]
    },
    {
+    "name": "悍马机侧平举",
+    "data": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     2,
+     5,
+     4,
+     1,
+     1,
+     0,
+     1,
+     1,
+     0,
+     2,
+     3,
+     2,
+     2
+    ]
+   },
+   {
     "name": "绳索臂屈伸",
     "data": [
      0,
@@ -11291,71 +11366,6 @@
      0,
      0,
      0
-    ]
-   },
-   {
-    "name": "悍马机侧平举",
-    "data": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     2,
-     5,
-     4,
-     1,
-     1,
-     0,
-     1,
-     1,
-     0,
-     2,
-     3,
-     2,
-     1
     ]
    },
    {
@@ -11619,6 +11629,71 @@
     ]
    },
    {
+    "name": "杠铃罗马尼亚硬拉",
+    "data": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     2,
+     4,
+     4,
+     3,
+     1,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     3,
+     2
+    ]
+   },
+   {
     "name": "卷腹",
     "data": [
      2,
@@ -11876,71 +11951,6 @@
      0,
      0,
      0
-    ]
-   },
-   {
-    "name": "杠铃罗马尼亚硬拉",
-    "data": [
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     2,
-     4,
-     4,
-     3,
-     1,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     1,
-     3,
-     1
     ]
    },
    {
@@ -15581,7 +15591,7 @@
      6.27,
      12.02,
      11.57,
-     4.21
+     8.41
     ]
    },
    {
@@ -15776,7 +15786,7 @@
      3.76,
      8.29,
      4.4,
-     1.52
+     3.05
     ]
    },
    {
@@ -15971,7 +15981,7 @@
      1.96,
      2.69,
      2.5,
-     0.65
+     1.31
     ]
    }
   ]
@@ -16189,6 +16199,22 @@
   }
  ],
  "cardio_sessions": [
+  {
+   "date": "2026-10-12",
+   "title": "步行",
+   "distance_km": 1.4,
+   "kcal": 96,
+   "duration_min": 24.0,
+   "avg_hr": 101.0
+  },
+  {
+   "date": "2026-10-11",
+   "title": "跑步",
+   "distance_km": 8.0,
+   "kcal": 563,
+   "duration_min": 62.0,
+   "avg_hr": 144.0
+  },
   {
    "date": "2026-10-11",
    "title": "跑步",
@@ -26135,16 +26161,16 @@
   }
  ],
  "strength_summary": {
-  "total_workouts": 457,
-  "total_volume_kg": 2694550.2,
-  "total_duration_hours": 460.6,
+  "total_workouts": 458,
+  "total_volume_kg": 2705301.2,
+  "total_duration_hours": 462.2,
   "total_years": 4.9,
   "calendar_years": 6,
   "latest_activity": {
-   "date": "2026-10-10",
-   "title": "背·二头",
-   "duration_min": 70.0,
-   "volume_kg": 5226.7
+   "date": "2026-10-12",
+   "title": "腿·肩",
+   "duration_min": 95.0,
+   "volume_kg": 10751.0
   },
   "workout_dates": [
    "2021-11-15",
@@ -26603,7 +26629,8 @@
    "2026-10-05",
    "2026-10-07",
    "2026-10-08",
-   "2026-10-10"
+   "2026-10-10",
+   "2026-10-12"
   ],
   "workout_details": {
    "2021-11-15": {
@@ -29347,6 +29374,12 @@
     "title": "背·二头",
     "duration_min": 70.0,
     "volume_kg": 5226.7
+   },
+   "2026-10-12": {
+    "date": "2026-10-12",
+    "title": "腿·肩",
+    "duration_min": 95.0,
+    "volume_kg": 10751.0
    }
   },
   "compound_prs": [
@@ -43700,7 +43733,7 @@
     "best_1rm_reps": 5,
     "best_1rm_date": "2023-06-20",
     "best_1rm_unit": "lb",
-    "total_sets": 866,
+    "total_sets": 876,
     "top_sets": [
      {
       "date": "2023-05-23",
@@ -43755,7 +43788,7 @@
     ],
     "recent_sets": [
      {
-      "date": "2026-10-05",
+      "date": "2026-10-12",
       "weight": 45.0,
       "reps": 12,
       "unit": "lb",
@@ -43765,7 +43798,7 @@
       "est_1rm_lb": 63.0
      },
      {
-      "date": "2026-10-05",
+      "date": "2026-10-12",
       "weight": 99.0,
       "reps": 8,
       "unit": "lb",
@@ -43775,7 +43808,7 @@
       "est_1rm_lb": 125.4
      },
      {
-      "date": "2026-10-05",
+      "date": "2026-10-12",
       "weight": 135.0,
       "reps": 6,
       "unit": "lb",
@@ -43785,7 +43818,7 @@
       "est_1rm_lb": 162.0
      },
      {
-      "date": "2026-10-05",
+      "date": "2026-10-12",
       "weight": 185.0,
       "reps": 3,
       "unit": "lb",
@@ -43795,7 +43828,7 @@
       "est_1rm_lb": 203.5
      },
      {
-      "date": "2026-10-05",
+      "date": "2026-10-12",
       "weight": 225.0,
       "reps": 2,
       "unit": "lb",
@@ -52465,6 +52498,106 @@
       "weight_lb": 245.0,
       "est_1rm_kg": 129.7,
       "est_1rm_lb": 285.8
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 45.0,
+      "reps": 12,
+      "unit": "lb",
+      "weight_kg": 20.4,
+      "weight_lb": 45.0,
+      "est_1rm_kg": 28.6,
+      "est_1rm_lb": 63.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 99.0,
+      "reps": 8,
+      "unit": "lb",
+      "weight_kg": 44.9,
+      "weight_lb": 99.0,
+      "est_1rm_kg": 56.9,
+      "est_1rm_lb": 125.4
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 135.0,
+      "reps": 6,
+      "unit": "lb",
+      "weight_kg": 61.2,
+      "weight_lb": 135.0,
+      "est_1rm_kg": 73.5,
+      "est_1rm_lb": 162.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 185.0,
+      "reps": 3,
+      "unit": "lb",
+      "weight_kg": 83.9,
+      "weight_lb": 185.0,
+      "est_1rm_kg": 92.3,
+      "est_1rm_lb": 203.5
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 225.0,
+      "reps": 2,
+      "unit": "lb",
+      "weight_kg": 102.1,
+      "weight_lb": 225.0,
+      "est_1rm_kg": 108.9,
+      "est_1rm_lb": 240.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 245.0,
+      "reps": 5,
+      "unit": "lb",
+      "weight_kg": 111.1,
+      "weight_lb": 245.0,
+      "est_1rm_kg": 129.7,
+      "est_1rm_lb": 285.8
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 245.0,
+      "reps": 5,
+      "unit": "lb",
+      "weight_kg": 111.1,
+      "weight_lb": 245.0,
+      "est_1rm_kg": 129.7,
+      "est_1rm_lb": 285.8
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 245.0,
+      "reps": 5,
+      "unit": "lb",
+      "weight_kg": 111.1,
+      "weight_lb": 245.0,
+      "est_1rm_kg": 129.7,
+      "est_1rm_lb": 285.8
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 245.0,
+      "reps": 5,
+      "unit": "lb",
+      "weight_kg": 111.1,
+      "weight_lb": 245.0,
+      "est_1rm_kg": 129.7,
+      "est_1rm_lb": 285.8
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 245.0,
+      "reps": 5,
+      "unit": "lb",
+      "weight_kg": 111.1,
+      "weight_lb": 245.0,
+      "est_1rm_kg": 129.7,
+      "est_1rm_lb": 285.8
      }
     ]
    },
@@ -58032,7 +58165,7 @@
     "best_1rm_reps": 8,
     "best_1rm_date": "2026-08-14",
     "best_1rm_unit": "lb",
-    "total_sets": 350,
+    "total_sets": 354,
     "top_sets": [
      {
       "date": "2026-08-14",
@@ -58087,7 +58220,37 @@
     ],
     "recent_sets": [
      {
-      "date": "2026-10-05",
+      "date": "2026-10-12",
+      "weight": 105.0,
+      "reps": 8,
+      "unit": "lb",
+      "weight_kg": 47.6,
+      "weight_lb": 105.0,
+      "est_1rm_kg": 60.3,
+      "est_1rm_lb": 133.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 105.0,
+      "reps": 8,
+      "unit": "lb",
+      "weight_kg": 47.6,
+      "weight_lb": 105.0,
+      "est_1rm_kg": 60.3,
+      "est_1rm_lb": 133.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 105.0,
+      "reps": 8,
+      "unit": "lb",
+      "weight_kg": 47.6,
+      "weight_lb": 105.0,
+      "est_1rm_kg": 60.3,
+      "est_1rm_lb": 133.0
+     },
+     {
+      "date": "2026-10-12",
       "weight": 105.0,
       "reps": 8,
       "unit": "lb",
@@ -58105,36 +58268,6 @@
       "weight_lb": 105.0,
       "est_1rm_kg": 60.3,
       "est_1rm_lb": 133.0
-     },
-     {
-      "date": "2026-10-05",
-      "weight": 105.0,
-      "reps": 8,
-      "unit": "lb",
-      "weight_kg": 47.6,
-      "weight_lb": 105.0,
-      "est_1rm_kg": 60.3,
-      "est_1rm_lb": 133.0
-     },
-     {
-      "date": "2026-10-05",
-      "weight": 105.0,
-      "reps": 8,
-      "unit": "lb",
-      "weight_kg": 47.6,
-      "weight_lb": 105.0,
-      "est_1rm_kg": 60.3,
-      "est_1rm_lb": 133.0
-     },
-     {
-      "date": "2026-09-28",
-      "weight": 45.0,
-      "reps": 8,
-      "unit": "lb",
-      "weight_kg": 20.4,
-      "weight_lb": 45.0,
-      "est_1rm_kg": 25.9,
-      "est_1rm_lb": 57.0
      }
     ],
     "history": [
@@ -61637,6 +61770,46 @@
       "weight_lb": 105.0,
       "est_1rm_kg": 60.3,
       "est_1rm_lb": 133.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 105.0,
+      "reps": 8,
+      "unit": "lb",
+      "weight_kg": 47.6,
+      "weight_lb": 105.0,
+      "est_1rm_kg": 60.3,
+      "est_1rm_lb": 133.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 105.0,
+      "reps": 8,
+      "unit": "lb",
+      "weight_kg": 47.6,
+      "weight_lb": 105.0,
+      "est_1rm_kg": 60.3,
+      "est_1rm_lb": 133.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 105.0,
+      "reps": 8,
+      "unit": "lb",
+      "weight_kg": 47.6,
+      "weight_lb": 105.0,
+      "est_1rm_kg": 60.3,
+      "est_1rm_lb": 133.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 105.0,
+      "reps": 8,
+      "unit": "lb",
+      "weight_kg": 47.6,
+      "weight_lb": 105.0,
+      "est_1rm_kg": 60.3,
+      "est_1rm_lb": 133.0
      }
     ]
    },
@@ -61658,7 +61831,7 @@
     "best_1rm_reps": 6,
     "best_1rm_date": "2023-06-16",
     "best_1rm_unit": "lb",
-    "total_sets": 211,
+    "total_sets": 215,
     "top_sets": [
      {
       "date": "2023-06-16",
@@ -61713,6 +61886,46 @@
     ],
     "recent_sets": [
      {
+      "date": "2026-10-12",
+      "weight": 135.0,
+      "reps": 8,
+      "unit": "lb",
+      "weight_kg": 61.2,
+      "weight_lb": 135.0,
+      "est_1rm_kg": 77.6,
+      "est_1rm_lb": 171.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 195.0,
+      "reps": 10,
+      "unit": "lb",
+      "weight_kg": 88.5,
+      "weight_lb": 195.0,
+      "est_1rm_kg": 117.9,
+      "est_1rm_lb": 260.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 195.0,
+      "reps": 10,
+      "unit": "lb",
+      "weight_kg": 88.5,
+      "weight_lb": 195.0,
+      "est_1rm_kg": 117.9,
+      "est_1rm_lb": 260.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 195.0,
+      "reps": 10,
+      "unit": "lb",
+      "weight_kg": 88.5,
+      "weight_lb": 195.0,
+      "est_1rm_kg": 117.9,
+      "est_1rm_lb": 260.0
+     },
+     {
       "date": "2026-10-05",
       "weight": 45.0,
       "reps": 8,
@@ -61721,46 +61934,6 @@
       "weight_lb": 45.0,
       "est_1rm_kg": 25.9,
       "est_1rm_lb": 57.0
-     },
-     {
-      "date": "2026-10-05",
-      "weight": 135.0,
-      "reps": 9,
-      "unit": "lb",
-      "weight_kg": 61.2,
-      "weight_lb": 135.0,
-      "est_1rm_kg": 79.6,
-      "est_1rm_lb": 175.5
-     },
-     {
-      "date": "2026-10-05",
-      "weight": 185.0,
-      "reps": 8,
-      "unit": "lb",
-      "weight_kg": 83.9,
-      "weight_lb": 185.0,
-      "est_1rm_kg": 106.3,
-      "est_1rm_lb": 234.3
-     },
-     {
-      "date": "2026-10-05",
-      "weight": 185.0,
-      "reps": 8,
-      "unit": "lb",
-      "weight_kg": 83.9,
-      "weight_lb": 185.0,
-      "est_1rm_kg": 106.3,
-      "est_1rm_lb": 234.3
-     },
-     {
-      "date": "2026-10-05",
-      "weight": 185.0,
-      "reps": 8,
-      "unit": "lb",
-      "weight_kg": 83.9,
-      "weight_lb": 185.0,
-      "est_1rm_kg": 106.3,
-      "est_1rm_lb": 234.3
      }
     ],
     "history": [
@@ -63873,6 +64046,46 @@
       "weight_lb": 185.0,
       "est_1rm_kg": 106.3,
       "est_1rm_lb": 234.3
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 135.0,
+      "reps": 8,
+      "unit": "lb",
+      "weight_kg": 61.2,
+      "weight_lb": 135.0,
+      "est_1rm_kg": 77.6,
+      "est_1rm_lb": 171.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 195.0,
+      "reps": 10,
+      "unit": "lb",
+      "weight_kg": 88.5,
+      "weight_lb": 195.0,
+      "est_1rm_kg": 117.9,
+      "est_1rm_lb": 260.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 195.0,
+      "reps": 10,
+      "unit": "lb",
+      "weight_kg": 88.5,
+      "weight_lb": 195.0,
+      "est_1rm_kg": 117.9,
+      "est_1rm_lb": 260.0
+     },
+     {
+      "date": "2026-10-12",
+      "weight": 195.0,
+      "reps": 10,
+      "unit": "lb",
+      "weight_kg": 88.5,
+      "weight_lb": 195.0,
+      "est_1rm_kg": 117.9,
+      "est_1rm_lb": 260.0
      }
     ]
    },
@@ -80748,9 +80961,9 @@
    }
   ],
   "streaks": {
-   "current_days": 0,
+   "current_days": 1,
    "max_days": 7,
-   "current_weeks": 14,
+   "current_weeks": 15,
    "max_weeks": 32
   },
   "goals": {
@@ -80758,19 +80971,19 @@
    "monthly_target": 13,
    "yearly_target": 156,
    "this_week": {
-    "workouts": 0,
-    "duration_hours": 0.0,
-    "diff_last_week": -5
+    "workouts": 1,
+    "duration_hours": 1.6,
+    "diff_last_week": -4
    },
    "this_month": {
-    "workouts": 6,
-    "duration_hours": 7.2,
-    "diff_last_month": -3
+    "workouts": 7,
+    "duration_hours": 8.8,
+    "diff_last_month": -2
    },
    "this_year": {
-    "workouts": 73,
-    "duration_hours": 78.5,
-    "diff_last_year": -45
+    "workouts": 74,
+    "duration_hours": 80.1,
+    "diff_last_year": -44
    }
   }
  },
@@ -95125,7 +95338,7 @@
    "best_1rm_reps": 5,
    "best_1rm_date": "2023-06-20",
    "best_1rm_unit": "lb",
-   "total_sets": 866,
+   "total_sets": 876,
    "top_sets": [
     {
      "date": "2023-05-23",
@@ -95180,7 +95393,7 @@
    ],
    "recent_sets": [
     {
-     "date": "2026-10-05",
+     "date": "2026-10-12",
      "weight": 45.0,
      "reps": 12,
      "unit": "lb",
@@ -95190,7 +95403,7 @@
      "est_1rm_lb": 63.0
     },
     {
-     "date": "2026-10-05",
+     "date": "2026-10-12",
      "weight": 99.0,
      "reps": 8,
      "unit": "lb",
@@ -95200,7 +95413,7 @@
      "est_1rm_lb": 125.4
     },
     {
-     "date": "2026-10-05",
+     "date": "2026-10-12",
      "weight": 135.0,
      "reps": 6,
      "unit": "lb",
@@ -95210,7 +95423,7 @@
      "est_1rm_lb": 162.0
     },
     {
-     "date": "2026-10-05",
+     "date": "2026-10-12",
      "weight": 185.0,
      "reps": 3,
      "unit": "lb",
@@ -95220,7 +95433,7 @@
      "est_1rm_lb": 203.5
     },
     {
-     "date": "2026-10-05",
+     "date": "2026-10-12",
      "weight": 225.0,
      "reps": 2,
      "unit": "lb",
@@ -103890,6 +104103,106 @@
      "weight_lb": 245.0,
      "est_1rm_kg": 129.7,
      "est_1rm_lb": 285.8
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 45.0,
+     "reps": 12,
+     "unit": "lb",
+     "weight_kg": 20.4,
+     "weight_lb": 45.0,
+     "est_1rm_kg": 28.6,
+     "est_1rm_lb": 63.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 99.0,
+     "reps": 8,
+     "unit": "lb",
+     "weight_kg": 44.9,
+     "weight_lb": 99.0,
+     "est_1rm_kg": 56.9,
+     "est_1rm_lb": 125.4
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 135.0,
+     "reps": 6,
+     "unit": "lb",
+     "weight_kg": 61.2,
+     "weight_lb": 135.0,
+     "est_1rm_kg": 73.5,
+     "est_1rm_lb": 162.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 185.0,
+     "reps": 3,
+     "unit": "lb",
+     "weight_kg": 83.9,
+     "weight_lb": 185.0,
+     "est_1rm_kg": 92.3,
+     "est_1rm_lb": 203.5
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 225.0,
+     "reps": 2,
+     "unit": "lb",
+     "weight_kg": 102.1,
+     "weight_lb": 225.0,
+     "est_1rm_kg": 108.9,
+     "est_1rm_lb": 240.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 245.0,
+     "reps": 5,
+     "unit": "lb",
+     "weight_kg": 111.1,
+     "weight_lb": 245.0,
+     "est_1rm_kg": 129.7,
+     "est_1rm_lb": 285.8
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 245.0,
+     "reps": 5,
+     "unit": "lb",
+     "weight_kg": 111.1,
+     "weight_lb": 245.0,
+     "est_1rm_kg": 129.7,
+     "est_1rm_lb": 285.8
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 245.0,
+     "reps": 5,
+     "unit": "lb",
+     "weight_kg": 111.1,
+     "weight_lb": 245.0,
+     "est_1rm_kg": 129.7,
+     "est_1rm_lb": 285.8
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 245.0,
+     "reps": 5,
+     "unit": "lb",
+     "weight_kg": 111.1,
+     "weight_lb": 245.0,
+     "est_1rm_kg": 129.7,
+     "est_1rm_lb": 285.8
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 245.0,
+     "reps": 5,
+     "unit": "lb",
+     "weight_kg": 111.1,
+     "weight_lb": 245.0,
+     "est_1rm_kg": 129.7,
+     "est_1rm_lb": 285.8
     }
    ]
   },
@@ -109457,7 +109770,7 @@
    "best_1rm_reps": 8,
    "best_1rm_date": "2026-08-14",
    "best_1rm_unit": "lb",
-   "total_sets": 350,
+   "total_sets": 354,
    "top_sets": [
     {
      "date": "2026-08-14",
@@ -109512,7 +109825,37 @@
    ],
    "recent_sets": [
     {
-     "date": "2026-10-05",
+     "date": "2026-10-12",
+     "weight": 105.0,
+     "reps": 8,
+     "unit": "lb",
+     "weight_kg": 47.6,
+     "weight_lb": 105.0,
+     "est_1rm_kg": 60.3,
+     "est_1rm_lb": 133.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 105.0,
+     "reps": 8,
+     "unit": "lb",
+     "weight_kg": 47.6,
+     "weight_lb": 105.0,
+     "est_1rm_kg": 60.3,
+     "est_1rm_lb": 133.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 105.0,
+     "reps": 8,
+     "unit": "lb",
+     "weight_kg": 47.6,
+     "weight_lb": 105.0,
+     "est_1rm_kg": 60.3,
+     "est_1rm_lb": 133.0
+    },
+    {
+     "date": "2026-10-12",
      "weight": 105.0,
      "reps": 8,
      "unit": "lb",
@@ -109530,36 +109873,6 @@
      "weight_lb": 105.0,
      "est_1rm_kg": 60.3,
      "est_1rm_lb": 133.0
-    },
-    {
-     "date": "2026-10-05",
-     "weight": 105.0,
-     "reps": 8,
-     "unit": "lb",
-     "weight_kg": 47.6,
-     "weight_lb": 105.0,
-     "est_1rm_kg": 60.3,
-     "est_1rm_lb": 133.0
-    },
-    {
-     "date": "2026-10-05",
-     "weight": 105.0,
-     "reps": 8,
-     "unit": "lb",
-     "weight_kg": 47.6,
-     "weight_lb": 105.0,
-     "est_1rm_kg": 60.3,
-     "est_1rm_lb": 133.0
-    },
-    {
-     "date": "2026-09-28",
-     "weight": 45.0,
-     "reps": 8,
-     "unit": "lb",
-     "weight_kg": 20.4,
-     "weight_lb": 45.0,
-     "est_1rm_kg": 25.9,
-     "est_1rm_lb": 57.0
     }
    ],
    "history": [
@@ -113062,6 +113375,46 @@
      "weight_lb": 105.0,
      "est_1rm_kg": 60.3,
      "est_1rm_lb": 133.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 105.0,
+     "reps": 8,
+     "unit": "lb",
+     "weight_kg": 47.6,
+     "weight_lb": 105.0,
+     "est_1rm_kg": 60.3,
+     "est_1rm_lb": 133.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 105.0,
+     "reps": 8,
+     "unit": "lb",
+     "weight_kg": 47.6,
+     "weight_lb": 105.0,
+     "est_1rm_kg": 60.3,
+     "est_1rm_lb": 133.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 105.0,
+     "reps": 8,
+     "unit": "lb",
+     "weight_kg": 47.6,
+     "weight_lb": 105.0,
+     "est_1rm_kg": 60.3,
+     "est_1rm_lb": 133.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 105.0,
+     "reps": 8,
+     "unit": "lb",
+     "weight_kg": 47.6,
+     "weight_lb": 105.0,
+     "est_1rm_kg": 60.3,
+     "est_1rm_lb": 133.0
     }
    ]
   },
@@ -113083,7 +113436,7 @@
    "best_1rm_reps": 6,
    "best_1rm_date": "2023-06-16",
    "best_1rm_unit": "lb",
-   "total_sets": 211,
+   "total_sets": 215,
    "top_sets": [
     {
      "date": "2023-06-16",
@@ -113138,6 +113491,46 @@
    ],
    "recent_sets": [
     {
+     "date": "2026-10-12",
+     "weight": 135.0,
+     "reps": 8,
+     "unit": "lb",
+     "weight_kg": 61.2,
+     "weight_lb": 135.0,
+     "est_1rm_kg": 77.6,
+     "est_1rm_lb": 171.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 195.0,
+     "reps": 10,
+     "unit": "lb",
+     "weight_kg": 88.5,
+     "weight_lb": 195.0,
+     "est_1rm_kg": 117.9,
+     "est_1rm_lb": 260.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 195.0,
+     "reps": 10,
+     "unit": "lb",
+     "weight_kg": 88.5,
+     "weight_lb": 195.0,
+     "est_1rm_kg": 117.9,
+     "est_1rm_lb": 260.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 195.0,
+     "reps": 10,
+     "unit": "lb",
+     "weight_kg": 88.5,
+     "weight_lb": 195.0,
+     "est_1rm_kg": 117.9,
+     "est_1rm_lb": 260.0
+    },
+    {
      "date": "2026-10-05",
      "weight": 45.0,
      "reps": 8,
@@ -113146,46 +113539,6 @@
      "weight_lb": 45.0,
      "est_1rm_kg": 25.9,
      "est_1rm_lb": 57.0
-    },
-    {
-     "date": "2026-10-05",
-     "weight": 135.0,
-     "reps": 9,
-     "unit": "lb",
-     "weight_kg": 61.2,
-     "weight_lb": 135.0,
-     "est_1rm_kg": 79.6,
-     "est_1rm_lb": 175.5
-    },
-    {
-     "date": "2026-10-05",
-     "weight": 185.0,
-     "reps": 8,
-     "unit": "lb",
-     "weight_kg": 83.9,
-     "weight_lb": 185.0,
-     "est_1rm_kg": 106.3,
-     "est_1rm_lb": 234.3
-    },
-    {
-     "date": "2026-10-05",
-     "weight": 185.0,
-     "reps": 8,
-     "unit": "lb",
-     "weight_kg": 83.9,
-     "weight_lb": 185.0,
-     "est_1rm_kg": 106.3,
-     "est_1rm_lb": 234.3
-    },
-    {
-     "date": "2026-10-05",
-     "weight": 185.0,
-     "reps": 8,
-     "unit": "lb",
-     "weight_kg": 83.9,
-     "weight_lb": 185.0,
-     "est_1rm_kg": 106.3,
-     "est_1rm_lb": 234.3
     }
    ],
    "history": [
@@ -115298,6 +115651,46 @@
      "weight_lb": 185.0,
      "est_1rm_kg": 106.3,
      "est_1rm_lb": 234.3
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 135.0,
+     "reps": 8,
+     "unit": "lb",
+     "weight_kg": 61.2,
+     "weight_lb": 135.0,
+     "est_1rm_kg": 77.6,
+     "est_1rm_lb": 171.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 195.0,
+     "reps": 10,
+     "unit": "lb",
+     "weight_kg": 88.5,
+     "weight_lb": 195.0,
+     "est_1rm_kg": 117.9,
+     "est_1rm_lb": 260.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 195.0,
+     "reps": 10,
+     "unit": "lb",
+     "weight_kg": 88.5,
+     "weight_lb": 195.0,
+     "est_1rm_kg": 117.9,
+     "est_1rm_lb": 260.0
+    },
+    {
+     "date": "2026-10-12",
+     "weight": 195.0,
+     "reps": 10,
+     "unit": "lb",
+     "weight_kg": 88.5,
+     "weight_lb": 195.0,
+     "est_1rm_kg": 117.9,
+     "est_1rm_lb": 260.0
     }
    ]
   },
