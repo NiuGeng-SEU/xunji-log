@@ -1,15 +1,15 @@
 {
  "date_start": "2021-11-15",
- "date_end": "2026-10-17",
- "n_days": 913,
- "n_sessions": 1714,
+ "date_end": "2026-10-18",
+ "n_days": 914,
+ "n_sessions": 1716,
  "n_movements": 88,
- "total_volume_kg": 2717213.5,
- "total_sets": 7952,
- "total_done_sets": 7935,
- "total_duration_min": 68953.5,
- "avg_session_duration_min": 40.2,
- "avg_sessions_per_week": 6.67,
+ "total_volume_kg": 2717648.9,
+ "total_sets": 7953,
+ "total_done_sets": 7936,
+ "total_duration_min": 69126.7,
+ "avg_session_duration_min": 40.3,
+ "avg_sessions_per_week": 6.68,
  "max_streak_days": 38,
  "avg_gap_days": 2.0,
  "monthly": {
@@ -135,7 +135,7 @@
    39,
    42,
    53,
-   35
+   37
   ],
   "days": [
    8,
@@ -197,7 +197,7 @@
    20,
    22,
    20,
-   14
+   15
   ],
   "volume_tons": [
    61.76,
@@ -259,7 +259,7 @@
    45.2,
    65.01,
    57.68,
-   48.23
+   48.67
   ],
   "duration_hours": [
    9.1,
@@ -321,7 +321,7 @@
    29.2,
    29.4,
    32.5,
-   25.3
+   28.2
   ],
   "cardio_km": [
    0,
@@ -383,7 +383,7 @@
    87.4,
    81.5,
    93.3,
-   65.2
+   87.3
   ],
   "cardio_kcal": [
    0,
@@ -445,7 +445,7 @@
    12969,
    13469,
    13469,
-   9632
+   11671
   ]
  },
  "weekly": {
@@ -965,14 +965,14 @@
    14,
    14,
    16,
-   13
+   15
   ]
  },
  "cardio": {
-  "n_sessions": 1254,
+  "n_sessions": 1256,
   "n_strength_sessions": 460,
-  "total_km": 2210.1,
-  "total_kcal": 392200,
+  "total_km": 2232.2,
+  "total_kcal": 394239,
   "avg_hr": 121.0,
   "max_hr": 145.0
  },
@@ -992,8 +992,8 @@
    258,
    277,
    228,
-   191,
-   184
+   192,
+   185
   ]
  },
  "hour_of_day": {
@@ -1031,7 +1031,7 @@
    83,
    84,
    58,
-   33,
+   34,
    23,
    14,
    16,
@@ -1044,7 +1044,7 @@
    86,
    112,
    129,
-   116,
+   117,
    116,
    116,
    115
@@ -1205,8 +1205,8 @@
    "name": "面拉",
    "days": 38,
    "sessions": 38,
-   "sets": 113,
-   "volume_kg": 42709.0,
+   "sets": 114,
+   "volume_kg": 43145.0,
    "category": "肩"
   },
   {
@@ -8597,11 +8597,19 @@
   },
   {
    "date": "2026-10-17",
-   "sessions": 1,
-   "volume_kg": 4864.0,
-   "duration_min": 66.0,
+   "sessions": 2,
+   "volume_kg": 5299.0,
+   "duration_min": 102.0,
    "cardio_km": 0.0,
-   "cardio_kcal": 0
+   "cardio_kcal": 79
+  },
+  {
+   "date": "2026-10-18",
+   "sessions": 1,
+   "volume_kg": 0.0,
+   "duration_min": 138.0,
+   "cardio_km": 22.1,
+   "cardio_kcal": 1533
   }
  ],
  "category_monthly": {
@@ -9055,7 +9063,7 @@
      9.58,
      14.95,
      9.65,
-     8.84
+     9.27
     ]
    }
   ]
@@ -16231,6 +16239,22 @@
   }
  ],
  "cardio_sessions": [
+  {
+   "date": "2026-10-18",
+   "title": "跑步",
+   "distance_km": 22.1,
+   "kcal": 1533,
+   "duration_min": 138.0,
+   "avg_hr": 152.0
+  },
+  {
+   "date": "2026-10-17",
+   "title": "步行",
+   "distance_km": 1.1,
+   "kcal": 79,
+   "duration_min": 13.0,
+   "avg_hr": 119.0
+  },
   {
    "date": "2026-10-16",
    "title": "跑步",
@@ -26266,15 +26290,15 @@
  ],
  "strength_summary": {
   "total_workouts": 460,
-  "total_volume_kg": 2717213.5,
-  "total_duration_hours": 464.4,
+  "total_volume_kg": 2717648.9,
+  "total_duration_hours": 464.8,
   "total_years": 4.9,
   "calendar_years": 6,
   "latest_activity": {
    "date": "2026-10-17",
    "title": "背·二头",
-   "duration_min": 66.0,
-   "volume_kg": 4863.9
+   "duration_min": 88.0,
+   "volume_kg": 5299.3
   },
   "workout_dates": [
    "2021-11-15",
@@ -29496,8 +29520,8 @@
    "2026-10-17": {
     "date": "2026-10-17",
     "title": "背·二头",
-    "duration_min": 66.0,
-    "volume_kg": 4863.9
+    "duration_min": 88.0,
+    "volume_kg": 5299.3
    }
   },
   "compound_prs": [
@@ -81369,18 +81393,18 @@
    "monthly_target": 13,
    "yearly_target": 156,
    "this_week": {
-    "workouts": 3,
-    "duration_hours": 3.8,
-    "diff_last_week": -2
+    "workouts": 0,
+    "duration_hours": 0.0,
+    "diff_last_week": -3
    },
    "this_month": {
     "workouts": 9,
-    "duration_hours": 11.0,
+    "duration_hours": 11.4,
     "diff_last_month": 0
    },
    "this_year": {
     "workouts": 76,
-    "duration_hours": 82.3,
+    "duration_hours": 82.7,
     "diff_last_year": -42
    }
   }
