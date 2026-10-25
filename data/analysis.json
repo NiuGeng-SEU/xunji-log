@@ -1,13 +1,13 @@
 {
  "date_start": "2021-11-15",
- "date_end": "2026-10-23",
- "n_days": 918,
- "n_sessions": 1725,
+ "date_end": "2026-10-25",
+ "n_days": 919,
+ "n_sessions": 1727,
  "n_movements": 88,
  "total_volume_kg": 2729366.1,
  "total_sets": 7987,
  "total_done_sets": 7970,
- "total_duration_min": 69453.9,
+ "total_duration_min": 69559.4,
  "avg_session_duration_min": 40.3,
  "avg_sessions_per_week": 6.69,
  "max_streak_days": 38,
@@ -135,7 +135,7 @@
    39,
    42,
    53,
-   46
+   48
   ],
   "days": [
    8,
@@ -197,7 +197,7 @@
    20,
    22,
    20,
-   19
+   20
   ],
   "volume_tons": [
    61.76,
@@ -321,7 +321,7 @@
    29.2,
    29.4,
    32.5,
-   33.6
+   35.4
   ],
   "cardio_km": [
    0,
@@ -383,7 +383,7 @@
    87.4,
    81.5,
    93.3,
-   104.2
+   117.7
   ],
   "cardio_kcal": [
    0,
@@ -445,7 +445,7 @@
    12969,
    13469,
    13469,
-   14434
+   15389
   ]
  },
  "weekly": {
@@ -967,14 +967,14 @@
    14,
    16,
    15,
-   9
+   11
   ]
  },
  "cardio": {
-  "n_sessions": 1263,
+  "n_sessions": 1265,
   "n_strength_sessions": 462,
-  "total_km": 2249.1,
-  "total_kcal": 397002,
+  "total_km": 2262.6,
+  "total_kcal": 397957,
   "avg_hr": 121.0,
   "max_hr": 145.0
  },
@@ -995,7 +995,7 @@
    279,
    230,
    192,
-   185
+   187
   ]
  },
  "hour_of_day": {
@@ -1030,8 +1030,8 @@
    95,
    107,
    81,
-   84,
-   84,
+   85,
+   85,
    58,
    34,
    23,
@@ -8644,6 +8644,14 @@
    "duration_min": 74.0,
    "cardio_km": 0.0,
    "cardio_kcal": 407
+  },
+  {
+   "date": "2026-10-25",
+   "sessions": 2,
+   "volume_kg": 0.0,
+   "duration_min": 105.0,
+   "cardio_km": 13.5,
+   "cardio_kcal": 955
   }
  ],
  "category_monthly": {
@@ -16273,6 +16281,22 @@
   }
  ],
  "cardio_sessions": [
+  {
+   "date": "2026-10-25",
+   "title": "跑步",
+   "distance_km": 8.0,
+   "kcal": 569,
+   "duration_min": 60.0,
+   "avg_hr": 140.0
+  },
+  {
+   "date": "2026-10-25",
+   "title": "跑步",
+   "distance_km": 5.5,
+   "kcal": 386,
+   "duration_min": 45.0,
+   "avg_hr": 134.0
+  },
   {
    "date": "2026-10-23",
    "title": "步行",
@@ -81747,7 +81771,7 @@
    }
   ],
   "streaks": {
-   "current_days": 1,
+   "current_days": 0,
    "max_days": 7,
    "current_weeks": 16,
    "max_weeks": 32
@@ -81757,9 +81781,9 @@
    "monthly_target": 13,
    "yearly_target": 156,
    "this_week": {
-    "workouts": 2,
-    "duration_hours": 2.1,
-    "diff_last_week": -1
+    "workouts": 0,
+    "duration_hours": 0.0,
+    "diff_last_week": -2
    },
    "this_month": {
     "workouts": 11,
