@@ -1,6 +1,23 @@
 {
-  "state": "running",
-  "trigger": "schedule",
-  "phase": "fetch",
-  "updated_at": "2026-09-07T06:30:00-04:00"
+  "state": "ok",
+  "trigger": "cli",
+  "phase": "done",
+  "fetch": {
+    "ok": true,
+    "start": "2026-11-06",
+    "end": "2026-11-07",
+    "fetched": 0,
+    "empty": 0,
+    "skipped": 0,
+    "refreshed": 2,
+    "rate_limited": 0,
+    "errors": []
+  },
+  "analyze": {
+    "ok": true,
+    "returncode": 0,
+    "stderr": ""
+  },
+  "message": "抓取 2026-11-06→2026-11-07，新增 0，刷新 2，空天 0；分析 成功",
+  "updated_at": "2026-11-07T19:28:47-05:00"
 }

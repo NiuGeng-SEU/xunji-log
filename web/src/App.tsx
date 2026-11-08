@@ -8,13 +8,17 @@ import {
 import Overview from "./pages/Overview";
 import Cardio from "./pages/Cardio";
 import Strength from "./pages/Strength";
+import Cycle from "./pages/Cycle";
 import { UnitProvider } from "./units";
 import { LanguageProvider } from "./language";
+import { AuthProvider } from "./utils/auth";
 
 export default function App() {
   return (
     <LanguageProvider>
-      <AppContent />
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </LanguageProvider>
   );
 }
@@ -47,6 +51,7 @@ function AppContent() {
       <Routes>
         <Route element={<Layout />}>
         <Route index element={<Overview data={data} />} />
+        <Route path="cycle" element={<Cycle data={data} />} />
         <Route path="strength" element={<Strength data={data} />} />
         <Route path="cardio" element={<Cardio data={data} />} />
         <Route path="muscle" element={<Navigate to="/strength" replace />} />

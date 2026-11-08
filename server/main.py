@@ -24,6 +24,7 @@ DATA_DIR = Path(os.environ.get("DATA_DIR", ROOT / "data"))
 CACHE_DIR = DATA_DIR / "cache"
 ANALYSIS_PATH = DATA_DIR / "analysis.json"
 STATUS_PATH = DATA_DIR / "sync_status.json"
+CYCLE_PLAN_PATH = DATA_DIR / "cycle_plan.json"
 STATIC_DIR = Path(os.environ.get("STATIC_DIR", ROOT / "web" / "dist"))
 SCRIPTS_DIR = ROOT / "scripts"
 
@@ -263,6 +264,28 @@ def refresh_analysis():
     if proc.returncode != 0:
         raise HTTPException(500, proc.stderr or proc.stdout or "analyze 失败")
     return {"ok": True, "message": "analysis.json 已更新"}
+
+
+@app.get("/api/cycle-plan")
+def get_cycle_plan():
+    if not CYCLE_PLAN_PATH.exists():
+        fallback = ROOT / "web" / "public" / "data" / "cycle_plan.json"
+        if fallback.exists():
+            return json.loads(fallback.read_text(encoding="utf-8"))
+        raise HTTPException(404, "cycle_plan.json 不存在")
+    with open(CYCLE_PLAN_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+@app.post("/api/cycle-plan")
+def update_cycle_plan(plan: dict):
+    with open(CYCLE_PLAN_PATH, "w", encoding="utf-8") as f:
+        json.dump(plan, f, ensure_ascii=False, indent=2)
+    web_public = ROOT / "web" / "public" / "data" / "cycle_plan.json"
+    if web_public.parent.exists():
+        with open(web_public, "w", encoding="utf-8") as f:
+            json.dump(plan, f, ensure_ascii=False, indent=2)
+    return {"ok": True, "message": "cycle_plan.json 已更新"}
 
 
 if STATIC_DIR.exists():

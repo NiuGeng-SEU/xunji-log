@@ -1,8 +1,12 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { Analysis, DrillQuery, chartClickIndex, chartClickName } from "../api";
 import Chart, { axisStyle, barSeries, lineSeries, MATLAB_COLORS } from "../components/Chart";
 import DrillPanel, { expandMonthKey } from "../components/DrillPanel";
 import TrainingHeatmap from "../components/TrainingHeatmap";
+import ForwardSimulationChart from "../components/cycle/ForwardSimulationChart";
+import { simulateBanister } from "../utils/banister";
+import { useAuth } from "../utils/auth";
 import {
   metricTonsToDisplay,
   useWeightUnit,
@@ -94,9 +98,18 @@ export default function Overview({ data }: Props) {
     [monthKeys],
   );
 
+  const { plan } = useAuth();
+  const banisterResult = useMemo(() => {
+    return simulateBanister(data, plan?.schedule || {}, 28);
+  }, [data, plan]);
+
   return (
     <>
       <h2 className="page-title overview-title">{t("Overview", "总览")}</h2>
+
+      <div className="overview-simulator-block">
+        <ForwardSimulationChart data={banisterResult} />
+      </div>
 
       <TrainingHeatmap
         data={data}

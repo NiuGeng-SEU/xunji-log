@@ -1,0 +1,2216 @@
+{
+  "user_profile": {
+    "height_cm": 178,
+    "current_weight_kg": 77.0,
+    "current_body_fat_pct": 20.0,
+    "gender": "men",
+    "goal": "cut",
+    "target_weight_kg": 73.0,
+    "weekly_weight_change_kg": -0.4,
+    "daily_protein_g": 160,
+    "history_body_metrics": [
+      {
+        "date": "2026-11-01",
+        "weight_kg": 77.0,
+        "body_fat_pct": 20.0,
+        "notes": "周期基准初始体重 (Cycle Baseline)"
+      }
+    ]
+  },
+  "cycle_config": {
+    "cycle_name": "Autumn Hybrid Block",
+    "start_date": "2026-11-01",
+    "total_weeks": 4,
+    "mode": "custom",
+    "load_multipliers": [
+      1,
+      1,
+      1.05,
+      0.5
+    ],
+    "week_names": [
+      "Week 1: Accumulation (积累基准 90%)",
+      "Week 2: Progression (加压推进 95%)",
+      "Week 3: Peak / Overreaching (巅峰冲刺 100%)",
+      "Week 4: Deload (智能减载 50%)"
+    ],
+    "weekly_template": {
+      "0": {
+        "title": "跑步 (LSD)",
+        "type": "cardio",
+        "cardio_km": 12,
+        "target_hr_max": 142
+      },
+      "1": {
+        "title": "深蹲",
+        "type": "strength",
+        "movements": [
+          {
+            "name": "深蹲",
+            "sets": [
+              {
+                "weight_kg": 130,
+                "reps": 5,
+                "rpe": 8.5,
+                "done": false
+              },
+              {
+                "weight_kg": 130,
+                "reps": 5,
+                "rpe": 8.5,
+                "done": false
+              },
+              {
+                "weight_kg": 117.5,
+                "reps": 5,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 117.5,
+                "reps": 5,
+                "rpe": 7.5,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "站姿杠铃推举",
+            "sets": [
+              {
+                "weight_kg": 52.5,
+                "reps": 8,
+                "rpe": 8,
+                "done": false
+              },
+              {
+                "weight_kg": 52.5,
+                "reps": 8,
+                "rpe": 8,
+                "done": false
+              },
+              {
+                "weight_kg": 52.5,
+                "reps": 8,
+                "rpe": 8,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "杠铃罗马尼亚硬拉",
+            "sets": [
+              {
+                "weight_kg": 92.5,
+                "reps": 10,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 92.5,
+                "reps": 10,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 92.5,
+                "reps": 10,
+                "rpe": 7.5,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "悍马机侧平举",
+            "sets": [
+              {
+                "weight_kg": 35,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 35,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "单手哑铃手腕弯举（正手）",
+            "sets": [
+              {
+                "weight_kg": 20,
+                "reps": 12,
+                "rpe": 7,
+                "done": false
+              },
+              {
+                "weight_kg": 20,
+                "reps": 12,
+                "rpe": 7,
+                "done": false
+              }
+            ]
+          }
+        ]
+      },
+      "2": {
+        "title": "跑步",
+        "type": "cardio",
+        "cardio_km": 8,
+        "target_hr_max": 145
+      },
+      "3": {
+        "title": "卧推",
+        "type": "strength",
+        "movements": [
+          {
+            "name": "杠铃卧推",
+            "sets": [
+              {
+                "weight_kg": 102.5,
+                "reps": 5,
+                "rpe": 9,
+                "done": false
+              },
+              {
+                "weight_kg": 102.5,
+                "reps": 5,
+                "rpe": 9,
+                "done": false
+              },
+              {
+                "weight_kg": 92.5,
+                "reps": 5,
+                "rpe": 8,
+                "done": false
+              },
+              {
+                "weight_kg": 92.5,
+                "reps": 5,
+                "rpe": 8,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "上斜杠铃卧推",
+            "sets": [
+              {
+                "weight_kg": 75,
+                "reps": 6,
+                "rpe": 8,
+                "done": false
+              },
+              {
+                "weight_kg": 75,
+                "reps": 6,
+                "rpe": 8,
+                "done": false
+              },
+              {
+                "weight_kg": 75,
+                "reps": 6,
+                "rpe": 8,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "双杠臂屈伸（负重）",
+            "sets": [
+              {
+                "weight_kg": 47.5,
+                "reps": 8,
+                "rpe": 8,
+                "done": false
+              },
+              {
+                "weight_kg": 47.5,
+                "reps": 8,
+                "rpe": 8,
+                "done": false
+              },
+              {
+                "weight_kg": 47.5,
+                "reps": 8,
+                "rpe": 8,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "直杆绳索下压",
+            "sets": [
+              {
+                "weight_kg": 60,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 60,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              }
+            ]
+          }
+        ]
+      },
+      "4": {
+        "title": "跑步",
+        "type": "cardio",
+        "cardio_km": 9,
+        "target_hr_max": 142
+      },
+      "5": {
+        "title": "背·二头",
+        "type": "strength",
+        "movements": [
+          {
+            "name": "杠铃划船",
+            "sets": [
+              {
+                "weight_kg": 87.5,
+                "reps": 8,
+                "rpe": 8.5,
+                "done": false
+              },
+              {
+                "weight_kg": 87.5,
+                "reps": 8,
+                "rpe": 8.5,
+                "done": false
+              },
+              {
+                "weight_kg": 80,
+                "reps": 8,
+                "rpe": 8,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "引体向上",
+            "sets": [
+              {
+                "weight_kg": 10,
+                "reps": 10,
+                "rpe": 8,
+                "done": false
+              },
+              {
+                "weight_kg": 10,
+                "reps": 10,
+                "rpe": 8,
+                "done": false
+              },
+              {
+                "weight_kg": 10,
+                "reps": 8,
+                "rpe": 8,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "哑铃划船",
+            "sets": [
+              {
+                "weight_kg": 40,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 40,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 40,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "EZ杆二头弯举",
+            "sets": [
+              {
+                "weight_kg": 32.5,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 32.5,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 32.5,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "Incline Dumbbell Face Pull",
+            "sets": [
+              {
+                "weight_kg": 10,
+                "reps": 10,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 10,
+                "reps": 10,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 10,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              }
+            ]
+          }
+        ]
+      },
+      "6": {
+        "title": "背·二头",
+        "type": "strength",
+        "movements": [
+          {
+            "name": "杠铃划船",
+            "sets": [
+              {
+                "weight_kg": 87.5,
+                "reps": 8,
+                "rpe": 8.5,
+                "done": false
+              },
+              {
+                "weight_kg": 87.5,
+                "reps": 8,
+                "rpe": 8.5,
+                "done": false
+              },
+              {
+                "weight_kg": 80,
+                "reps": 8,
+                "rpe": 8,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "引体向上",
+            "sets": [
+              {
+                "weight_kg": 10,
+                "reps": 10,
+                "rpe": 8,
+                "done": false
+              },
+              {
+                "weight_kg": 10,
+                "reps": 10,
+                "rpe": 8,
+                "done": false
+              },
+              {
+                "weight_kg": 10,
+                "reps": 8,
+                "rpe": 8,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "哑铃划船",
+            "sets": [
+              {
+                "weight_kg": 40,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 40,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 40,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "EZ杆二头弯举",
+            "sets": [
+              {
+                "weight_kg": 32.5,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 32.5,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 32.5,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              }
+            ]
+          },
+          {
+            "name": "Incline Dumbbell Face Pull",
+            "sets": [
+              {
+                "weight_kg": 10,
+                "reps": 10,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 10,
+                "reps": 10,
+                "rpe": 7.5,
+                "done": false
+              },
+              {
+                "weight_kg": 10,
+                "reps": 12,
+                "rpe": 7.5,
+                "done": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "schedule": {
+    "2026-11-01": {
+      "title": "跑步 (LSD)",
+      "type": "cardio",
+      "cardio_km": 12,
+      "target_hr_max": 142
+    },
+    "2026-11-02": {
+      "title": "深蹲",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "深蹲",
+          "sets": [
+            {
+              "weight_kg": 130,
+              "reps": 5,
+              "rpe": 8.5,
+              "done": false
+            },
+            {
+              "weight_kg": 130,
+              "reps": 5,
+              "rpe": 8.5,
+              "done": false
+            },
+            {
+              "weight_kg": 117.5,
+              "reps": 5,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 117.5,
+              "reps": 5,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "站姿杠铃推举",
+          "sets": [
+            {
+              "weight_kg": 52.5,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 52.5,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 52.5,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "杠铃罗马尼亚硬拉",
+          "sets": [
+            {
+              "weight_kg": 92.5,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 92.5,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 92.5,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "悍马机侧平举",
+          "sets": [
+            {
+              "weight_kg": 35,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 35,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "单手哑铃手腕弯举（正手）",
+          "sets": [
+            {
+              "weight_kg": 20,
+              "reps": 12,
+              "rpe": 7,
+              "done": false
+            },
+            {
+              "weight_kg": 20,
+              "reps": 12,
+              "rpe": 7,
+              "done": false
+            }
+          ]
+        }
+      ]
+    },
+    "2026-11-03": {
+      "title": "跑步",
+      "type": "cardio",
+      "cardio_km": 8,
+      "target_hr_max": 145
+    },
+    "2026-11-04": {
+      "title": "卧推",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "杠铃卧推",
+          "sets": [
+            {
+              "weight_kg": 102.5,
+              "reps": 5,
+              "rpe": 9,
+              "done": false
+            },
+            {
+              "weight_kg": 102.5,
+              "reps": 5,
+              "rpe": 9,
+              "done": false
+            },
+            {
+              "weight_kg": 92.5,
+              "reps": 5,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 92.5,
+              "reps": 5,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "上斜杠铃卧推",
+          "sets": [
+            {
+              "weight_kg": 75,
+              "reps": 6,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 75,
+              "reps": 6,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 75,
+              "reps": 6,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "双杠臂屈伸（负重）",
+          "sets": [
+            {
+              "weight_kg": 47.5,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 47.5,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 47.5,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "直杆绳索下压",
+          "sets": [
+            {
+              "weight_kg": 60,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 60,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        }
+      ]
+    },
+    "2026-11-05": {
+      "title": "跑步",
+      "type": "cardio",
+      "cardio_km": 9,
+      "target_hr_max": 142
+    },
+    "2026-11-06": {
+      "title": "背·二头",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "杠铃划船",
+          "sets": [
+            {
+              "weight_kg": 87.5,
+              "reps": 8,
+              "rpe": 8.5,
+              "done": false
+            },
+            {
+              "weight_kg": 87.5,
+              "reps": 8,
+              "rpe": 8.5,
+              "done": false
+            },
+            {
+              "weight_kg": 80,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "引体向上",
+          "sets": [
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "哑铃划船",
+          "sets": [
+            {
+              "weight_kg": 40,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 40,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 40,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "EZ杆二头弯举",
+          "sets": [
+            {
+              "weight_kg": 32.5,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 32.5,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 32.5,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "Incline Dumbbell Face Pull",
+          "sets": [
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        }
+      ]
+    },
+    "2026-11-07": {
+      "title": "背·二头",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "杠铃划船",
+          "sets": [
+            {
+              "weight_kg": 87.5,
+              "reps": 8,
+              "rpe": 8.5,
+              "done": false
+            },
+            {
+              "weight_kg": 87.5,
+              "reps": 8,
+              "rpe": 8.5,
+              "done": false
+            },
+            {
+              "weight_kg": 80,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "引体向上",
+          "sets": [
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "哑铃划船",
+          "sets": [
+            {
+              "weight_kg": 40,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 40,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 40,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "EZ杆二头弯举",
+          "sets": [
+            {
+              "weight_kg": 32.5,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 32.5,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 32.5,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "Incline Dumbbell Face Pull",
+          "sets": [
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        }
+      ]
+    },
+    "2026-11-08": {
+      "title": "跑步 (LSD)",
+      "type": "cardio",
+      "cardio_km": 12,
+      "target_hr_max": 142
+    },
+    "2026-11-09": {
+      "title": "深蹲",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "深蹲",
+          "sets": [
+            {
+              "weight_kg": 130,
+              "reps": 5,
+              "rpe": 8.5,
+              "done": false
+            },
+            {
+              "weight_kg": 130,
+              "reps": 5,
+              "rpe": 8.5,
+              "done": false
+            },
+            {
+              "weight_kg": 117.5,
+              "reps": 5,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 117.5,
+              "reps": 5,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "站姿杠铃推举",
+          "sets": [
+            {
+              "weight_kg": 52.5,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 52.5,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 52.5,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "杠铃罗马尼亚硬拉",
+          "sets": [
+            {
+              "weight_kg": 92.5,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 92.5,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 92.5,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "悍马机侧平举",
+          "sets": [
+            {
+              "weight_kg": 35,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 35,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "单手哑铃手腕弯举（正手）",
+          "sets": [
+            {
+              "weight_kg": 20,
+              "reps": 12,
+              "rpe": 7,
+              "done": false
+            },
+            {
+              "weight_kg": 20,
+              "reps": 12,
+              "rpe": 7,
+              "done": false
+            }
+          ]
+        }
+      ]
+    },
+    "2026-11-10": {
+      "title": "跑步",
+      "type": "cardio",
+      "cardio_km": 8,
+      "target_hr_max": 145
+    },
+    "2026-11-11": {
+      "title": "卧推",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "杠铃卧推",
+          "sets": [
+            {
+              "weight_kg": 102.5,
+              "reps": 5,
+              "rpe": 9,
+              "done": false
+            },
+            {
+              "weight_kg": 102.5,
+              "reps": 5,
+              "rpe": 9,
+              "done": false
+            },
+            {
+              "weight_kg": 92.5,
+              "reps": 5,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 92.5,
+              "reps": 5,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "上斜杠铃卧推",
+          "sets": [
+            {
+              "weight_kg": 75,
+              "reps": 6,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 75,
+              "reps": 6,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 75,
+              "reps": 6,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "双杠臂屈伸（负重）",
+          "sets": [
+            {
+              "weight_kg": 47.5,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 47.5,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 47.5,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "直杆绳索下压",
+          "sets": [
+            {
+              "weight_kg": 60,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 60,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        }
+      ]
+    },
+    "2026-11-12": {
+      "title": "跑步",
+      "type": "cardio",
+      "cardio_km": 9,
+      "target_hr_max": 142
+    },
+    "2026-11-13": {
+      "title": "背·二头",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "杠铃划船",
+          "sets": [
+            {
+              "weight_kg": 87.5,
+              "reps": 8,
+              "rpe": 8.5,
+              "done": false
+            },
+            {
+              "weight_kg": 87.5,
+              "reps": 8,
+              "rpe": 8.5,
+              "done": false
+            },
+            {
+              "weight_kg": 80,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "引体向上",
+          "sets": [
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "哑铃划船",
+          "sets": [
+            {
+              "weight_kg": 40,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 40,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 40,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "EZ杆二头弯举",
+          "sets": [
+            {
+              "weight_kg": 32.5,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 32.5,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 32.5,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "Incline Dumbbell Face Pull",
+          "sets": [
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        }
+      ]
+    },
+    "2026-11-14": {
+      "title": "背·二头",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "杠铃划船",
+          "sets": [
+            {
+              "weight_kg": 87.5,
+              "reps": 8,
+              "rpe": 8.5,
+              "done": false
+            },
+            {
+              "weight_kg": 87.5,
+              "reps": 8,
+              "rpe": 8.5,
+              "done": false
+            },
+            {
+              "weight_kg": 80,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "引体向上",
+          "sets": [
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 8,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 8,
+              "rpe": 8,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "哑铃划船",
+          "sets": [
+            {
+              "weight_kg": 40,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 40,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 40,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "EZ杆二头弯举",
+          "sets": [
+            {
+              "weight_kg": 32.5,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 32.5,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 32.5,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "Incline Dumbbell Face Pull",
+          "sets": [
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 7.5,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 12,
+              "rpe": 7.5,
+              "done": false
+            }
+          ]
+        }
+      ]
+    },
+    "2026-11-15": {
+      "title": "跑步 (LSD)",
+      "type": "cardio",
+      "cardio_km": 12.6,
+      "target_hr_max": 142
+    },
+    "2026-11-16": {
+      "title": "深蹲",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "深蹲",
+          "sets": [
+            {
+              "weight_kg": 137.5,
+              "reps": 5,
+              "rpe": 8.6,
+              "done": false
+            },
+            {
+              "weight_kg": 137.5,
+              "reps": 5,
+              "rpe": 8.6,
+              "done": false
+            },
+            {
+              "weight_kg": 122.5,
+              "reps": 5,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 122.5,
+              "reps": 5,
+              "rpe": 7.6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "站姿杠铃推举",
+          "sets": [
+            {
+              "weight_kg": 55,
+              "reps": 8,
+              "rpe": 8.1,
+              "done": false
+            },
+            {
+              "weight_kg": 55,
+              "reps": 8,
+              "rpe": 8.1,
+              "done": false
+            },
+            {
+              "weight_kg": 55,
+              "reps": 8,
+              "rpe": 8.1,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "杠铃罗马尼亚硬拉",
+          "sets": [
+            {
+              "weight_kg": 97.5,
+              "reps": 10,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 97.5,
+              "reps": 10,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 97.5,
+              "reps": 10,
+              "rpe": 7.6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "悍马机侧平举",
+          "sets": [
+            {
+              "weight_kg": 37.5,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 37.5,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "单手哑铃手腕弯举（正手）",
+          "sets": [
+            {
+              "weight_kg": 20,
+              "reps": 12,
+              "rpe": 7.1,
+              "done": false
+            },
+            {
+              "weight_kg": 20,
+              "reps": 12,
+              "rpe": 7.1,
+              "done": false
+            }
+          ]
+        }
+      ]
+    },
+    "2026-11-17": {
+      "title": "跑步",
+      "type": "cardio",
+      "cardio_km": 8.4,
+      "target_hr_max": 145
+    },
+    "2026-11-18": {
+      "title": "卧推",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "杠铃卧推",
+          "sets": [
+            {
+              "weight_kg": 107.5,
+              "reps": 5,
+              "rpe": 9.1,
+              "done": false
+            },
+            {
+              "weight_kg": 107.5,
+              "reps": 5,
+              "rpe": 9.1,
+              "done": false
+            },
+            {
+              "weight_kg": 97.5,
+              "reps": 5,
+              "rpe": 8.1,
+              "done": false
+            },
+            {
+              "weight_kg": 97.5,
+              "reps": 5,
+              "rpe": 8.1,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "上斜杠铃卧推",
+          "sets": [
+            {
+              "weight_kg": 80,
+              "reps": 6,
+              "rpe": 8.1,
+              "done": false
+            },
+            {
+              "weight_kg": 80,
+              "reps": 6,
+              "rpe": 8.1,
+              "done": false
+            },
+            {
+              "weight_kg": 80,
+              "reps": 6,
+              "rpe": 8.1,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "双杠臂屈伸（负重）",
+          "sets": [
+            {
+              "weight_kg": 50,
+              "reps": 8,
+              "rpe": 8.1,
+              "done": false
+            },
+            {
+              "weight_kg": 50,
+              "reps": 8,
+              "rpe": 8.1,
+              "done": false
+            },
+            {
+              "weight_kg": 50,
+              "reps": 8,
+              "rpe": 8.1,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "直杆绳索下压",
+          "sets": [
+            {
+              "weight_kg": 62.5,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 62.5,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            }
+          ]
+        }
+      ]
+    },
+    "2026-11-19": {
+      "title": "跑步",
+      "type": "cardio",
+      "cardio_km": 9.5,
+      "target_hr_max": 142
+    },
+    "2026-11-20": {
+      "title": "背·二头",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "杠铃划船",
+          "sets": [
+            {
+              "weight_kg": 92.5,
+              "reps": 8,
+              "rpe": 8.6,
+              "done": false
+            },
+            {
+              "weight_kg": 92.5,
+              "reps": 8,
+              "rpe": 8.6,
+              "done": false
+            },
+            {
+              "weight_kg": 85,
+              "reps": 8,
+              "rpe": 8.1,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "引体向上",
+          "sets": [
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 8.1,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 8.1,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 8,
+              "rpe": 8.1,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "哑铃划船",
+          "sets": [
+            {
+              "weight_kg": 42.5,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 42.5,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 42.5,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "EZ杆二头弯举",
+          "sets": [
+            {
+              "weight_kg": 35,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 35,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 35,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "Incline Dumbbell Face Pull",
+          "sets": [
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            }
+          ]
+        }
+      ]
+    },
+    "2026-11-21": {
+      "title": "背·二头",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "杠铃划船",
+          "sets": [
+            {
+              "weight_kg": 92.5,
+              "reps": 8,
+              "rpe": 8.6,
+              "done": false
+            },
+            {
+              "weight_kg": 92.5,
+              "reps": 8,
+              "rpe": 8.6,
+              "done": false
+            },
+            {
+              "weight_kg": 85,
+              "reps": 8,
+              "rpe": 8.1,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "引体向上",
+          "sets": [
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 8.1,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 8.1,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 8,
+              "rpe": 8.1,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "哑铃划船",
+          "sets": [
+            {
+              "weight_kg": 42.5,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 42.5,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 42.5,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "EZ杆二头弯举",
+          "sets": [
+            {
+              "weight_kg": 35,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 35,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 35,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "Incline Dumbbell Face Pull",
+          "sets": [
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 10,
+              "rpe": 7.6,
+              "done": false
+            },
+            {
+              "weight_kg": 10,
+              "reps": 12,
+              "rpe": 7.6,
+              "done": false
+            }
+          ]
+        }
+      ]
+    },
+    "2026-11-22": {
+      "title": "跑步 (LSD)",
+      "type": "cardio",
+      "cardio_km": 6,
+      "target_hr_max": 142,
+      "notes": "超量恢复减载跑，极轻心率舒适巡航，让心肌与结缔组织充分排酸恢复。"
+    },
+    "2026-11-23": {
+      "title": "深蹲",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "深蹲",
+          "sets": [
+            {
+              "weight_kg": 105,
+              "reps": 3,
+              "rpe": 6,
+              "done": false
+            },
+            {
+              "weight_kg": 105,
+              "reps": 3,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "站姿杠铃推举",
+          "sets": [
+            {
+              "weight_kg": 40,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "杠铃罗马尼亚硬拉",
+          "sets": [
+            {
+              "weight_kg": 70,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "悍马机侧平举",
+          "sets": [
+            {
+              "weight_kg": 27.5,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "单手哑铃手腕弯举（正手）",
+          "sets": [
+            {
+              "weight_kg": 15,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        }
+      ],
+      "notes": "超量减载周：组数砍半，重量轻柔，彻底清空全身中枢疲劳，促进超量恢复。"
+    },
+    "2026-11-24": {
+      "title": "跑步",
+      "type": "cardio",
+      "cardio_km": 4,
+      "target_hr_max": 145,
+      "notes": "超量恢复减载跑，极轻心率舒适巡航，让心肌与结缔组织充分排酸恢复。"
+    },
+    "2026-11-25": {
+      "title": "卧推",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "杠铃卧推",
+          "sets": [
+            {
+              "weight_kg": 82.5,
+              "reps": 3,
+              "rpe": 6,
+              "done": false
+            },
+            {
+              "weight_kg": 82.5,
+              "reps": 3,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "上斜杠铃卧推",
+          "sets": [
+            {
+              "weight_kg": 57.5,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "双杠臂屈伸（负重）",
+          "sets": [
+            {
+              "weight_kg": 35,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "直杆绳索下压",
+          "sets": [
+            {
+              "weight_kg": 45,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        }
+      ],
+      "notes": "超量减载周：组数砍半，重量轻柔，彻底清空全身中枢疲劳，促进超量恢复。"
+    },
+    "2026-11-26": {
+      "title": "跑步",
+      "type": "cardio",
+      "cardio_km": 4.5,
+      "target_hr_max": 142,
+      "notes": "超量恢复减载跑，极轻心率舒适巡航，让心肌与结缔组织充分排酸恢复。"
+    },
+    "2026-11-27": {
+      "title": "背·二头",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "杠铃划船",
+          "sets": [
+            {
+              "weight_kg": 70,
+              "reps": 3,
+              "rpe": 6,
+              "done": false
+            },
+            {
+              "weight_kg": 70,
+              "reps": 3,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "引体向上",
+          "sets": [
+            {
+              "weight_kg": 7.5,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "哑铃划船",
+          "sets": [
+            {
+              "weight_kg": 30,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "EZ杆二头弯举",
+          "sets": [
+            {
+              "weight_kg": 25,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "Incline Dumbbell Face Pull",
+          "sets": [
+            {
+              "weight_kg": 7.5,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        }
+      ],
+      "notes": "超量减载周：组数砍半，重量轻柔，彻底清空全身中枢疲劳，促进超量恢复。"
+    },
+    "2026-11-28": {
+      "title": "背·二头",
+      "type": "strength",
+      "movements": [
+        {
+          "name": "杠铃划船",
+          "sets": [
+            {
+              "weight_kg": 70,
+              "reps": 3,
+              "rpe": 6,
+              "done": false
+            },
+            {
+              "weight_kg": 70,
+              "reps": 3,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "引体向上",
+          "sets": [
+            {
+              "weight_kg": 7.5,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "哑铃划船",
+          "sets": [
+            {
+              "weight_kg": 30,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "EZ杆二头弯举",
+          "sets": [
+            {
+              "weight_kg": 25,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "Incline Dumbbell Face Pull",
+          "sets": [
+            {
+              "weight_kg": 7.5,
+              "reps": 8,
+              "rpe": 6,
+              "done": false
+            }
+          ]
+        }
+      ],
+      "notes": "超量减载周：组数砍半，重量轻柔，彻底清空全身中枢疲劳，促进超量恢复。"
+    }
+  }
+}

@@ -8,6 +8,7 @@ export default function Layout() {
 
   const nav = [
     { to: "/", label: t("Overview", "总览"), end: true },
+    { to: "/cycle", label: t("Cycle Plan", "周期规划"), end: false },
     { to: "/strength", label: t("Strength", "力量训练"), end: false },
     { to: "/cardio", label: t("Cardio", "有氧训练"), end: false },
   ];

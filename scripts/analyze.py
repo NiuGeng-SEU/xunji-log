@@ -1079,7 +1079,7 @@ def main():
             [{"name": n, **v} for n, v in movement_prs.items()],
             key=lambda x: x["max_weight_kg"],
             reverse=True,
-        )[:30],
+        ),
         "cardio_sessions": sorted(cardio_sessions, key=lambda x: x["date"], reverse=True),
         "strength_summary": strength_summary,
         "compound_prs": compound_prs,
@@ -1099,6 +1099,12 @@ def main():
 
         # Pre-export static drill JSON files for serverless GitHub Pages hosting
         export_static_drills(result)
+
+        cycle_plan_src = os.path.join(_DATA, "cycle_plan.json")
+        if os.path.exists(cycle_plan_src):
+            import shutil
+            shutil.copy2(cycle_plan_src, os.path.join(web_public_dir, "cycle_plan.json"))
+            print(f"copied {cycle_plan_src} -> {web_public_dir}")
 
     print(json.dumps(result, ensure_ascii=False)[:600])
 
@@ -1166,7 +1172,7 @@ def export_static_drills(result: dict) -> None:
     mov_dir = os.path.join(out_drill_dir, "movement")
     os.makedirs(mov_dir, exist_ok=True)
     mov_count = 0
-    for m in result.get("movement_prs") or []:
+    for m in (result.get("movement_prs") or [])[:30]:
         name = m.get("name")
         if not name:
             continue
