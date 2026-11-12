@@ -1,15 +1,15 @@
 {
  "date_start": "2021-11-15",
- "date_end": "2026-11-11",
- "n_days": 933,
- "n_sessions": 1759,
+ "date_end": "2026-11-12",
+ "n_days": 934,
+ "n_sessions": 1762,
  "n_movements": 89,
  "total_volume_kg": 2782719.4,
  "total_sets": 8128,
  "total_done_sets": 8111,
- "total_duration_min": 70772.8,
+ "total_duration_min": 70864.2,
  "avg_session_duration_min": 40.2,
- "avg_sessions_per_week": 6.75,
+ "avg_sessions_per_week": 6.76,
  "max_streak_days": 38,
  "avg_gap_days": 2.0,
  "monthly": {
@@ -137,7 +137,7 @@
    42,
    53,
    57,
-   23
+   26
   ],
   "days": [
    8,
@@ -200,7 +200,7 @@
    22,
    20,
    24,
-   10
+   11
   ],
   "volume_tons": [
    61.76,
@@ -326,7 +326,7 @@
    29.4,
    32.5,
    40.3,
-   15.4
+   16.9
   ],
   "cardio_km": [
    0,
@@ -389,7 +389,7 @@
    81.5,
    93.3,
    125.9,
-   41.6
+   50.4
   ],
   "cardio_kcal": [
    0,
@@ -452,7 +452,7 @@
    13469,
    13469,
    17558,
-   6096
+   7196
   ]
  },
  "weekly": {
@@ -980,14 +980,14 @@
    11,
    10,
    15,
-   7
+   10
   ]
  },
  "cardio": {
-  "n_sessions": 1289,
+  "n_sessions": 1292,
   "n_strength_sessions": 470,
-  "total_km": 2312.4,
-  "total_kcal": 406222,
+  "total_km": 2321.2,
+  "total_kcal": 407322,
   "avg_hr": 121.0,
   "max_hr": 145.0
  },
@@ -1004,8 +1004,8 @@
   "sessions": [
    287,
    304,
-   269,
-   282,
+   270,
+   284,
    232,
    193,
    192
@@ -1039,10 +1039,10 @@
    "23时"
   ],
   "sessions": [
-   115,
+   117,
    100,
    111,
-   86,
+   87,
    87,
    87,
    60,
@@ -8772,11 +8772,19 @@
   },
   {
    "date": "2026-11-11",
-   "sessions": 2,
+   "sessions": 3,
    "volume_kg": 6742.0,
-   "duration_min": 89.0,
+   "duration_min": 102.0,
    "cardio_km": 0.0,
-   "cardio_kcal": 72
+   "cardio_kcal": 135
+  },
+  {
+   "date": "2026-11-12",
+   "sessions": 2,
+   "volume_kg": 0.0,
+   "duration_min": 79.0,
+   "cardio_km": 8.7,
+   "cardio_kcal": 690
   }
  ],
  "category_monthly": {
@@ -16881,12 +16889,36 @@
  ],
  "cardio_sessions": [
   {
+   "date": "2026-11-12",
+   "title": "跑步",
+   "distance_km": 8.7,
+   "kcal": 613,
+   "duration_min": 65.0,
+   "avg_hr": 146.0
+  },
+  {
+   "date": "2026-11-12",
+   "title": "步行",
+   "distance_km": 1.2,
+   "kcal": 77,
+   "duration_min": 14.0,
+   "avg_hr": 113.0
+  },
+  {
    "date": "2026-11-11",
    "title": "步行",
    "distance_km": 1.2,
    "kcal": 72,
    "duration_min": 17.0,
    "avg_hr": 111.0
+  },
+  {
+   "date": "2026-11-11",
+   "title": "步行",
+   "distance_km": 1.0,
+   "kcal": 63,
+   "duration_min": 13.0,
+   "avg_hr": 113.0
   },
   {
    "date": "2026-11-10",
